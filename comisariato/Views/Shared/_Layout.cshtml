@@ -30,8 +30,8 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-@*                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="index3.html" class="nav-link">Home</a>
+                @*                 <li class="nav-item d-none d-sm-inline-block">
+                <a href="index3.html" class="nav-link">Home</a>
                 </li> *@
 
             </ul>
@@ -67,7 +67,6 @@
                     </div>
                 </li>
                 <!-- /.Notificaciones -->
-
                 <!-- Full Screen -->
                 <li class="nav-item">
                     <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -75,15 +74,13 @@
                     </a>
                 </li>
                 <!-- /.Full Screen -->
-
                 <!-- Opcion que permite personalizar front end -->
-                 <li class="nav-item">
+                <li class="nav-item">
                     <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                         <i class="fas fa-th-large"></i>
                     </a>
                 </li>
                 <!-- /.Opcion que permite personalizar front end -->
-
                 <!-- Logout -->
                 <li class="nav-item">
                     <a class="nav-link" data-widget="" href="#" role="button">
@@ -94,7 +91,6 @@
             </ul>
         </nav>
         <!-- /.navbar -->
-
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <!-- Brand Logo -->
@@ -106,12 +102,13 @@
             <!-- Sidebar -->
             <div class="sidebar">
                 <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="user-panel mt-1 pb-1 mb-3 d-flex align-items-center">
                     <div class="image">
                         <img src="~/img/usr.png" class="img-circle elevation-2" alt="User Image">
                     </div>
-                    <div class="info">
+                    <div class="info ml-2 d-flex flex-column justify-content-center">
                         <a href="#" class="d-block">Erick Quispal</a>
+                        <a href="#" class="" style="font-size: small;">Industria La Popular S.A.</a>
                     </div>
                 </div>
 
@@ -131,23 +128,21 @@
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
-
                         <!-- Inicio - menu -->
                         <li class="nav-item">
-                            <a class="nav-link active"   asp-controller="Home" asp-action="Index">
+                            <a class="nav-link active" asp-controller="Home" asp-action="Index">
                                 <i class="nav-icon fas fa-lg fa-fw fa-chart-bar"></i>
                                 <p>
                                     Inicio
-@*                                     <span class="right badge badge-danger">New</span> *@
+                                    @*                                     <span class="right badge badge-danger">New</span> *@
                                 </p>
                             </a>
                         </li>
                         <!-- /.Inicio - menu -->
-
                         <!-- Finanzas - menu -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-lg fa-fw fa-money-bill" ></i>
+                                <i class="nav-icon fas fa-lg fa-fw fa-money-bill"></i>
                                 <p>
                                     Finanzas
                                     <i class="right fas fa-angle-right"></i>
@@ -191,7 +186,6 @@
                             </ul>
                         </li>
                         <!-- /.Finanzas - menu -->
-
                         <!-- Sistema - menu -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -234,7 +228,6 @@
                             </ul>
                         </li>
                         <!-- /.Sistema - menu -->
-
                         <!-- Operaciones - menu -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -277,7 +270,6 @@
                             </ul>
                         </li>
                         <!-- /.Operaciones - menu -->
-
                         <!-- Mercadeo y Venta - menu -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -303,18 +295,17 @@
                                                 <p>Mantenimiento de Productos</p>
                                             </a>
                                         </li>
-@*                                         <li class="nav-item">
-                                            <a href="#" class="nav-link" style="padding-left: 80px;">
-                                                <i class=""></i>
-                                                <p>Libre</p>
-                                            </a>
+                                        @*                                         <li class="nav-item">
+                                        <a href="#" class="nav-link" style="padding-left: 80px;">
+                                        <i class=""></i>
+                                        <p>Libre</p>
+                                        </a>
                                         </li> *@
                                     </ul>
                                 </li>
                             </ul>
                         </li>
                         <!-- /.Mercadeo y Venta - menu -->
-
                         <!-- Reportes - menu -->
                         <li class="nav-item">
                             <a href="#" class="nav-link">
@@ -365,6 +356,17 @@
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
+                    <div class="content-header">
+                        <div class="row mb-0">
+                            <div class="col-sm-6">
+                                <ol class="breadcrumb float-sm-left">
+                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item active"></li>
+                                </ol>
+                            </div><!-- /.col -->
+                        </div><!-- /.row -->
+                        <hr style="margin-top: 0;">
+                    </div>
                     <div class="main-content">
                         <main role="main" class="pb-3">
                             @RenderBody()
