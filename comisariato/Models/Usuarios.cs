@@ -2,10 +2,11 @@
 {
     public class Usuarios
     {
-        private int UsuarioId { get; set; }
-        private string UsuarioName { get; set; }
-        private string UsuarioPassword {  get; set; }
-        private int RoleId {  get; set; }
+        public int UsuarioId { get; set; }
+        public string UsuarioName { get; set; }
+        public string UsuarioPassword {  get; set; }
+        public int RoleId {  get; set; }
+        public int EstadoId { get; set; }
 
     }
 }
