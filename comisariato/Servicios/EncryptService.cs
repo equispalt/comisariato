@@ -3,9 +3,13 @@ using System.Text;
 
 namespace comisariato.Servicios
 {
-    public class EncryptService
+    public interface IEncryptService
+    { 
+        string ConvertirSHA256(string password);
+    }
+    public class EncryptService : IEncryptService
     {
-        public static string ConvertirSHA256(string texto)
+        public string ConvertirSHA256(string texto)
         {
             // referencia de "System.security.cryptography"
             StringBuilder Sb = new StringBuilder();

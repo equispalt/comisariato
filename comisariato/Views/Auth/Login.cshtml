@@ -59,23 +59,30 @@
                         <img class="d-block img-fluid" src="~/img/LaPopularLogo.png" alt="First slide">
                     </div>
 
-                    <div class="" style="margin-top: 50px">
+                    <div class="" style="margin-top: 60px">
                         <h2 class="text-center"><strong>Ingreso al sistema</strong></h2>
                     </div>
 
-                    <form class="login-form">
+                    <form action="@Url.Action("Login","Auth")" method="post" class="login-form">
                     
                         <div class="form-group">                            
                             <label for="exampleInputEmail1" class="">Usuario</label>
-                            <input type="text" class="form-control" placeholder="Ingrese su usuario">
+                            <input type="text" name="UsuarioName" class="form-control" placeholder="Ingrese su usuario">
 
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1" class="">Contraseña</label>
-                            <input type="password" class="form-control" placeholder="Ingrese su contraseña">
+                            <input type="password" name="UsuarioPassword" class="form-control" placeholder="Ingrese su contraseña">
                         </div>
 
-                        <button type="submit" class="btn btn-login float-right btn-primary">Aceptar</button>
+                        @if (ViewData["Mensaje"] != null)
+						{
+							<div class="alert alert-danger" role="alert">
+								@ViewData["Mensaje"]
+							</div>
+						}
+
+                        <button type="submit" name="button" class="btn btn-login float-right btn-primary">Aceptar</button>
 
                     </form>
                 </div>
