@@ -30,6 +30,12 @@ namespace comisariato.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(Usuarios usuario)
         {
+            if (string.IsNullOrWhiteSpace(usuario.UsuarioName) || string.IsNullOrWhiteSpace(usuario.UsuarioPassword))
+            {
+                ViewData["Mensaje"] = "Ambos campos son obligatorios.";
+                return View();
+            }
+
             usuario.UsuarioPassword = _encryptService.ConvertirSHA256(usuario.UsuarioPassword);
 
             try

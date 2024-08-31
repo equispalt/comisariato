@@ -56,10 +56,17 @@
 
                 <div class="col-lg-4 login-sec">
                     <div class="">
-                        <img class="d-block img-fluid" src="~/img/LaPopularLogo.png" alt="First slide">
+                        <img class="d-block img-fluid" src="~/img/LaPopularLogo.png" alt="First slide"  style="margin-bottom: 30px">
                     </div>
 
-                    <div class="" style="margin-top: 60px">
+                    @if (ViewData["Mensaje"] != null)
+                    {
+                    <div class="alert alert-danger alert-block" style="Background-color: #c26565; color: #fff">
+                            @ViewData["Mensaje"] <button class="close" data-dismiss="alert" aria-hidden="true" style="color:#fff">×</button>
+                    </div>
+                    }
+
+                    <div class="" style="margin-top: 50px">
                         <h2 class="text-center"><strong>Ingreso al sistema</strong></h2>
                     </div>
 
@@ -75,12 +82,7 @@
                             <input type="password" name="UsuarioPassword" class="form-control" placeholder="Ingrese su contraseña">
                         </div>
 
-                        @if (ViewData["Mensaje"] != null)
-						{
-							<div class="alert alert-danger" role="alert">
-								@ViewData["Mensaje"]
-							</div>
-						}
+
 
                         <button type="submit" name="button" class="btn btn-login float-right btn-primary">Aceptar</button>
 
@@ -93,3 +95,4 @@
 
 </body>
 </html>
+
