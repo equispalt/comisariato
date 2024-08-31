@@ -1,10 +1,6 @@
 ﻿using comisariato.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using System.Security.Claims;
-using System.Net.NetworkInformation;
 using Dapper;
 
 namespace comisariato.Servicios
@@ -17,9 +13,7 @@ namespace comisariato.Servicios
     {
         private readonly string connectionString;
 
-        public AuthService(
-            IConfiguration configuration
-            )
+        public AuthService(IConfiguration configuration)
         {
             connectionString = configuration.GetConnectionString("ConnectionComisariato");
         }
@@ -43,7 +37,6 @@ namespace comisariato.Servicios
 
             return usuario.UsuarioId;
         }
-
     }
 
 }

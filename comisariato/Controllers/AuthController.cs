@@ -1,6 +1,9 @@
 ﻿using comisariato.Models;
 using comisariato.Servicios;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace comisariato.Controllers
 {
@@ -32,7 +35,6 @@ namespace comisariato.Controllers
             try
             {
                 usuario.UsuarioId = await _authService.Login(usuario);
-               
             }
             catch (System.Exception e)
             {
@@ -42,9 +44,9 @@ namespace comisariato.Controllers
 
             if (usuario.UsuarioId != 0)
             {
+                await SetSesion(usuario);
                 // Si el login es exitoso, redirigir al usuario a la página de inicio
                 return RedirectToAction("Index", "Home");
-
             }
             else
             {
@@ -53,5 +55,30 @@ namespace comisariato.Controllers
                 return View();
             }
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Auth");
+        }
+
+        private async Task SetSesion(Usuarios usuario)
+        {
+            List<Claim> sesion = new List<Claim>()
+            {
+                new Claim(ClaimTypes.Name, usuario.UsuarioName),
+                new Claim(ClaimTypes.NameIdentifier, usuario.UsuarioId.ToString())
+            };
+
+            ClaimsIdentity identidad = new(sesion, CookieAuthenticationDefaults.AuthenticationScheme);
+            AuthenticationProperties autenticacionPropiedad = new();
+
+            autenticacionPropiedad.AllowRefresh = true;
+            autenticacionPropiedad.IsPersistent = true;
+            autenticacionPropiedad.ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1);
+
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identidad), autenticacionPropiedad);
+        }
+
     }
 }
