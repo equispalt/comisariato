@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using comisariato.Models;
 using Microsoft.Data.SqlClient;
+using System.Runtime.InteropServices.ObjectiveC;
 
 
 namespace comisariato.Servicios
@@ -10,12 +11,12 @@ namespace comisariato.Servicios
         private readonly string connectionString;
         public PermisosService(IConfiguration configuration)
         {
-            connectionString = configuration.GetConnectionString("ConnectionComisariato");
+            connectionString = configuration.GetConnectionString("ConnectionComisariato")??"";
         }
         public async Task<bool> TienePermiso(string currentUser, string currentFormName)
         {
-            int roleId = ObtenerFormIdPorFormNombre(currentUser);
-            int formId = ObtenerRoleIdPorUsuarioNombre(currentFormName);
+            int roleId = await ObtenerFormIdPorFormNombre(currentUser);
+            int formId = await ObtenerRoleIdPorUsuarioNombre(currentFormName);
 
             if (roleId != -1 && formId != -1)
             {
@@ -40,19 +41,42 @@ namespace comisariato.Servicios
             return false;
         }
 
-        public int ObtenerFormIdPorFormNombre(string formName)
+        public async Task<int> ObtenerFormIdPorFormNombre(string formName)
         {
-            // Implementación para obtener FormId basado en el nombre del formulario
-            return 1; // Valor de ejemplo
+            using var conection = new SqlConnection(connectionString);
+            try
+            {
+                int result = await conection.ExecuteScalarAsync<int>(@"
+                EXEC SP_ObtenerFormPorNombre @FormNombre
+            ", new
+                {
+                    FormName = formName
+                });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return 0; 
+            }
         }
-        public int ObtenerRoleIdPorUsuarioNombre(string username)
+        public async Task<int> ObtenerRoleIdPorUsuarioNombre(string username)
         {
-            // Implementación para obtener RoleId basado en el username
-            return 1; // Valor de ejemplo
+            try
+            {
+                using var conection = new SqlConnection(connectionString);
+
+                int result = await conection.ExecuteScalarAsync<int>(@"
+                EXEC SP_ObtenerFormIdPorFormNombre @FormNombre
+            ", new
+                {
+                    UsuarioNombre = username
+                });
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+            }
         }
-
-
-
     }
-
 }
