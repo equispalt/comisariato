@@ -1,11 +1,11 @@
-﻿using comisariato.Models;
-using comisariato.Servicios;
-using Microsoft.AspNetCore.Authentication.Cookies;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using SistemaILP.comisariato.Servicios;
+using SistemaILP.comisariato.Models;
 
-namespace comisariato.Controllers
+namespace SistemaILP.comisariato.Controllers
 {
     public class AuthController : Controller
     {
@@ -19,8 +19,8 @@ namespace comisariato.Controllers
             IAuthService authService
             )
         {
-            this._encryptService = encryptService;
-            this._authService = authService;
+            _encryptService = encryptService;
+            _authService = authService;
         }
 
         //Get: Acceso
@@ -44,7 +44,7 @@ namespace comisariato.Controllers
             {
                 usuario.UsuarioId = await _authService.Login(usuario);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 ViewBag.Error = e.Message;
                 return View();

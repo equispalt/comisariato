@@ -1,14 +1,14 @@
 ﻿using Dapper;
-using comisariato.Models;
+using SistemaILP.comisariato.Models;
 using Microsoft.Data.SqlClient;
 using System.Runtime.InteropServices.ObjectiveC;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 
-namespace comisariato.Servicios
+namespace SistemaILP.comisariato.Servicios
 {
-    public interface IPermisosService 
+    public interface IPermisosService
     {
         Task<bool> TienePermiso(string user, string form);
         Task<bool> ValidaPermisoForm();
@@ -23,12 +23,12 @@ namespace comisariato.Servicios
             _contextAccessor = contextAccessor;
         }
 
-        public async Task<bool> ValidaPermisoForm() 
+        public async Task<bool> ValidaPermisoForm()
         {
             string currentUser = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
-            if (!string.IsNullOrEmpty(currentUser)) 
+            if (!string.IsNullOrEmpty(currentUser))
             {
-                string currentFormName = System.IO.Path.GetFileNameWithoutExtension(_contextAccessor.HttpContext.Request.Path);
+                string currentFormName = Path.GetFileNameWithoutExtension(_contextAccessor.HttpContext.Request.Path);
 
                 bool tienePermiso = await TienePermiso(currentUser, currentFormName);
 
@@ -81,7 +81,7 @@ namespace comisariato.Servicios
             }
             catch (Exception ex)
             {
-                return 0; 
+                return 0;
             }
         }
         public async Task<int> ObtenerRoleIdPorUsuarioNombre(string username)

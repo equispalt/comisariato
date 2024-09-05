@@ -1,16 +1,16 @@
-using comisariato.Models;
-using comisariato.Servicios;
+using SistemaILP.comisariato.Models;
 using Microsoft.AspNetCore.Mvc;
+using SistemaILP.comisariato.Servicios;
 using System.Diagnostics;
 
-namespace comisariato.Controllers
+namespace SistemaILP.comisariato.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IPermisosService _permisosService;
 
-        public HomeController(ILogger<HomeController> logger,IPermisosService permisosService)
+        public HomeController(ILogger<HomeController> logger, IPermisosService permisosService)
         {
             _logger = logger;
             _permisosService = permisosService;
@@ -20,9 +20,9 @@ namespace comisariato.Controllers
         {
             bool tienePermiso = await _permisosService.ValidaPermisoForm();
 
-            if (!tienePermiso) 
-            { 
-                return RedirectToAction("Error","Home");
+            if (!tienePermiso)
+            {
+                return RedirectToAction("Error", "Home");
             }
 
             return View();

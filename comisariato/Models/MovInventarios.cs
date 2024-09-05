@@ -1,4 +1,4 @@
-﻿namespace comisariato.Models
+﻿namespace SistemaILP.comisariato.Models
 {
     public class MovInventarios
     {

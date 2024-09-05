@@ -1,10 +1,10 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace comisariato.Servicios
+namespace SistemaILP.comisariato.Servicios
 {
     public interface IEncryptService
-    { 
+    {
         string ConvertirSHA256(string password);
     }
     public class EncryptService : IEncryptService

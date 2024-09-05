@@ -1,12 +1,12 @@
-﻿using comisariato.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Dapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using SistemaILP.comisariato.Models;
 
-namespace comisariato.Servicios
+namespace SistemaILP.comisariato.Servicios
 {
     public interface IAuthService
     {
@@ -16,7 +16,7 @@ namespace comisariato.Servicios
     public class AuthService : IAuthService
     {
         private readonly string _connectionString;
-        private readonly IHttpContextAccessor _httpContextAccessor;   
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AuthService(IConfiguration configuration, IHttpContextAccessor contextAccessor)
         {
@@ -36,7 +36,7 @@ namespace comisariato.Servicios
             ", new
             {
                 UsuarioNombre = usuario.UsuarioName,
-                UsuarioPassword = usuario.UsuarioPassword
+                usuario.UsuarioPassword
             });
 
             usuario.UsuarioId = usuarioId;
