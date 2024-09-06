@@ -30,19 +30,19 @@ namespace SistemaILP.comisariato.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(Usuarios usuario)
+        public async Task<IActionResult> Login(Usuarios user)
         {
-            if (string.IsNullOrWhiteSpace(usuario.UsuarioName) || string.IsNullOrWhiteSpace(usuario.UsuarioPassword))
+            if (string.IsNullOrWhiteSpace(user.Usuario) || string.IsNullOrWhiteSpace(user.Password))
             {
                 ViewData["Mensaje"] = "Ambos campos son obligatorios.";
                 return View();
             }
 
-            usuario.UsuarioPassword = _encryptService.ConvertirSHA256(usuario.UsuarioPassword);
+            user.Password = _encryptService.ConvertirSHA256(user.Password);
 
             try
             {
-                usuario.UsuarioId = await _authService.Login(usuario);
+                user.UsuarioId = await _authService.Login(user);
             }
             catch (Exception e)
             {
@@ -50,9 +50,9 @@ namespace SistemaILP.comisariato.Controllers
                 return View();
             }
 
-            if (usuario.UsuarioId != 0)
+            if (user.UsuarioId != 0)
             {
-                await _authService.SetSesion(usuario);
+                await _authService.SetSesion(user);
                 // Si el login es exitoso, redirigir al usuario a la página de inicio
                 return RedirectToAction("Index", "Home");
             }

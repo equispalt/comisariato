@@ -10,7 +10,7 @@ namespace SistemaILP.comisariato.Servicios
 {
     public interface IPermisosService
     {
-        Task<bool> TienePermiso(string user, string form);
+        Task<bool> esPermitido(string user, string program);
         Task<bool> ValidaPermisoForm();
     }
     public class PermisosService : IPermisosService
@@ -28,82 +28,82 @@ namespace SistemaILP.comisariato.Servicios
             string currentUser = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
             if (!string.IsNullOrEmpty(currentUser))
             {
-                string currentFormName = Path.GetFileNameWithoutExtension(_contextAccessor.HttpContext.Request.Path);
+                //string currentProgramName = Path.GetFileNameWithoutExtension(_contextAccessor.HttpContext.Request.Path);
 
 
-                //string current = _contextAccessor.HttpContext.Request.Path;
+                string currentProgramName = _contextAccessor.HttpContext.Request.Path;
 
-                bool tienePermiso = await TienePermiso(currentUser, currentFormName);
+                bool esAutorizado = await esPermitido(currentUser, currentProgramName);
 
-                return tienePermiso;
+                return esAutorizado;
             }
             return false;
         }
 
 
-        public async Task<bool> TienePermiso(string currentUser, string currentFormName)
+        public async Task<bool> esPermitido(string currentUser, string currentProgramName)
         {
-            int formId = await ObtenerFormIdPorFormNombre(currentFormName);
-            int roleId = await ObtenerRoleIdPorUsuarioNombre(currentUser);
+            int programId = await ObtieneProgramaIdPorNombrePrograma(currentProgramName);
+            int roleId = await ObtieneRolIdPorUsuario(currentUser);
 
-            if (roleId != -1 && formId != -1)
+            if (roleId != -1 && programId != -1)
             {
                 using var connection = new SqlConnection(_connectionString);
                 try
                 {
                     int TienePermiso = await connection.ExecuteScalarAsync<int>(@"
-                    EXEC ObtenerRecuentoPermisos @RoleId, @FormId
+                    EXEC obtieneRecuentoPermiso @rolId, @programaId
                 ", new
                     {
-                        RoleId = roleId,
-                        FormId = formId
+                        rolId = roleId,
+                        programaId = programId
                     });
                     return TienePermiso > 0;
                 }
                 catch (Exception ex)
                 {
                     // Manejo de errores
-                    return false;
+                    throw new Exception($"Error al verificar permiso para el usuario {currentUser} en el programa {currentProgramName}: {ex.Message}", ex);
                 }
             }
             return false;
         }
 
-        public async Task<int> ObtenerFormIdPorFormNombre(string formName)
+        public async Task<int> ObtieneProgramaIdPorNombrePrograma(string path)
         {
             using var conection = new SqlConnection(_connectionString);
             try
             {
                 int result = await conection.ExecuteScalarAsync<int>(@"
-                EXEC ObtenerFormIdPorFormNombre @FormNombre
+                EXEC obtieneProgramaIdPorNombrePrograma @path
             ", new
                 {
-                    FormNombre = formName
+                    path = path
                 });
                 return result;
             }
             catch (Exception ex)
             {
-                return 0;
+                throw new Exception($"Error al obtener el ProgramaId para el usuario {path}: {ex.Message}", ex);
             }
         }
-        public async Task<int> ObtenerRoleIdPorUsuarioNombre(string username)
+        public async Task<int>ObtieneRolIdPorUsuario(string user)
         {
             try
             {
                 using var conection = new SqlConnection(_connectionString);
 
                 int result = await conection.ExecuteScalarAsync<int>(@"
-                EXEC ObtenerRoleIdPorUsuarioNombre @UsuarioNombre
+                EXEC obtieneRolIdPorUsuario @usuario
             ", new
                 {
-                    UsuarioNombre = username
+                    usuario = user
                 });
                 return result;
             }
             catch (Exception ex)
             {
-                return 0;
+                throw new Exception($"Error al obtener el RolId para el usuario {user}: {ex.Message}", ex);
             }
         }
     }

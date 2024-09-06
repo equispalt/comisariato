@@ -27,16 +27,15 @@ namespace SistemaILP.comisariato.Servicios
         [HttpPost]
         public async Task<int> Login(Usuarios usuario)
         {
-
             using var connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
 
             var usuarioId = await connection.ExecuteScalarAsync<int>(@"
-            EXEC ObtenerUsuarioPorCredencial @UsuarioNombre, @UsuarioPassword
+            EXEC obtieneUsuarioPorCredencial @usuario, @password
             ", new
             {
-                UsuarioNombre = usuario.UsuarioName,
-                usuario.UsuarioPassword
+                usuario = usuario.Usuario,
+                password = usuario.Password
             });
 
             usuario.UsuarioId = usuarioId;
@@ -49,7 +48,7 @@ namespace SistemaILP.comisariato.Servicios
         {
             List<Claim> sesion = new List<Claim>()
             {
-                new Claim(ClaimTypes.Name, usuario.UsuarioName),  // agregar una claim con el nombre del usuario
+                new Claim(ClaimTypes.Name, usuario.Usuario),  // agregar una claim con el nombre del usuario
                 new Claim(ClaimTypes.NameIdentifier, usuario.UsuarioId.ToString()) // agregar una claim con el id del usuario
             };
 
