@@ -1,10 +1,21 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc.Razor;
 using SistemaILP.comisariato.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorOptions(options =>
+{
+    // Mantener las rutas por defecto
+    options.ViewLocationFormats.Add("/Views/{1}/{0}.cshtml");
+
+    // Agregar las rutas personalizadas
+    options.ViewLocationFormats.Add("/Views/Areas/{1}/{0}.cshtml");
+    options.ViewLocationFormats.Add("/Views/Areas/Sistemas/{1}/{0}.cshtml");
+    options.ViewLocationFormats.Add("/Views/Areas/Finanzas/{1}/{0}.cshtml");
+    options.ViewLocationFormats.Add("/Views/Areas/Reportes/{1}/{0}.cshtml");
+});
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSession(options =>
@@ -44,5 +55,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Login}/{id?}");
+
+app.MapControllerRoute(
+    name: "modulos",
+    pattern: "Areas/{module}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

@@ -30,6 +30,9 @@ namespace SistemaILP.comisariato.Servicios
             {
                 string currentFormName = Path.GetFileNameWithoutExtension(_contextAccessor.HttpContext.Request.Path);
 
+
+                //string current = _contextAccessor.HttpContext.Request.Path;
+
                 bool tienePermiso = await TienePermiso(currentUser, currentFormName);
 
                 return tienePermiso;
@@ -72,10 +75,10 @@ namespace SistemaILP.comisariato.Servicios
             try
             {
                 int result = await conection.ExecuteScalarAsync<int>(@"
-                EXEC ObtenerFormPorNombre @FormNombre
+                EXEC ObtenerFormIdPorFormNombre @FormNombre
             ", new
                 {
-                    FormName = formName
+                    FormNombre = formName
                 });
                 return result;
             }
