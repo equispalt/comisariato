@@ -12,10 +12,13 @@ builder.Services.AddControllersWithViews().AddRazorOptions(options =>
 
     // Agregar las rutas personalizadas
     options.ViewLocationFormats.Add("/Views/Areas/{1}/{0}.cshtml");
-    options.ViewLocationFormats.Add("/Views/Areas/Sistemas/{1}/{0}.cshtml");
     options.ViewLocationFormats.Add("/Views/Areas/Finanzas/{1}/{0}.cshtml");
+    options.ViewLocationFormats.Add("/Views/Areas/Mercadeo&Ventas/{1}/{0}.cshtml");
+    options.ViewLocationFormats.Add("/Views/Areas/Operaciones/{1}/{0}.cshtml");
     options.ViewLocationFormats.Add("/Views/Areas/Reportes/{1}/{0}.cshtml");
+    options.ViewLocationFormats.Add("/Views/Areas/Sistemas/{1}/{0}.cshtml");
 });
+
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSession(options =>

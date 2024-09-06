@@ -3,9 +3,10 @@
     public class Usuarios
     {
         public int UsuarioId { get; set; }
-        public string UsuarioName { get; set; }
-        public string UsuarioPassword { get; set; }
-        public int RoleId { get; set; }
+        public string Usuario { get; set; }
+        public string Password { get; set; }
+        public int EmpleadoId { get; set; }
+        public int RolId { get; set; }
         public int EstadoId { get; set; }
 
     }
