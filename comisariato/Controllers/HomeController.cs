@@ -18,11 +18,11 @@ namespace SistemaILP.comisariato.Controllers
 
         public async Task<IActionResult> Index()
         {
-            bool tienePermiso = await _permisosService.ValidaPermisoForm();
+            bool esPermitido = await _permisosService.ValidaPermisoForm();
 
-            if (!tienePermiso)
+            if (esPermitido == false)
             {
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error403", "Home");
             }
 
             return View();
@@ -35,6 +35,11 @@ namespace SistemaILP.comisariato.Controllers
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult Error403()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }

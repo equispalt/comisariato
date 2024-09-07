@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Razor;
 using SistemaILP.comisariato.Servicios;
+using SistemaILP.comisariato.Servicios.Sistemas;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddScoped<IPermisosService, PermisosService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEncryptService, EncryptService>();
+
+builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuarios>();
 
 var app = builder.Build();
 
