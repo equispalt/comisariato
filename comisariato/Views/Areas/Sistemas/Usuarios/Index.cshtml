@@ -1,19 +1,18 @@
 ﻿@model List<Usuarios>
 
 <div class="card">
+    <h5  style="padding-left: 20px" class="card-title"><i class="fas fa-user"></i> Consulta De Usuarios</h5>
     <div class="card-header">
-        <h3 class="card-title">Consulta De Usuarios</h3>
-
         <div class="card-tools">
             <button type="submit" class="btn btn-outline-dark btn-sm"><i class="fas fa-plus"></i> Nuevo Usuario</></button>
         </div>
     </div>
     <!-- /.card-header -->
     <div class="card-body table-responsive p-0" style="height: 500px;">
-        <table class="table table-head-fixed text-nowrap table-hover table-bordered">
+        <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered">
             <thead>
                 <tr>
-                    <th style="width: 60px;"></th>
+                    <th style="width: 75px;"  ></th>
                     <th>Nombre</th>
                     <th style="width: 300px;">Usuario</th>
                     <th style="width: 300px;">Estado</th>
@@ -26,7 +25,7 @@
                         <td >
                             <!-- Menú desplegable en la celda -->
                             <div class="dropdown">
-                                <button class="btn btn-primary " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button class="btn btn-primary btn-sm " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fas fa-bars"></i>
                                 </button>
                                 <div class="dropdown-menu" style="background-color: #f0d8a8">
