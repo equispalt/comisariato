@@ -15,7 +15,7 @@ namespace SistemaILP.comisariato.Data
         }
         public bool PaginasAnteriores => PaginaInicio > 1;
         public bool PaginasPosteriores => PaginaInicio < PaginasTotales;
-        public static async Task<Paginacion<T>> CrearPaginacion(List<T> fuente, int paginaInicio, int cantidadregistros)
+        public static Paginacion<T> CrearPaginacion(List<T> fuente, int paginaInicio, int cantidadregistros)
         {
             var contador = fuente.Count();
             var item = fuente.Skip((paginaInicio - 1) * cantidadregistros).Take(cantidadregistros).ToList();

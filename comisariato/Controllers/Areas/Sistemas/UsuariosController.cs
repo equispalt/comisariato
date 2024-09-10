@@ -35,7 +35,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
 
                 int cantidadregistros = 10;
 
-                return View(await Paginacion<Usuarios>.CrearPaginacion(Listado, numpag ?? 1, cantidadregistros));
+                return View(Paginacion<Usuarios>.CrearPaginacion(Listado, numpag ?? 1, cantidadregistros));
             }
             catch (Exception ex)
             {
