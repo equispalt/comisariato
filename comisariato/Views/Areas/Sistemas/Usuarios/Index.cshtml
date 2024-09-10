@@ -1,49 +1,84 @@
-﻿@model List<Usuarios>
+﻿@using SistemaILP.comisariato.Data;
+@model Paginacion<Usuarios>
 
 <div class="card">
     <h5  style="padding-left: 20px" class="card-title"><i class="fas fa-user"></i> Consulta De Usuarios</h5>
     <div class="card-header">
-        <div class="card-tools">
+        <div class="card-tools" style="padding-right: 10px; margin-bottom: 10px" >
             <button type="submit" class="btn btn-outline-dark btn-sm"><i class="fas fa-plus"></i> Nuevo Usuario</></button>
         </div>
-    </div>
-    <!-- /.card-header -->
-    <div class="card-body table-responsive p-0" style="height: 500px;">
-        <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered">
-            <thead>
-                <tr>
-                    <th style="width: 75px;"  ></th>
-                    <th>Nombre</th>
-                    <th style="width: 300px;">Usuario</th>
-                    <th style="width: 300px;">Estado</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var usuario in Model)
-                {
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 500px;">
+            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered">
+                <thead>
                     <tr>
-                        <td >
-                            <!-- Menú desplegable en la celda -->
-                            <div class="dropdown">
-                                <button class="btn btn-primary btn-sm " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-bars"></i>
-                                </button>
-                                <div class="dropdown-menu" style="background-color: #f0d8a8">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-pencil"></i> Editar</a>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Eliminar</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#"><i class="fa fa-key"></i> Asignar Roles</a>
-                                </div>
-                            </div>
-                        </td>
-                        <td>@usuario.UsuarioId</td>
-                        <td>@usuario.Usuario</td>
-                        <td>@usuario.EstadoId</td>
+                        <th style="width: 75px;"></th>
+                        <th>Nombre</th>
+                        <th style="width: 300px;">Usuario</th>
+                        <th style="width: 300px;">Estado</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var usuario in Model)
+                    {
+                        <tr>
+                            <td>
+                                <!-- Menú desplegable en la celda -->
+                                <div class="dropdown">
+                                    <button class="btn btn-primary btn-sm " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-bars"></i>
+                                    </button>
+                                    <div class="dropdown-menu" style="background-color: #f0d8a8">
+                                        <a class="dropdown-item" href="#"><i class="fa fa-pencil"></i> Editar</a>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-trash"></i> Eliminar</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-key"></i> Asignar Roles</a>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@usuario.UsuarioId</td>
+                            <td>@usuario.Usuario</td>
+                            <td>@usuario.EstadoId</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <hr>
+
+            @{
+                var anteriordeshabilitado = !Model.PaginasAnteriores ? "disable" : "";
+                var siguientedeshabilitado = !Model.PaginasPosteriores ? "disable" : "";
+            }
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm justify-content-end">
+                    <!-- Botón Anterior -->
+                    <li class="page-item @(Model.PaginaInicio == 1 ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio - 1)" tabindex="@(Model.PaginaInicio == 1 ? "-1" : "")">Anterior</a>
+                    </li>
+
+                    <!-- Botones de páginas -->
+                    @for (var i = 1; i <= Model.PaginasTotales; i++)
+                    {
+                        <li class="page-item @(i == Model.PaginaInicio ? "active" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-numpag="@i">@i</a>
+                            @if (i == Model.PaginaInicio)
+                            {
+                                <span class="sr-only">(current)</span>
+                            }
+                        </li>
+                    }
+
+                    <!-- Botón Siguiente -->
+                    <li class="page-item @(Model.PaginaInicio == Model.PaginasTotales ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio + 1)" tabindex="@(Model.PaginaInicio == Model.PaginasTotales ? "-1" : "")">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!-- /.card-body -->
     </div>
-    <!-- /.card-body -->
 </div>
 <!-- /.card -->
+
+

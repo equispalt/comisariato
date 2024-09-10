@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SistemaILP.comisariato.Data;
 using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Sistemas;
-
 
 namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
 {
@@ -20,7 +20,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? numpag)
         {
             bool esPermitido = await _permisosService.ValidaPermisoForm();
 
@@ -32,7 +32,10 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             try
             {
                 List<Usuarios> Listado = await _repositorioUsuario.ObtieneTodoUsuarios();
-                return View(Listado);
+
+                int cantidadregistros = 10;
+
+                return View(await Paginacion<Usuarios>.CrearPaginacion(Listado, numpag ?? 1, cantidadregistros));
             }
             catch (Exception ex)
             {

@@ -15,10 +15,10 @@ namespace SistemaILP.comisariato.Data
         }
         public bool PaginasAnteriores => PaginaInicio > 1;
         public bool PaginasPosteriores => PaginaInicio < PaginasTotales;
-        public static async Task<Paginacion<T>> CrearPaginacion(IQueryable<T> fuente, int paginaInicio, int cantidadregistros)
+        public static async Task<Paginacion<T>> CrearPaginacion(List<T> fuente, int paginaInicio, int cantidadregistros)
         {
-            var contador = await fuente.CountAsync();
-            var item = await fuente.Skip((paginaInicio - 1) * cantidadregistros).Take(cantidadregistros).ToListAsync();
+            var contador = fuente.Count();
+            var item = fuente.Skip((paginaInicio - 1) * cantidadregistros).Take(cantidadregistros).ToList();
             return new Paginacion<T>(item, contador, paginaInicio, cantidadregistros);
         }
     }
