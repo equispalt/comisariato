@@ -11,16 +11,16 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
     }
     public class RepositorioUsuarios : IRepositorioUsuario
     {
-        private readonly string _conectionString;
+        private readonly string _connectionString;
 
         public RepositorioUsuarios(IConfiguration configuration)
         {
-            _conectionString = configuration.GetConnectionString("ConecctionComisariato");
+            _connectionString = configuration.GetConnectionString("ConnectionComisariato") ?? "";
         }
 
         public async Task<List<Usuarios>> ObtieneTodoUsuarios() 
         {
-            using var connection = new SqlConnection(_conectionString);
+            using var connection = new SqlConnection(_connectionString);
             IEnumerable<Usuarios> user = await connection.QueryAsync<Usuarios>(@"
                         EXEC obtieneTodoUsuario
             ");
