@@ -22,7 +22,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         [HttpGet]
         public async Task<IActionResult> Index(int? numpag)
         {
-            bool esPermitido = await _permisosService.ValidaPermisoForm();
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
             if (esPermitido == false) 
             {

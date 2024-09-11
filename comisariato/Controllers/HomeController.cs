@@ -18,7 +18,7 @@ namespace SistemaILP.comisariato.Controllers
 
         public async Task<IActionResult> Index()
         {
-            bool esPermitido = await _permisosService.ValidaPermisoForm();
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
             if (esPermitido == false)
             {

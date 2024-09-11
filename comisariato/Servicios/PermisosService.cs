@@ -11,7 +11,7 @@ namespace SistemaILP.comisariato.Servicios
     public interface IPermisosService
     {
         Task<bool> esPermitido(string user, string program);
-        Task<bool> ValidaPermisoForm();
+        Task<bool> ValidaPermisoPrograma();
     }
     public class PermisosService : IPermisosService
     {
@@ -23,7 +23,7 @@ namespace SistemaILP.comisariato.Servicios
             _contextAccessor = contextAccessor;
         }
 
-        public async Task<bool> ValidaPermisoForm()
+        public async Task<bool> ValidaPermisoPrograma()
         {
             string currentUser = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
             if (!string.IsNullOrEmpty(currentUser))
