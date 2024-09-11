@@ -9,5 +9,7 @@
         public int RolId { get; set; }
         public int EstadoId { get; set; }
 
+        // relacionado a modelo empleados
+        public string Nombre { get; set; }  
     }
 }
