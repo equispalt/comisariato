@@ -13,8 +13,8 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         private readonly IPermisosService _permisosService;
         private readonly IRepositorioUsuario _repositorioUsuario;
 
-        public UsuariosController(IPermisosService permisosService, IRepositorioUsuario repositorioUsuario) 
-        { 
+        public UsuariosController(IPermisosService permisosService, IRepositorioUsuario repositorioUsuario)
+        {
             this._permisosService = permisosService;
             this._repositorioUsuario = repositorioUsuario;
         }
@@ -24,7 +24,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         {
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
-            if (esPermitido == false) 
+            if (esPermitido == false)
             {
                 return RedirectToAction("Error403", "Home");
             }
@@ -38,6 +38,37 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
                 return View(Paginacion<Usuarios>.CrearPaginacion(Listado, numpag ?? 1, cantidadregistros));
             }
             catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Editar(int id) 
+        {
+            try
+            {
+                Usuarios usuarios = await _repositorioUsuario.ObtienePorUsuarioId(id);
+
+                return View();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error","Home");
+            }
+        }
+
+        
+        [HttpGet]
+        public async Task<IActionResult> Eliminar(int id)
+        {
+            try
+            {
+                Usuarios usuarios = await _repositorioUsuario.ObtienePorUsuarioId(id);
+
+                return View();
+            }
+            catch (Exception)
             {
                 return RedirectToAction("Error", "Home");
             }

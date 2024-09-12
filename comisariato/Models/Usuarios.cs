@@ -10,6 +10,7 @@
         public int EstadoId { get; set; }
 
         // relacionado a modelo empleados
-        public string Nombre { get; set; }  
+        public string NombreEmpleado { get; set; }
+        public string NombreEstado { get; set; }
     }
 }

@@ -9,6 +9,8 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
     public interface IRepositorioUsuario 
     {
         Task<List<Usuarios>> ObtieneTodoUsuarios();
+        Task<Usuarios> ObtienePorUsuarioId(int id);
+        Task<bool> PaEliminarUsuario(int id);
     }
     public class RepositorioUsuarios : IRepositorioUsuario
     {
@@ -27,33 +29,33 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             ");
             return user.ToList();
         }
-        public async Task<Usuarios> ObtieneUsuarioId(int id)
+        public async Task<Usuarios> ObtienePorUsuarioId(int id)
         {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Usuarios> user = await connection.QueryAsync<Usuarios>(@"
-                        EXEC SP_OBTENER_OBTENER_POR_ID @idusuario 
+                        EXEC obtieneUsuarioPorId @usuarioid 
                         ", new
             {
-                idusuario = id
+                usuarioid = id
             });
             return user.FirstOrDefault();
         }
-        public async Task<int> PaCrearUsuario(Usuarios usuario)
-        {
-            using var connection = new SqlConnection(_connectionString);
-            var usuarioId = await connection.QuerySingleAsync<int>(@"
-                        EXEC SP_CREAR_USUARIOS @Usuario, @Nombre, @Password, @RolId, @EstadoID
-                        ", new
-            {
-                Usuario = usuario.Usuario,
-                Nombre = usuario.Nombre,
-                Password = usuario.Password,
-                EmpleadoId = usuario.EmpleadoId,
-                RolId = usuario.RolId,
-                EstadoId = usuario.EstadoId,
-            });
-            return usuarioId;
-        }
+        //public async Task<int> PaCrearUsuario(Usuarios usuario)
+        //{
+        //    using var connection = new SqlConnection(_connectionString);
+        //    var usuarioId = await connection.QuerySingleAsync<int>(@"
+        //                EXEC SP_CREAR_USUARIOS @Usuario, @Nombre, @Password, @RolId, @EstadoID
+        //                ", new
+        //    {
+        //        Usuario = usuario.Usuario,
+        //        Nombre = usuario.Nombre,
+        //        Password = usuario.Password,
+        //        EmpleadoId = usuario.EmpleadoId,
+        //        RolId = usuario.RolId,
+        //        EstadoId = usuario.EstadoId,
+        //    });
+        //    return usuarioId;
+        //}
 
         public async Task<bool> PaEditarUsuario(Usuarios usuario)
         {
@@ -84,10 +86,10 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             {
                 using var connection = new SqlConnection(_connectionString);
                 await connection.ExecuteAsync(@"
-                    EXEC EliUsuario @Usuarioid",
+                    EXEC paEliminarPorId @usuarioid",
                     new 
                     { 
-                        UsuarioId = userId  
+                        usuarioid = userId  
                     });
                 return true;
             }
