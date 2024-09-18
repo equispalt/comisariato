@@ -63,14 +63,42 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
                     return RedirectToAction("Error", "Home");
                 }
 
-                // Actualizar los campos del usuario con los datos editados
-                usuario.Usuario = updatedUser.Usuario; // Actualiza el nombre de usuario
-                usuario.Password = updatedUser.Password; // Actualiza la contraseña 
+                usuario.Usuario = updatedUser.Usuario;
 
                 // Guardar los cambios
                 bool editado = await _repositorioUsuario.PaEditarUsuario(usuario);
 
                 if (editado)
+                {
+                    return RedirectToAction("Index", "Usuarios");
+                }
+
+                return RedirectToAction("Error", "Home");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditarPassword(int id, string newPassword)
+        {
+            try
+            {
+                Usuarios usuario = await _repositorioUsuario.ObtienePorUsuarioId(id);
+
+                if (usuario == null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                // Actualizar la contraseña del usuario
+                usuario.Password = newPassword;
+
+                bool actualizado = await _repositorioUsuario.PaEditarPassword(usuario);
+
+                if (actualizado)
                 {
                     return RedirectToAction("Index", "Usuarios");
                 }

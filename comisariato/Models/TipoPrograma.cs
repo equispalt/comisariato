@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.Web.CodeGeneration.Design;
-
-namespace SistemaILP.comisariato.Models
+﻿namespace SistemaILP.comisariato.Models
 {
     public class TipoPrograma
     {

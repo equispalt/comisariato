@@ -1,12 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace SistemaILP.comisariato.Data
+﻿namespace SistemaILP.comisariato.Data
 {
     public class Paginacion<T> : List<T>
     {
         public int PaginaInicio { get; private set; }
         public int PaginasTotales { get; private set; }
-        public Paginacion(List<T> items, int contador, int paginaInicio, int cantidadregistros) 
+        public Paginacion(List<T> items, int contador, int paginaInicio, int cantidadregistros)
         {
             PaginaInicio = paginaInicio;
             PaginasTotales = (int)Math.Ceiling(contador / (double)cantidadregistros);

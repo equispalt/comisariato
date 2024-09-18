@@ -1,8 +1,5 @@
 ﻿using Dapper;
-using SistemaILP.comisariato.Models;
 using Microsoft.Data.SqlClient;
-using System.Runtime.InteropServices.ObjectiveC;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 
@@ -87,7 +84,7 @@ namespace SistemaILP.comisariato.Servicios
                 throw new Exception($"Error al obtener el ProgramaId para el usuario {path}: {ex.Message}", ex);
             }
         }
-        public async Task<int>ObtieneRolIdPorUsuario(string user)
+        public async Task<int> ObtieneRolIdPorUsuario(string user)
         {
             try
             {

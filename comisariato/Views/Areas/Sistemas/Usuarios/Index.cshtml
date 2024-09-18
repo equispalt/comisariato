@@ -29,10 +29,14 @@
                                         <i class="fas fa-bars"></i>
                                     </button>
                                     <div class="dropdown-menu" style="background-color: #f0d8a8">
-                                        <a class="dropdown-item btn-editar" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario"  data-target="modalEditarUsuario">
+
+                                        <a class="dropdown-item btn-editar" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario"  data-target="#modalEditarUsuario">
                                             <i class="fa fa-pencil"></i> Editar</a>
-                                        <!-- Botón de eliminar dentro de tu foreach -->
-                                        <a class="dropdown-item btn-eliminar" data-toggle="modal" data-id="@usuario.UsuarioId" data-nombre="@usuario.NombreEmpleado" data-target="modalEliminarUsuario">
+
+                                        <a class="dropdown-item btn-editar-password" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario" data-target="#modalEditarPassword">
+                                            <i class="fa fa-key"></i> Cambiar Contraseña
+                                        </a>
+                                        <a class="dropdown-item btn-eliminar" data-toggle="modal" data-id="@usuario.UsuarioId" data-nombre="@usuario.NombreEmpleado" data-target="#modalEliminarUsuario">
                                             <i class="fa fa-trash"></i> Eliminar
                                         </a>
 
@@ -98,11 +102,9 @@
             <div class="modal-body">
                 <form action="@Url.Action("EditarUsuario", "Usuarios")" method="post">
                     <input type="hidden" id="modal-user-id" name="id" />
+
                     <label for="modal-user" class="col-form-label">Usuario:</label>
                     <input type="text" class="form-control" id="modal-user" name="usuario" />
-@* 
-                    <label for="modal-passwd" class="col-form-label">Password:</label>
-                    <input type="text" class="form-control" id="modal-passwd" name="passwd" /> *@
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-warning">Editar</button>
@@ -114,6 +116,37 @@
     </div>
 </div>
 
+<!-- Modal de Editar Contraseña -->
+<div class="modal fade" id="modalEditarPassword" tabindex="-1" role="dialog" aria-labelledby="modalEditarPasswordLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEditarPasswordLabel">Cambiar Contraseña a <strong id="modal-user-user"></strong>?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="passwordForm" action="@Url.Action("EditarPassword", "Usuarios")" method="post">
+                    <input type="hidden" id="modal-password-id" name="id" />
+
+                    <label for="new-password" class="col-form-label">Nueva Contraseña:</label>
+                    <input type="password" class="form-control" id="new-password" name="newPassword" required />
+
+                    <label for="confirm-password" class="col-form-label">Confirmar Contraseña:</label>
+                    <input type="password" class="form-control" id="confirm-password" name="confirmPassword" required />
+
+                    <div id="password-error" class="text-danger" style="display: none;">Las contraseñas no coinciden</div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-warning">Guardar Cambios</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <!-- Modal de eliminar usuario -->
 <div class="modal fade" id="modalEliminarUsuario" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
@@ -127,8 +160,10 @@
             </div>
             <div class="modal-body">
                 <form action="@Url.Action("EliminarUsuario", "Usuarios")" method="post">
-                    <input type="hidden" id="modal-user-id" name="id" />
-                    <p>¿Estás seguro que deseas eliminar al usuario <strong id="modal-user-name"></strong>?</p>
+                    <input type="hidden" id="modal-userid" name="id" />
+
+                    <p>¿Estás seguro que deseas eliminar al usuario <strong id="modal-username"></strong>?</p>
+
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-danger">Eliminar</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
@@ -138,6 +173,8 @@
         </div>
     </div>
 </div>
+
+
 
 <script>
     // Selecciona todos los botones con la clase btn-editar
@@ -152,36 +189,58 @@
             document.getElementById('modal-user').value = userName; // Coloca el nombre de usuario
 
             // Muestra el modal manualmente (si quieres controlarlo vía JS)
-            var modal = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
+            var modalEditar = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
             modal.show();
         });
     });
 </script>
-
 
 
 <script>
-    // Selecciona todos los botones con la clase btn-eliminar
-    var deleteButtons = document.querySelectorAll('.btn-eliminar');
-
-    // Recorre todos los botones y añade el evento click
-    deleteButtons.forEach(function (button) {
+    // Captura el ID del usuario cuando haces clic en "Cambiar Contraseña"
+    document.querySelectorAll('.btn-editar-password').forEach(function (button) {
         button.addEventListener('click', function () {
-            // Captura el ID y el nombre del usuario desde el botón
-            var userId = button.getAttribute('data-id');
-            var userName = button.getAttribute('data-nombre');
+            // Captura el ID y el nombre de usuario desde los atributos del botón
+            var userId = this.getAttribute('data-id');
+            var userUser = this.getAttribute('data-usuario');
 
-            // Asigna los valores capturados al modal
-            document.getElementById('modal-user-id').value = userId; // Coloca el ID en el input hidden
-            document.getElementById('modal-user-name').textContent = userName; // Muestra el nombre en el modal
-
-            // Muestra el modal manualmente (si no usas Bootstrap con data-toggle)
-            var modal = new bootstrap.Modal(document.getElementById('modalEliminarUsuario'));
-            modal.show();
+            // Asigna el ID del usuario al campo hidden y muestra el nombre en el modal
+            document.getElementById('modal-user-id').value = userId;
+            document.getElementById('modal-user-user').textContent = userUser;
         });
+    });
+
+    // Validación de contraseñas al enviar
+    document.getElementById('passwordForm').addEventListener('submit', function (event) {
+        var newPassword = document.getElementById('new-password').value;
+        var confirmPassword = document.getElementById('confirm-password').value;
+
+        // Si las contraseñas no coinciden, mostrar error y evitar el envío
+        if (newPassword !== confirmPassword) {
+            event.preventDefault();
+            document.getElementById('password-error').style.display = 'block';
+        }
     });
 </script>
 
-       
 
+<script>
+    // Captura todos los botones con la clase btn-eliminar
+    document.querySelectorAll('.btn-eliminar').forEach(function (button) {
+        button.addEventListener('click', function () {
+            // Captura el ID y el nombre del usuario desde el botón
+            var userId = this.getAttribute('data-id');
+            var userName = this.getAttribute('data-nombre');
+
+            // Asigna los valores capturados al modal
+            document.getElementById('modal-userid').value = userId;
+            document.getElementById('modal-username').textContent = userName;
+
+            // Muestra el modal manualmente usando Bootstrap
+            var modalEliminar = new bootstrap.Modal(document.getElementById('modalEliminarUsuario'));
+            modalEliminar.show();
+        });
+    });
+
+</script>
 

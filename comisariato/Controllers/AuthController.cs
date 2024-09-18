@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Models;
+using SistemaILP.comisariato.Servicios;
 
 namespace SistemaILP.comisariato.Controllers
 {
