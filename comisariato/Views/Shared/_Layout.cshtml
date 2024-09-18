@@ -434,7 +434,7 @@
     </div>
     <!-- REQUIRED SCRIPTS -->
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+@*     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
@@ -462,6 +462,23 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ *@
+
+    <!-- jQuery (conserva esta referencia local) -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+    <!-- Bootstrap (conserva esta referencia local si ya tienes Bootstrap en tu proyecto) -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- AdminLTE (conserva estas si usas AdminLTE en tu proyecto) -->
+    <script src="~/template/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/template/dist/js/adminlte.js"></script>
+
+    <!-- Opcional: otros scripts que puedas necesitar, como gráficos -->
+    <script src="~/template/plugins/chart.js/Chart.min.js"></script>
+    <script src="~/template/dist/js/demo.js"></script>
+    <script src="~/template/dist/js/pages/dashboard3.js"></script>
 
 
 

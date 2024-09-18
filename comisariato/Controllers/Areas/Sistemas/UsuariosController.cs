@@ -19,6 +19,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             this._repositorioUsuario = repositorioUsuario;
         }
 
+        //Metodo para Listar
         [HttpGet]
         public async Task<IActionResult> Index(int? numpag)
         {
@@ -43,38 +44,40 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Editar(int id) 
+
+        [HttpPost]
+        public async Task<IActionResult> EliminarUsuario(int id)
         {
+            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+
+            //if (esPermitido == false)
+            //{
+            //    return RedirectToAction("Error403", "Home");
+            //}
+
             try
             {
-                Usuarios usuarios = await _repositorioUsuario.ObtienePorUsuarioId(id);
+                Usuarios usuario = await _repositorioUsuario.ObtienePorUsuarioId(id);
 
-                return View();
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("Error","Home");
-            }
-        }
+                if (usuario == null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
 
-        
-        [HttpGet]
-        public async Task<IActionResult> Eliminar(int id)
-        {
-            try
-            {
-                Usuarios usuarios = await _repositorioUsuario.ObtienePorUsuarioId(id);
+                bool eliminado = await _repositorioUsuario.PaEliminarUsuario(id);
 
-                return View();
+                if (eliminado)
+                {
+                    return RedirectToAction("Index", "Usuarios");
+                }
+
+                return RedirectToAction("Error", "Home");
             }
             catch (Exception)
             {
                 return RedirectToAction("Error", "Home");
             }
         }
-
-
 
     }
 }

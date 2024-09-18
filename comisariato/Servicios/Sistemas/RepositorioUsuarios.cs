@@ -40,22 +40,6 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             });
             return user.FirstOrDefault();
         }
-        //public async Task<int> PaCrearUsuario(Usuarios usuario)
-        //{
-        //    using var connection = new SqlConnection(_connectionString);
-        //    var usuarioId = await connection.QuerySingleAsync<int>(@"
-        //                EXEC SP_CREAR_USUARIOS @Usuario, @Nombre, @Password, @RolId, @EstadoID
-        //                ", new
-        //    {
-        //        Usuario = usuario.Usuario,
-        //        Nombre = usuario.Nombre,
-        //        Password = usuario.Password,
-        //        EmpleadoId = usuario.EmpleadoId,
-        //        RolId = usuario.RolId,
-        //        EstadoId = usuario.EstadoId,
-        //    });
-        //    return usuarioId;
-        //}
 
         public async Task<bool> PaEditarUsuario(Usuarios usuario)
         {
@@ -86,7 +70,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             {
                 using var connection = new SqlConnection(_connectionString);
                 await connection.ExecuteAsync(@"
-                    EXEC paEliminarPorId @usuarioid",
+                    EXEC paEliminarUsuario @usuarioid",
                     new 
                     { 
                         usuarioid = userId  
