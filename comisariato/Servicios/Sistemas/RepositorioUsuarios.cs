@@ -10,6 +10,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
     {
         Task<List<Usuarios>> ObtieneTodoUsuarios();
         Task<Usuarios> ObtienePorUsuarioId(int id);
+        Task<bool> PaEditarUsuario(Usuarios usuario);
         Task<bool> PaEliminarUsuario(int id);
     }
     public class RepositorioUsuarios : IRepositorioUsuario
@@ -47,14 +48,12 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             {
                 using var connection = new SqlConnection(_connectionString);
                 await connection.ExecuteAsync(@"
-                       EXEC SP_EDITAR_USUARIO @idusuario, @nombre_usuario, @contrasennia, @correo, @Id_role
-                        ", new
+                       EXEC paEditarUsuario @usuarioid, @usuario, @password", 
+                       new
                 {
-                    UsuarioId = usuario.UsuarioId,
-                    Usuario  = usuario.Usuario,
-                    Password = usuario.Password,
-                    RolId = usuario.RolId,
-                    EstadoId = usuario.EstadoId
+                    usuarioid = usuario.UsuarioId,
+                    usuario  = usuario.Usuario,
+                    password = usuario.Password,
                 });
                 return true;
             }

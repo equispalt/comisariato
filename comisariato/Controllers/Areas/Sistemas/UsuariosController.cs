@@ -44,6 +44,45 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditarUsuario(int id, Usuarios updatedUser)
+        {
+            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            //if (esPermitido == false)
+            //{
+            //    return RedirectToAction("Error403", "Home");
+            //}
+
+            try
+            {
+                // Buscar el usuario por ID
+                Usuarios usuario = await _repositorioUsuario.ObtienePorUsuarioId(id);
+
+                if (usuario == null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                // Actualizar los campos del usuario con los datos editados
+                usuario.Usuario = updatedUser.Usuario; // Actualiza el nombre de usuario
+                usuario.Password = updatedUser.Password; // Actualiza la contraseña 
+
+                // Guardar los cambios
+                bool editado = await _repositorioUsuario.PaEditarUsuario(usuario);
+
+                if (editado)
+                {
+                    return RedirectToAction("Index", "Usuarios");
+                }
+
+                return RedirectToAction("Error", "Home");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> EliminarUsuario(int id)
