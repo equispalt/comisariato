@@ -12,11 +12,13 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
     {
         private readonly IPermisosService _permisosService;
         private readonly IRepositorioUsuario _repositorioUsuario;
+        private readonly IEncryptService _encryptService;
 
-        public UsuariosController(IPermisosService permisosService, IRepositorioUsuario repositorioUsuario)
+        public UsuariosController(IPermisosService permisosService, IRepositorioUsuario repositorioUsuario, IEncryptService encryptService)
         {
             this._permisosService = permisosService;
             this._repositorioUsuario = repositorioUsuario;
+            this. _encryptService = encryptService;
         }
 
         //Metodo para Listar
@@ -84,6 +86,12 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         [HttpPost]
         public async Task<IActionResult> EditarPassword(int id, string newPassword)
         {
+            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+
+            //if (esPermitido == false)
+            //{
+            //    return RedirectToAction("Error403", "Home");
+            //}
             try
             {
                 Usuarios usuario = await _repositorioUsuario.ObtienePorUsuarioId(id);
@@ -93,8 +101,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
                     return RedirectToAction("Error", "Home");
                 }
 
-                // Actualizar la contraseña del usuario
-                usuario.Password = newPassword;
+                usuario.Password = _encryptService.ConvertirSHA256(newPassword);
 
                 bool actualizado = await _repositorioUsuario.PaEditarPassword(usuario);
 

@@ -67,7 +67,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             {
                 using var connection = new SqlConnection(_connectionString);
                 await connection.ExecuteAsync(@"
-                       EXEC paEditarUsuario @usuarioid, @password",
+                       EXEC paEditarPassword @usuarioid, @password",
                        new
                        {
                            usuarioid = usuario.UsuarioId,

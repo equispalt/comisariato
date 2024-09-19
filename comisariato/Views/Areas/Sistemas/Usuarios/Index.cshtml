@@ -121,14 +121,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarPasswordLabel">Cambiar Contraseña a <strong id="modal-user-user"></strong>?</h5>
+                <h5 class="modal-title" id="modalEditarPasswordLabel">Cambiar Contraseña a <strong id="modal-usr-user"></strong>?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form id="passwordForm" action="@Url.Action("EditarPassword", "Usuarios")" method="post">
-                    <input type="hidden" id="modal-password-id" name="id" />
+                    <input type="hidden" id="modal-usr-id" name="id" />
 
                     <label for="new-password" class="col-form-label">Nueva Contraseña:</label>
                     <input type="password" class="form-control" id="new-password" name="newPassword" required />
@@ -177,7 +177,7 @@
 
 
 <script>
-    // Selecciona todos los botones con la clase btn-editar
+    // Captura el ID y usuario cuando haces clic en "btn-editar"
     document.querySelectorAll('.btn-editar').forEach(function (button) {
         button.addEventListener('click', function () {
             // Captura el ID y usuario desde los atributos del botón
@@ -205,8 +205,8 @@
             var userUser = this.getAttribute('data-usuario');
 
             // Asigna el ID del usuario al campo hidden y muestra el nombre en el modal
-            document.getElementById('modal-user-id').value = userId;
-            document.getElementById('modal-user-user').textContent = userUser;
+            document.getElementById('modal-usr-id').value = userId;
+            document.getElementById('modal-usr-user').textContent = userUser;
         });
     });
 
@@ -225,7 +225,7 @@
 
 
 <script>
-    // Captura todos los botones con la clase btn-eliminar
+    // CCaptura el ID del usuario cuando haces clic en "btn-eliminar"
     document.querySelectorAll('.btn-eliminar').forEach(function (button) {
         button.addEventListener('click', function () {
             // Captura el ID y el nombre del usuario desde el botón
