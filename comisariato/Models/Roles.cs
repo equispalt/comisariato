@@ -10,5 +10,7 @@
         public string Descripcion { get; set; }
         public int ProgramaId { get; set; }
 
+        // relacionado a modelo estados
+        public string NombreEstado { get; set; }
     }
 }

@@ -35,6 +35,7 @@ builder.Services.AddScoped<IPermisosService, PermisosService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEncryptService, EncryptService>();
 
+builder.Services.AddTransient<IRepositorioRoles, RepositorioRoles>();
 builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuarios>();
 
 var app = builder.Build();
