@@ -41,6 +41,26 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             return user.FirstOrDefault();
         }
 
+        public async Task<bool> PaCrearUsuario(Usuarios usuario) 
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                await connection.ExecuteAsync(@"
+                EXEC paCrearUsuario @usuario, @password, @empleadoid, @rolid",
+                new { 
+                    usuario = usuario.Usuario,
+                    password = usuario.Password,
+                    empleadoid = usuario.EmpleadoId,
+                    rolid     = usuario.RolId
+                });
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         public async Task<bool> PaEditarUsuario(Usuarios usuario)
         {
             try
@@ -57,7 +77,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             }
             catch (Exception ex)
             {
-                throw;
+                return false;
             }
         }
 
@@ -77,7 +97,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             }
             catch (Exception ex)
             {
-                throw;
+                return false;
             }
         }
 
@@ -94,7 +114,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
                     });
                 return true;
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 return false;
             }
