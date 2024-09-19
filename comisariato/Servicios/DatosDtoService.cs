@@ -8,6 +8,7 @@ namespace SistemaILP.comisariato.Servicios
     {
         Task<List<Estados>> ObtieneTodoEstados();
         Task<List<Roles>> ObtieneTodoRoles();
+        Task<List<Empleados>> ObtieneTodoEmpleados();
     }
     public class DatosDtoService : IDatosDtoService
     {
@@ -22,7 +23,7 @@ namespace SistemaILP.comisariato.Servicios
         {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Estados> estados = await connection.QueryAsync<Estados>(@" 
-                EXEC obtieneEstados
+                EXEC obtieneEstadosDto
                 ");
             return estados.ToList();
         }
@@ -31,11 +32,18 @@ namespace SistemaILP.comisariato.Servicios
         { 
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Roles> roles = await connection.QueryAsync<Roles>(@"
-                EXEC obtieneRoles
+                EXEC obtieneRolesDto
                 ");
             return roles.ToList();
         }
-
+        public async Task<List<Empleados>> ObtieneTodoEmpleados()
+        {
+            using var connection = new SqlConnection(_connectionString);
+            IEnumerable<Empleados> empleados = await connection.QueryAsync<Empleados>(@"
+                EXEC obtieneEmpleadosDto
+                ");
+            return empleados.ToList();
+        }
 
 
     }

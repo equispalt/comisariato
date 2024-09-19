@@ -1,6 +1,6 @@
 ﻿namespace SistemaILP.comisariato.Models
 {
-    public class Empleado
+    public class Empleados
     {
         public long EmpleadoId { get; set; }
         public string Codigo { get; set; }

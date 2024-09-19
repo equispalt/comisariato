@@ -13,15 +13,17 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         private readonly IPermisosService _permisosService;
         private readonly IRepositorioUsuario _repositorioUsuario;
         private readonly IEncryptService _encryptService;
+        private readonly IDatosDtoService _datosDtoService;
 
-        public UsuariosController(IPermisosService permisosService, IRepositorioUsuario repositorioUsuario, IEncryptService encryptService)
+        public UsuariosController(IPermisosService permisosService, IRepositorioUsuario repositorioUsuario, IEncryptService encryptService, IDatosDtoService datosDtoService)
         {
             this._permisosService = permisosService;
             this._repositorioUsuario = repositorioUsuario;
-            this. _encryptService = encryptService;
+            this._encryptService = encryptService;
+            this._datosDtoService = datosDtoService;
         }
 
-        //Metodo para Listar
+        //---------- Listar Usuario    ----------
         [HttpGet]
         public async Task<IActionResult> Index(int? numpag)
         {
@@ -34,11 +36,22 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
 
             try
             {
+
+                List<Roles> Roles = await _datosDtoService.ObtieneTodoRoles();
+
+                // Pasar los roles al ViewBag
+                ViewBag.Roles = Roles;
+
+                List<Empleados> Empleados = await _datosDtoService.ObtieneTodoEmpleados();
+                ViewBag.Empleados = Empleados;
+
+
                 List<Usuarios> Listado = await _repositorioUsuario.ObtieneTodoUsuarios();
 
                 int cantidadregistros = 10;
 
                 return View(Paginacion<Usuarios>.CrearPaginacion(Listado, numpag ?? 1, cantidadregistros));
+
             }
             catch (Exception ex)
             {
@@ -46,6 +59,34 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             }
         }
 
+        //---------- Crear Usuario    ----------
+        [HttpPost]
+        public async Task<IActionResult> CrearUsuario(Usuarios newUser)
+        {
+            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            //if (esPermitido == false)
+            //{
+            //    return RedirectToAction("Error403", "Home");
+            //}
+            try
+            {
+                bool creado = await _repositorioUsuario.PaCrearUsuario(newUser);
+
+                if (creado)
+                {
+                    return RedirectToAction("Index", "Usuario");
+                }
+                return RedirectToAction("Error", "Home");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error","Home");
+            }
+        }
+
+
+
+        //---------- Eliminar Usuario    ----------
         [HttpPost]
         public async Task<IActionResult> EditarUsuario(int id, Usuarios updatedUser)
         {
@@ -82,7 +123,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
                 return RedirectToAction("Error", "Home");
             }
         }
-
+        //---------- Editar contraseña    ----------
         [HttpPost]
         public async Task<IActionResult> EditarPassword(int id, string newPassword)
         {
@@ -118,7 +159,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             }
         }
 
-
+        //---------- Eliminar Usuario    ----------
         [HttpPost]
         public async Task<IActionResult> EliminarUsuario(int id)
         {
