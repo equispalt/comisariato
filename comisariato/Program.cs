@@ -31,9 +31,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     option.LoginPath = "/Auth/Login";
 });
 
-builder.Services.AddScoped<IPermisosService, PermisosService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IDatosDtoService, DatosDtoService>();
 builder.Services.AddScoped<IEncryptService, EncryptService>();
+builder.Services.AddScoped<IPermisosService, PermisosService>();
 
 builder.Services.AddTransient<IRepositorioRoles, RepositorioRoles>();
 builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuarios>();
