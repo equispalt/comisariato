@@ -8,6 +8,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
     {
         Task<List<Usuarios>> ObtieneTodoUsuarios();
         Task<Usuarios> ObtienePorUsuarioId(int id);
+        Task<bool> PaCrearUsuario(Usuarios usuario);
         Task<bool> PaEditarUsuario(Usuarios usuario);
         Task<bool> PaEditarPassword(Usuarios usuario);
         Task<bool> PaEliminarUsuario(int id);
