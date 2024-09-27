@@ -74,7 +74,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
 
                 if (creado)
                 {
-                    return RedirectToAction("Index", "Usuario");
+                    return RedirectToAction("Index", "Usuarios");
                 }
                 return RedirectToAction("Error", "Home");
             }
