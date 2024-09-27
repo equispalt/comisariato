@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using SistemaILP.comisariato.Data;
 using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
@@ -70,6 +71,8 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             //}
             try
             {
+                newUser.Password = _encryptService.ConvertirSHA256(newUser.Password);
+
                 bool creado = await _repositorioUsuario.PaCrearUsuario(newUser);
 
                 if (creado)
