@@ -60,6 +60,14 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> ExisteUsuario(string usuario)
+        {
+            bool existe = await _repositorioUsuario.PaValidarUsuario(usuario);
+            return Json(new { existe });
+        }
+
+
         //---------- Crear Usuario    ----------
         [HttpPost]
         public async Task<IActionResult> CrearUsuario(Usuarios newUser)

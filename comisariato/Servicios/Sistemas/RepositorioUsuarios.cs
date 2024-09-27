@@ -8,6 +8,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
     {
         Task<List<Usuarios>> ObtieneTodoUsuarios();
         Task<Usuarios> ObtienePorUsuarioId(int id);
+        Task<bool> PaValidarUsuario(string usuario);
         Task<bool> PaCrearUsuario(Usuarios usuario);
         Task<bool> PaEditarUsuario(Usuarios usuario);
         Task<bool> PaEditarPassword(Usuarios usuario);
@@ -41,6 +42,16 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             });
             return user.FirstOrDefault();
         }
+
+        public async Task<bool> PaValidarUsuario(string usuario)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            var existe = await connection.ExecuteScalarAsync<bool>(@"
+            EXEC paValidarUsuario @usuario", 
+            new { usuario });
+            return existe;
+        }
+
 
         public async Task<bool> PaCrearUsuario(Usuarios usuario) 
         {
