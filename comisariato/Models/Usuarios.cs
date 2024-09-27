@@ -8,6 +8,7 @@
         public int EmpleadoId { get; set; }
         public int RolId { get; set; }
         public int EstadoId { get; set; }
+        public DateTime FechaMod { get; set; }
 
         // relacionado a modelo empleados
         public string NombreEmpleado { get; set; }
