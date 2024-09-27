@@ -5,7 +5,9 @@
     <h5  style="padding-left: 20px" class="card-title"><i class="fas fa-user"></i> Consulta De Usuarios</h5>
     <div class="card-header">
         <div class="card-tools" style="padding-right: 10px; margin-bottom: 10px" >
-            <button class="btn btn-outline-dark btn-sm btn-crear" data-toggle="modal" data-target="#modalCrearUsuario"><i class="fas fa-plus"></i> Nuevo Usuario</></button>
+            <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#modalCrearUsuario">
+                <i class="fas fa-plus"></i> Nuevo Usuario
+            </button>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0" style="height: 500px;">
@@ -86,7 +88,7 @@
     </div>
 </div>
 <!-- /.card -->
-<!-- Modal de crear usuario -->
+<!-- Modal de Crear usuario -->
 <div class="modal fade" id="modalCrearUsuario" tabindex="-1" role="dialog" aria-labelledby="modalCrearLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -97,39 +99,38 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="pwdForm"   action="@Url.Action("CrearUsuario", "Usuarios")" method="post">
+                <form id="btn-crear" action="@Url.Action("CrearUsuario", "Usuarios")" method="post">
 
-                    <label class="col-form-label">Usuario:</label>
-                    <input type="text" class="form-control" id="modalUser" name="usuario" />
+                    <label for="modalUser" class="col-form-label">Usuario:</label>
+                    <input type="text" class="form-control" id="modalUser" name="usuario" required />
 
-                    <label for="pwd" class="col-form-label">Contraseña:</label>
-                    <input type="password" class="form-control" id="pwd" name="Password" required />
+                    <label for="modalPwd" class="col-form-label">Contraseña:</label>
+                    <input type="password" class="form-control" id="modalPwd" name="password" required />
 
-                    <label for="cpwd" class="col-form-label">Confirmar Contraseña:</label>
-                    <input type="password" class="form-control" id="cpwd" name="confirmPassword" required />
+                    <label for="modalCpwd" class="col-form-label">Confirmar Contraseña:</label>
+                    <input type="password" class="form-control" id="modalCpwd" name="cpwd" required />
 
-                    <div id="empleadosList" style="display: none;">
-                        <label class="col-form-label">Empleado:</label>
-                        <select class="form-control" id="empleadosDropdown" name="empleado">
-                            <option value="">Seleccione un empleado</option> 
-                            @foreach (var empleado in ViewBag.Empleados as List<Empleados>)
-                            {
-                                <option value="@empleado.EmpleadoId">@empleado.Nombre</option> <!-- Cambia según las propiedades de tu modelo de empleados -->
-                            }
-                        </select>
+                    <div id="passworderror" class="alert alert-danger" style="display: none;">
+                        Las contraseñas no coinciden.
                     </div>
 
-                    <!-- Aquí renderizamos los roles de forma oculta inicialmente -->
-                    <div id="rolesList" style="display: none;">
-                        <label class="col-form-label">Roles:</label>
-                        <select class="form-control" id="rolesDropdown" name="rol">
-                            <option value="">Seleccione un rol</option>
-                            @foreach (var rol in ViewBag.Roles as List<Roles>)
-                            {
-                                <option value="@rol.RolId">@rol.Nombre</option> <!-- Cambia según las propiedades de tu modelo de roles -->
-                            }
-                        </select>
-                    </div>
+                    <label for="empleadosDropdown" class="col-form-label">Empleado:</label>
+                    <select class="form-control" id="empleadosDropdown" name="empleadoid">
+                        <option value="">Seleccione un empleado</option>
+                        @foreach (var empleado in ViewBag.Empleados as List<Empleados>)
+                        {
+                            <option value="@empleado.EmpleadoId">@empleado.Nombre</option>
+                        }
+                    </select>
+
+                    <label for="rolesDropdown" class="col-form-label">Roles:</label>
+                    <select class="form-control" id="rolesDropdown" name="rolid">
+                        <option value="">Seleccione un rol</option>
+                        @foreach (var rol in ViewBag.Roles as List<Roles>)
+                        {
+                            <option value="@rol.RolId">@rol.Nombre</option>
+                        }
+                    </select>
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -226,46 +227,30 @@
     </div>
 </div>
 
+    <script>
+    // Envia datos de usuario cuando haces clic en "btn-crear"
+    document.getElementById('.btn-crear').addEventListener('submit', function (e) {
+        var password = document.getElementById('modalPwd').value;
+        var confirmPassword = document.getElementById('modalCpwd').value;
+        var errorDiv = document.getElementById('passworderror');
 
-<script>
-    // Captura el ID y usuario cuando haces clic en "btn-crear"
-    document.querySelectorAll('.btn-crear').forEach(function (button) {
-        button.addEventListener('click', function () {
-            // Captura el ID y usuario desde los atributos del botón
-            var userId = this.getAttribute('data-id');
-            var userName = this.getAttribute('data-usuario');
+        if (password !== confirmPassword) {
+            e.preventDefault();  // Evita el envío del formulario
+            errorDiv.style.display = 'block';  // Muestra el error
 
-            // Asigna los valores capturados al modal
-            document.getElementById('modalUser').value = userName; // Coloca el nombre de usuario
+            setTimeout(function () {
+                errorDiv.style.display = 'none';
+            }, 1500);
 
-            // Muestra la lista de empleados
-            document.getElementById('empleadosList').style.display = "block";
-
-            // Muestra la lista de roles
-            document.getElementById('rolesList').style.display = "block";
-
-            // Muestra el modal manualmente
-            var modalCrear = new bootstrap.Modal(document.getElementById('modalCrearUsuario'));
-            modalCrear.show();
-        });
-    });
-
-    // Validación de contraseñas al enviar
-    document.getElementById('pwdForm').addEventListener('submit', function (event) {
-        var Password = document.getElementById('pwd').value;
-        var confirmPassword = document.getElementById('cpwd').value;
-
-        // Si las contraseñas no coinciden, mostrar error y evitar el envío
-        if (Password !== confirmPassword) {
-            event.preventDefault();
-            document.getElementById('passworderror').style.display = 'block';
         } else {
-            document.getElementById('passworderror').style.display = 'none';
+            errorDiv.style.display = 'none';  // Oculta el error
         }
     });
-</script>
+    </script>
 
-<script>
+    
+
+    <script>
     // Captura el ID y usuario cuando haces clic en "btn-editar"
     document.querySelectorAll('.btn-editar').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -277,15 +262,15 @@
             document.getElementById('modal-user-id').value = userId; // Coloca el ID en el input hidden
             document.getElementById('modal-user').value = userName; // Coloca el nombre de usuario
 
-            // Muestra el modal manualmente (si quieres controlarlo vía JS)
+            // Muestra el modal manualmente usando Bootstrap
             var modalEditar = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
             modal.show();
         });
     });
-</script>
+    </script>
 
 
-<script>
+    <script>
     // Captura el ID del usuario cuando haces clic en "Cambiar Contraseña"
     document.querySelectorAll('.btn-editar-password').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -310,10 +295,10 @@
             document.getElementById('password-error').style.display = 'block';
         }
     });
-</script>
+    </script>
 
 
-<script>
+    <script>
     // CCaptura el ID del usuario cuando haces clic en "btn-eliminar"
     document.querySelectorAll('.btn-eliminar').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -331,5 +316,5 @@
         });
     });
 
-</script>
+    </script>
 
