@@ -1,6 +1,6 @@
 ﻿namespace SistemaILP.comisariato.Models
 {
-    public class Producto
+    public class Productos
     {
         public long ProductoId { get; set; }
         public string CodigoSILP { get; set; }
@@ -16,5 +16,8 @@
         public int ProgramaId { get; set; }
         public int MonedaId { get; set; }
         public DateTime FechaMod { get; set; }
+
+        // relacionado a modelo estados
+        public string NombreEstado { get; set; }
     }
 }

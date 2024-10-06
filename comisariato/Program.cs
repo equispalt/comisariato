@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Finanzas;
+using SistemaILP.comisariato.Servicios.MercadeoVentas;
 using SistemaILP.comisariato.Servicios.Sistemas;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,7 @@ builder.Services.AddControllersWithViews().AddRazorOptions(options =>
     // Agregar las rutas personalizadas
     options.ViewLocationFormats.Add("/Views/Areas/{1}/{0}.cshtml");
     options.ViewLocationFormats.Add("/Views/Areas/Finanzas/{1}/{0}.cshtml");
-    options.ViewLocationFormats.Add("/Views/Areas/Mercadeo&Ventas/{1}/{0}.cshtml");
+    options.ViewLocationFormats.Add("/Views/Areas/MercadeoVentas/{1}/{0}.cshtml");
     options.ViewLocationFormats.Add("/Views/Areas/Operaciones/{1}/{0}.cshtml");
     options.ViewLocationFormats.Add("/Views/Areas/Reportes/{1}/{0}.cshtml");
     options.ViewLocationFormats.Add("/Views/Areas/Sistemas/{1}/{0}.cshtml");
@@ -40,7 +41,7 @@ builder.Services.AddScoped<IPermisosService, PermisosService>();
 builder.Services.AddTransient<IRepositorioRoles, RepositorioRoles>();
 builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuarios>();
 builder.Services.AddTransient<IRepositorioEmpleado, RepositorioEmpleados>();
-
+builder.Services.AddTransient<IRepositorioProducto, RepositorioProductos>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

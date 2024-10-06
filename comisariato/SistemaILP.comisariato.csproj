@@ -17,10 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Areas\Mercadeo&amp;Venta\" />
     <Folder Include="Controllers\Areas\Reportes\" />
     <Folder Include="Controllers\Areas\Operaciones\" />
-    <Folder Include="Views\Areas\Mercadeo&amp;Venta\" />
     <Folder Include="Views\Areas\Reportes\" />
     <Folder Include="Views\Areas\Operaciones\" />
     <Folder Include="wwwroot\img\Login\" />
