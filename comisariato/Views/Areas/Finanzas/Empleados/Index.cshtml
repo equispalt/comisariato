@@ -61,33 +61,33 @@
                 var siguientedeshabilitado = !Model.PaginasPosteriores ? "disable" : "";
             }
 
-            <nav aria-label="Page navigation">
-                <ul class="pagination pagination-sm justify-content-end">
-                    <!-- Botón Anterior -->
-                    <li class="page-item @(Model.PaginaInicio == 1 ? "disabled" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio - 1)" tabindex="@(Model.PaginaInicio == 1 ? "-1" : "")">Anterior</a>
-                    </li>
-
-                    <!-- Botones de páginas -->
-                    @for (var i = 1; i <= Model.PaginasTotales; i++)
-                    {
-                        <li class="page-item @(i == Model.PaginaInicio ? "active" : "")">
-                            <a class="page-link" asp-action="Index" asp-route-numpag="@i">@i</a>
-                            @if (i == Model.PaginaInicio)
-                            {
-                                <span class="sr-only">(current)</span>
-                            }
-                        </li>
-                    }
-
-                    <!-- Botón Siguiente -->
-                    <li class="page-item @(Model.PaginaInicio == Model.PaginasTotales ? "disabled" : "")">
-                        <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio + 1)" tabindex="@(Model.PaginaInicio == Model.PaginasTotales ? "-1" : "")">Siguiente</a>
-                    </li>
-                </ul>
-            </nav>
         </div>
         <!-- /.card-body -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination pagination-sm justify-content-end">
+                <!-- Botón Anterior -->
+                <li class="page-item @(Model.PaginaInicio == 1 ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio - 1)" tabindex="@(Model.PaginaInicio == 1 ? "-1" : "")">Anterior</a>
+                </li>
+
+                <!-- Botones de páginas -->
+                @for (var i = 1; i <= Model.PaginasTotales; i++)
+                {
+                    <li class="page-item @(i == Model.PaginaInicio ? "active" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-numpag="@i">@i</a>
+                        @if (i == Model.PaginaInicio)
+                        {
+                            <span class="sr-only">(current)</span>
+                        }
+                    </li>
+                }
+
+                <!-- Botón Siguiente -->
+                <li class="page-item @(Model.PaginaInicio == Model.PaginasTotales ? "disabled" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio + 1)" tabindex="@(Model.PaginaInicio == Model.PaginasTotales ? "-1" : "")">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 <!-- /.card -->
