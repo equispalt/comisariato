@@ -37,10 +37,22 @@
                                     </button>
                                     <div class="dropdown-menu" style="background-color: #f0d8a8">
 
-                                        <a class="dropdown-item btn-editar" data-toggle="modal" data-id="@Producto.ProductoId" data-producto="@Producto.Nombre" data-target="#modalEditarProducto">
+                                        <a class="dropdown-item btn-editar" data-toggle="modal" 
+                                            data-id="@Producto.ProductoId" 
+                                            data-producto="@Producto.Nombre"
+                                            data-barra="@Producto.CodigoBarra"
+                                            data-marca="@Producto.Marca"
+                                            data-categoria="@Producto.Categoria"
+                                            data-precio="@Producto.Precio"
+                                        
+                                        data-target="#modalEditarProducto">
                                             <i class="fa fa-pencil"></i> Editar
                                         </a>
-                                        <a class="dropdown-item btn-eliminar" data-toggle="modal" data-id="@Producto.ProductoId" data-producto="@Producto.Nombre" data-target="#modalEliminarProducto">
+                                        <a class="dropdown-item btn-eliminar" data-toggle="modal" 
+                                            data-id="@Producto.ProductoId" 
+                                            data-producto="@Producto.Nombre" 
+                                                
+                                            data-target="#modalEliminarProducto">
                                             <i class="fa fa-trash"></i> Eliminar
                                         </a>
                                     </div>
@@ -95,7 +107,7 @@
     </div>
 </div>
 <!-- /.card -->
-@* <!-- Modal de Crear usuario -->
+@*  <!-- Modal de Crear usuario -->
 <div class="modal fade" id="modalCrearUsuario" tabindex="-1" role="dialog" aria-labelledby="modalCrearLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -147,24 +159,36 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 
 <!-- Modal de Editar usuario -->
-<div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="modalEditarLabel" aria-hidden="true">
+<div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarLabel">Editar Usuario</h5>
+                <h5 class="modal-title" id="modalEditarLabel">Editar Producto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="@Url.Action("EditarUsuario", "Usuarios")" method="post">
-                    <input type="hidden" id="modal-user-id" name="id" />
+                <form action="@Url.Action("EditarProducto", "Productos")" method="post">
+                    <input type="hidden" id="modal-productid" name="id" />
 
-                    <label for="modal-user" class="col-form-label">Usuario:</label>
-                    <input type="text" class="form-control" id="modal-user" name="usuario" />
+                    <label for="modal-user" class="col-form-label">Producto:</label>
+                    <input type="text" class="form-control" id="modal-productname" name="producto" />
+
+                    <label for="modal-user" class="col-form-label">Codigo de barras:</label>
+                    <input type="text" class="form-control" id="modal-productbarra" name="barras" />
+
+                    <label for="modal-user" class="col-form-label">Marca:</label>
+                    <input type="text" class="form-control" id="modal-productmarca" name="marca" />
+
+                    <label for="modal-user" class="col-form-label">Categoria:</label>
+                    <input type="text" class="form-control" id="modal-productcategoria" name="categoria" />
+                    
+                    <label for="modal-user" class="col-form-label">Precio:</label>
+                    <input type="number" class="form-control" id="modal-productprecio" name="precio" />
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-warning">Guardar Cambios</button>
@@ -176,53 +200,22 @@
     </div>
 </div>
 
-<!-- Modal de Editar Contraseña -->
-<div class="modal fade" id="modalEditarPassword" tabindex="-1" role="dialog" aria-labelledby="modalEditarPasswordLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarPasswordLabel">Cambiar Contraseña a <strong id="modal-usr-user"></strong>?</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="passwordForm" action="@Url.Action("EditarPassword", "Usuarios")" method="post">
-                    <input type="hidden" id="modal-usr-id" name="id" />
-
-                    <label for="new-password" class="col-form-label">Nueva Contraseña:</label>
-                    <input type="password" class="form-control" id="new-password" name="newPassword" required />
-
-                    <label for="confirm-password" class="col-form-label">Confirmar Contraseña:</label>
-                    <input type="password" class="form-control" id="confirm-password" name="confirmPassword" required />
-
-                    <div id="password-error" class="text-danger" style="display: none;">Las contraseñas no coinciden</div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-warning">Guardar Cambios</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 
 <!-- Modal de eliminar usuario -->
-<div class="modal fade" id="modalEliminarUsuario" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+<div class="modal fade" id="modalEliminarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalEliminarLabel">Eliminar Usuario</h5>
+                <h5 class="modal-title" id="modalEliminarLabel">Eliminar Producto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="@Url.Action("EliminarUsuario", "Usuarios")" method="post">
-                    <input type="hidden" id="modal-userid" name="id" />
+                <form action="@Url.Action("EliminarProducto", "Productos")" method="post">
+                    <input type="hidden" id="modal-productid" name="id" />
 
-                    <p>¿Estás seguro que deseas eliminar al usuario <strong id="modal-username"></strong>?</p>
+                    <p>¿Estás seguro que deseas eliminar el producto <strong id="modal-product"></strong>?</p>
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-danger">Eliminar</button>
@@ -234,6 +227,7 @@
     </div>
 </div>
 
+@*
 <script>
     let userExists = false;  // Variable global para verificar si el usuario ya existe
 
@@ -283,74 +277,54 @@
 </script>
 
 
+ *@
 
-
-<script>
-    // Captura el ID y usuario cuando haces clic en "btn-editar"
+    <script>
+    // Captura el ID y producto cuando haces clic en "btn-editar"
     document.querySelectorAll('.btn-editar').forEach(function (button) {
         button.addEventListener('click', function () {
             // Captura el ID y usuario desde los atributos del botón
-            var userId = this.getAttribute('data-id');
-            var userName = this.getAttribute('data-usuario');
+            var ProductId = this.getAttribute('data-id');
+            var ProductName = this.getAttribute('data-producto');
+            var ProductBarra = this.getAttribute('data-barra');
+            var ProductMarca = this.getAttribute('data-marca');
+            var ProductCategoria = this.getAttribute('data-categoria');
+            var ProductPrecio = this.getAttribute('data-precio');
 
-            // Asigna los valores capturados al modal
-            document.getElementById('modal-user-id').value = userId; // Coloca el ID en el input hidden
-            document.getElementById('modal-user').value = userName; // Coloca el nombre de usuario
+            // Asigna los valores capturados y los traslada al modal
+            document.getElementById('modal-productid').value = ProductId; // Coloca el ID en el input hidden
+            document.getElementById('modal-productname').value = ProductName; // Coloca el nombre del producto
+            document.getElementById('modal-productbarra').value = ProductBarra;
+            document.getElementById('modal-productmarca').value = ProductMarca;
+            document.getElementById('modal-productcategoria').value = ProductCategoria;
+            document.getElementById('modal-productprecio').value = ProductPrecio;
 
             // Muestra el modal manualmente usando Bootstrap
-            var modalEditar = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
+            var modalEditar = new bootstrap.Modal(document.getElementById('modalEditarProducto'));
             modal.show();
         });
     });
-</script>
+    </script>
 
 
-<script>
-    // Captura el ID del usuario cuando haces clic en "Cambiar Contraseña"
-    document.querySelectorAll('.btn-editar-password').forEach(function (button) {
-        button.addEventListener('click', function () {
-            // Captura el ID y el nombre de usuario desde los atributos del botón
-            var userId = this.getAttribute('data-id');
-            var userUser = this.getAttribute('data-usuario');
-
-            // Asigna el ID del usuario al campo hidden y muestra el nombre en el modal
-            document.getElementById('modal-usr-id').value = userId;
-            document.getElementById('modal-usr-user').textContent = userUser;
-        });
-    });
-
-    // Validación de contraseñas al enviar
-    document.getElementById('passwordForm').addEventListener('submit', function (event) {
-        var newPassword = document.getElementById('new-password').value;
-        var confirmPassword = document.getElementById('confirm-password').value;
-
-        // Si las contraseñas no coinciden, mostrar error y evitar el envío
-        if (newPassword !== confirmPassword) {
-            event.preventDefault();
-            document.getElementById('password-error').style.display = 'block';
-        }
-    });
-</script>
 
 
-<script>
-    // Captura el ID del usuario cuando haces clic en "btn-eliminar"
+    <script>
+    // Captura el ID del producto cuando haces clic en "btn-eliminar"
     document.querySelectorAll('.btn-eliminar').forEach(function (button) {
         button.addEventListener('click', function () {
-            // Captura el ID y el nombre del usuario desde el botón
-            var userId = this.getAttribute('data-id');
-            var userName = this.getAttribute('data-nombre');
+            // Captura el ID y demas valores del producto desde el botón
+            var ProductId = this.getAttribute('data-id');
+            var Product = this.getAttribute('data-producto');
 
-            // Asigna los valores capturados al modal
-            document.getElementById('modal-userid').value = userId;
-            document.getElementById('modal-username').textContent = userName;
+            // Asigna los valores capturados y los traslada al modal
+            document.getElementById('modal-productid').value = ProductId;
+            document.getElementById('modal-product').textContent = Product;
 
             // Muestra el modal manualmente usando Bootstrap
-            var modalEliminar = new bootstrap.Modal(document.getElementById('modalEliminarUsuario'));
+            var modalEliminar = new bootstrap.Modal(document.getElementById('modalEliminarProducto'));
             modalEliminar.show();
         });
     });
+    </script>
 
-</script>
-
- *@
