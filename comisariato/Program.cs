@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using SistemaILP.comisariato.Servicios;
+using SistemaILP.comisariato.Servicios.Finanzas;
 using SistemaILP.comisariato.Servicios.Sistemas;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +39,7 @@ builder.Services.AddScoped<IPermisosService, PermisosService>();
 
 builder.Services.AddTransient<IRepositorioRoles, RepositorioRoles>();
 builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuarios>();
+builder.Services.AddTransient<IRepositorioEmpleado, RepositorioEmpleados>();
 
 var app = builder.Build();
 

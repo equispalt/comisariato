@@ -20,7 +20,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
 
         public RepositorioUsuarios(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("ConnectionComisariato") ?? "";
+            _connectionString = configuration.GetConnectionString(" ") ?? "";
         }
 
         public async Task<List<Usuarios>> ObtieneTodoUsuarios()
