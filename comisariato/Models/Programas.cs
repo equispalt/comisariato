@@ -10,10 +10,14 @@
         public int TipoProgramaId { get; set; }
         public int? ProgramaPadreId { get; set; }
         public string Icono { get; set; }
-        public int Estado { get; set; }
+        public int EstadoId { get; set; }
         public DateTime FechaMod { get; set; }
 
-        // Navigation property
+        // Relacionado a 
+
+        public string NombreTipoPrograma { get; set; }
+        public string NombreEstado { get; set; }
+        public string Ruta { get; set; }
 
 
     }

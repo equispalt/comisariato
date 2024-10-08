@@ -8,7 +8,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
     {
         Task<List<Programas>> ObtieneTodoProgramas();
     }
-    public class RepositorioProgramas
+    public class RepositorioProgramas : IRepositorioProgramas
     {
         private readonly string _connectionString;
 
@@ -22,7 +22,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
         {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Programas> programas = await connection.QueryAsync<Programas>(@"
-                        EXEC obtieneTodoRoles
+                        EXEC obtieneTodoPrograma
             ");
             return programas.ToList();
         }

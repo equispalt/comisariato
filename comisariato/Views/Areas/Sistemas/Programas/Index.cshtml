@@ -1,5 +1,147 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using SistemaILP.comisariato.Data;
+@model List<Programas>;
+
+<style>
+    .lista-programas {
+        /* Puedes ajustar los estilos para el div aquí */
+        padding: 10px; /* Espaciado interno para el div */
+        background-color: #f9f9f9; /* Color de fondo para el div */
+        border-radius: 5px; /* Bordes redondeados */
+    }
+
+        .lista-programas ul {
+            list-style-type: none; /* Elimina las viñetas por defecto */
+            padding-left: 0; /* Sin sangría para la lista */
+        }
+
+        .lista-programas li {
+            display: flex; /* Usar flexbox para organizar elementos en fila */
+            justify-content: space-between; /* Espacio entre los elementos */
+            align-items: center; /* Centrar verticalmente */
+            padding: 5px;
+            cursor: pointer;
+            border-bottom: 1px solid #ccc; /* Línea divisoria entre elementos */
+        }
+
+            .lista-programas li:last-child {
+                border-bottom: none; /* Elimina la línea del último elemento */
+            }
+
+    .menu {
+        font-weight: bold;
+        margin-top: 10px;
+        color: blue; /* Color azul para menús */
+    }
+
+    .submenu {
+        margin-left: 50px; /* Sangría para submenús */
+        font-weight: normal; /* Peso normal para submenús */
+        color: black;
+    }
+
+    .opcion {
+        margin-left: 100px; /* Más sangría para opciones */
+        font-weight: normal; /* Peso normal para opciones */
+        color: black;
+    }
+
+    .nombre {
+        flex: 2; /* Primer columna: Nombre */
+        margin-left: 20px; /* Sangría solo en la columna de nombre */
+    }
+
+    .tipo {
+        flex: 2; /* Segunda columna: Nombre Tipo Programa */
+        color: black; /* Color de texto para el tipo de programa */
+        margin-left: 0; /* Asegura que esta columna no tenga sangría */
+        padding-left: 0; /* Asegura que esta columna no tenga relleno */
+    }
+
+    .dropdown {
+        display: inline-flex; /* Alinea los botones en línea */
+        gap: 5px; /* Espacio entre los botones */
+        flex: 1; /* Tercer columna: Botones */
+        justify-content: flex-end; /* Alinea los botones a la derecha */
+    }
+
+    .btn-primary, .btn-success, .btn-danger {
+        padding: 5px 10px; /* Espaciado interno para los botones */
+        color: white; /* Color de texto en los botones */
+        border: none; /* Sin borde */
+        border-radius: 3px; /* Bordes redondeados */
+        cursor: pointer; /* Cambia el cursor al pasar por encima */
+    }
+
+    .btn-primary {
+        background-color: #007bff; /* Color azul para el botón de nuevo */
+    }
+
+    .btn-success {
+        background-color: #28a745; /* Color verde para el botón de editar */
+    }
+
+    .btn-danger {
+        background-color: #dc3545; /* Color rojo para el botón de eliminar */
+    }
+</style>
+
+
+<div class="card">
+    <h5 style="padding-left: 30px" class="card-title"><i class="fas fa-user"></i> Consulta De Roles</h5>
+    <div class="card-header">
+
+
+        <div class="lista-programas margin-top: 10px">
+            <ul>
+                @foreach (var programa in Model)
+                {
+                    <li class="@(programa.NombreTipoPrograma == "Menu del sistema" ? "menu" :
+                             programa.NombreTipoPrograma == "SubMenu del sistema" ? "submenu" : "opcion")">
+                        <div class="nombre">
+                            @if (programa.NombreTipoPrograma == "Opcion del sistema")
+                            {
+                                    @programa.Nombre
+                            }
+                            else
+                            {
+                                <i class="@programa.Icono"></i> @programa.Nombre
+
+                                
+                            }
+                        </div>
+
+                        <div class="tipo">
+                            @programa.NombreTipoPrograma
+                        </div>
+
+                        <div class="dropdown">
+                            <a class="btn-primary btn-xs btn-crear" title="Nuevo Programa" data-toggle="modal" data-id="@programa.ProgramaId" data-target="#modalEditarRol">
+                                <i class="fa fa-plus"></i>
+                            </a>
+                            <a class="btn-success btn-xs btn-editar" title="Editar Programa" data-toggle="modal" data-id="@programa.ProgramaId" data-target="#modalEditarRol">
+                                <i class="fa fa-edit"></i>
+                            </a>
+                            <a class="btn-danger btn-xs btn-eliminar" title="Eliminar Programa" data-toggle="modal" data-id="@programa.ProgramaId" data-target="#modalEliminarPrograma">
+                                <i class="fa fa-trash"></i>
+                            </a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+
+    </div>
+</div>
+<!-- /.card -->
+
+
+
+
+
+
+
+
+
+
+
+

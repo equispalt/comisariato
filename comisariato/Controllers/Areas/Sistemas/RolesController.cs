@@ -21,7 +21,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         public async Task<IActionResult> Index(int? numpag)
         {
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
-            if (esPermitido) 
+            if (esPermitido == false) 
             { 
                 return RedirectToAction("Error403", "Home");
             }
