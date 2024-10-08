@@ -16,7 +16,7 @@
                     <tr>
                         <th style="width: 75px;"></th>
                         <th style="width: 75px">Codigo</th>
-                        <th style="width: 250px;">Nombre</th>
+                        <th>Nombre</th>
                         <th style="width: 100px;">Codigo de barras</th>
                         <th style="width: 100px;">Marca</th>
                         <th style="width: 100px;">Categoria</th>
@@ -45,7 +45,7 @@
                                             data-categoria="@Producto.Categoria"
                                             data-precio="@Producto.Precio"
                                         
-                                        data-target="#modalEditarProducto">
+                                            data-target="#modalEditarProducto">
                                             <i class="fa fa-pencil"></i> Editar
                                         </a>
                                         <a class="dropdown-item btn-eliminar" data-toggle="modal" 
@@ -161,7 +161,7 @@
     </div>
 </div> *@
 
-<!-- Modal de Editar usuario -->
+@* <!-- Modal de Editar usuario -->
 <div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -199,7 +199,7 @@
         </div>
     </div>
 </div>
-
+ *@
 
 <!-- Modal de eliminar usuario -->
 <div class="modal fade" id="modalEliminarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
@@ -314,12 +314,12 @@
     document.querySelectorAll('.btn-eliminar').forEach(function (button) {
         button.addEventListener('click', function () {
             // Captura el ID y demas valores del producto desde el botón
-            var ProductId = this.getAttribute('data-id');
-            var Product = this.getAttribute('data-producto');
+            var productId = this.getAttribute('data-id');
+            var product = this.getAttribute('data-producto');
 
             // Asigna los valores capturados y los traslada al modal
-            document.getElementById('modal-productid').value = ProductId;
-            document.getElementById('modal-product').textContent = Product;
+            document.getElementById('modal-productid').value = productId;
+            document.getElementById('modal-product').textContent = product;
 
             // Muestra el modal manualmente usando Bootstrap
             var modalEliminar = new bootstrap.Modal(document.getElementById('modalEliminarProducto'));

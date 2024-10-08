@@ -43,5 +43,39 @@ namespace SistemaILP.comisariato.Controllers.Areas.MercadeoVenta
             }
 
         }
+
+        public async Task<IActionResult> EliminarProducto(int id)
+        {
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
+
+            try
+            {
+                Productos producto = await _repositorioProducto.ObtinePorProductoId(id);
+                if (producto == null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                bool eliminado = await _repositorioProducto.PaEliminarProducto(id);
+
+                if (eliminado)
+                {
+                    return RedirectToAction("Index","Productos");
+                }
+                return RedirectToAction("Error","Home");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error","Home");
+            }
+
+        }
+
+
     }
 }

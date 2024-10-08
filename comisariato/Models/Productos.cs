@@ -2,7 +2,7 @@
 {
     public class Productos
     {
-        public long ProductoId { get; set; }
+        public int ProductoId { get; set; }
         public string CodigoSILP { get; set; }
         public string Nombre { get; set; }
         public string CodigoBarra { get; set; }

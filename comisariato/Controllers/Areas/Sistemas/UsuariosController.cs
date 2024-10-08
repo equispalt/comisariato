@@ -72,11 +72,11 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         [HttpPost]
         public async Task<IActionResult> CrearUsuario(Usuarios newUser)
         {
-            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
-            //if (esPermitido == false)
-            //{
-            //    return RedirectToAction("Error403", "Home");
-            //}
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
             try
             {
                 newUser.Password = _encryptService.ConvertirSHA256(newUser.Password);
@@ -101,11 +101,11 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         [HttpPost]
         public async Task<IActionResult> EditarUsuario(int id, Usuarios updatedUser)
         {
-            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
-            //if (esPermitido == false)
-            //{
-            //    return RedirectToAction("Error403", "Home");
-            //}
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
 
             try
             {
@@ -138,12 +138,12 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         [HttpPost]
         public async Task<IActionResult> EditarPassword(int id, string newPassword)
         {
-            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
-            //if (esPermitido == false)
-            //{
-            //    return RedirectToAction("Error403", "Home");
-            //}
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
             try
             {
                 Usuarios usuario = await _repositorioUsuario.ObtienePorUsuarioId(id);
@@ -174,12 +174,12 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         [HttpPost]
         public async Task<IActionResult> EliminarUsuario(int id)
         {
-            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
-            //if (esPermitido == false)
-            //{
-            //    return RedirectToAction("Error403", "Home");
-            //}
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
 
             try
             {
