@@ -4,6 +4,10 @@ using SistemaILP.comisariato.Models;
 
 namespace SistemaILP.comisariato.Servicios.Sistemas
 {
+    public interface IRepositorioProgramas
+    {
+        Task<List<Programas>> ObtieneTodoProgramas();
+    }
     public class RepositorioProgramas
     {
         private readonly string _connectionString;
@@ -14,7 +18,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             _connectionString = configuration.GetConnectionString("ConnectionComisariato")??"";
         }
 
-        public async Task<List<Programas>> ObtieneTodoRoles()
+        public async Task<List<Programas>> ObtieneTodoProgramas()
         {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Programas> programas = await connection.QueryAsync<Programas>(@"
