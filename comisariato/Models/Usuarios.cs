@@ -13,5 +13,6 @@
         // relacionado a modelo empleados
         public string NombreEmpleado { get; set; }
         public string NombreEstado { get; set; }
+        public string NombreRol { get; set; }
     }
 }
