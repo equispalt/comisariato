@@ -7,7 +7,7 @@ namespace SistemaILP.comisariato.Servicios.MercadeoVentas
     public interface IRepositorioProducto
     {
         Task<List<Productos>> ObtieneTodoProductos();
-        Task<Productos> ObtinePorProductoId(int id);
+        Task<Productos> ObtienePorProductoId(int id);
         Task<bool> PaEditarProducto(Productos producto);
         Task<bool> PaEliminarProducto(int id);
     }
@@ -31,7 +31,7 @@ namespace SistemaILP.comisariato.Servicios.MercadeoVentas
             return pro.ToList();
         }
 
-        public async Task<Productos> ObtinePorProductoId(int id)
+        public async Task<Productos> ObtienePorProductoId(int id)
         {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Productos> pro = await connection.QueryAsync<Productos>(@"

@@ -44,7 +44,47 @@ namespace SistemaILP.comisariato.Controllers.Areas.Finanzas
                 return RedirectToAction("Error", "Home");
             }
         }
-        
+
+        [HttpPost]
+        public async Task<IActionResult> EditarEmpleado(int id, Empleados updatedEmp)
+        {
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
+
+            try
+            {
+                // Buscar el usuario por ID
+                Empleados empleado = await _repositorioEmpleado.ObtienePorEmpleadoId(id);
+
+                if (empleado == null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                empleado.Nombre = updatedEmp.Nombre;
+                empleado.NIT = updatedEmp.NIT;
+                empleado.DPI = updatedEmp.DPI;
+  
+
+                // Guardar los cambios
+                bool editado = await _repositorioEmpleado.PaEditarEmpleado(empleado);
+
+                if (editado)
+                {
+                    return RedirectToAction("Index", "Empleados");
+                }
+
+                return RedirectToAction("Error", "Home");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
         [HttpPost]
         public async Task<IActionResult> EliminarEmpleado(int id)
         {

@@ -9,6 +9,7 @@ namespace SistemaILP.comisariato.Servicios.Finanzas
     {
         Task<List<Empleados>> ObtieneTodoEmpleados();
         Task<Empleados> ObtienePorEmpleadoId(int id);
+        Task<bool> PaEditarEmpleado(Empleados empleado);
         Task<bool> PaEliminarEmpleado(int id);
     }
     public class RepositorioEmpleados : IRepositorioEmpleado
@@ -42,6 +43,29 @@ namespace SistemaILP.comisariato.Servicios.Finanzas
             return emp.FirstOrDefault();
         }
 
+        public async Task<bool> PaEditarEmpleado(Empleados empleado)
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                await connection.ExecuteAsync(@"
+                       EXEC paEditarEmpleado @empleadoid, @nombre, @nit, @dpi ",
+                       new
+                       {
+                           empleadoid = empleado.EmpleadoId,
+                           nombre = empleado.Nombre,
+                           nit = empleado.NIT,
+                           dpi = empleado.DPI,
+
+
+                       });
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         public async Task<bool> PaEliminarEmpleado(int empleadoId)
         {
             try

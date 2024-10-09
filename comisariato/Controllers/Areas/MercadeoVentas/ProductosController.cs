@@ -56,7 +56,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.MercadeoVenta
             try
             {
                 // Buscar el usuario por ID
-                Productos producto = await _repositorioProducto.ObtinePorProductoId(id);
+                Productos producto = await _repositorioProducto.ObtienePorProductoId(id);
 
                 if (producto == null)
                 {
@@ -97,7 +97,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.MercadeoVenta
 
             try
             {
-                Productos producto = await _repositorioProducto.ObtinePorProductoId(id);
+                Productos producto = await _repositorioProducto.ObtienePorProductoId(id);
                 if (producto == null)
                 {
                     return RedirectToAction("Error", "Home");
