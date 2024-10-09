@@ -39,8 +39,8 @@
 
                                         <a class="dropdown-item btn-editar" data-toggle="modal" 
                                             data-id="@Producto.ProductoId" 
-                                            data-producto="@Producto.Nombre"
-                                            data-barra="@Producto.CodigoBarra"
+                                            data-nombre="@Producto.Nombre"
+                                            data-codigobarra="@Producto.CodigoBarra"
                                             data-marca="@Producto.Marca"
                                             data-categoria="@Producto.Categoria"
                                             data-precio="@Producto.Precio"
@@ -161,7 +161,7 @@
     </div>
 </div> *@
 
-@* <!-- Modal de Editar usuario -->
+<!-- Modal de Editar usuario -->
 <div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -176,10 +176,10 @@
                     <input type="hidden" id="modal-productid" name="id" />
 
                     <label for="modal-user" class="col-form-label">Producto:</label>
-                    <input type="text" class="form-control" id="modal-productname" name="producto" />
+                    <input type="text" class="form-control" id="modal-productname" name="nombre" />
 
                     <label for="modal-user" class="col-form-label">Codigo de barras:</label>
-                    <input type="text" class="form-control" id="modal-productbarra" name="barras" />
+                    <input type="text" class="form-control" id="modal-productbarra" name="codigobarra" />
 
                     <label for="modal-user" class="col-form-label">Marca:</label>
                     <input type="text" class="form-control" id="modal-productmarca" name="marca" />
@@ -199,7 +199,7 @@
         </div>
     </div>
 </div>
- *@
+
 
 <!-- Modal de eliminar usuario -->
 <div class="modal fade" id="modalEliminarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
@@ -213,7 +213,7 @@
             </div>
             <div class="modal-body">
                 <form action="@Url.Action("EliminarProducto", "Productos")" method="post">
-                    <input type="hidden" id="modal-productid" name="id" />
+                    <input type="hidden" id="modal-product-id" name="id" />
 
                     <p>¿Estás seguro que deseas eliminar el producto <strong id="modal-product"></strong>?</p>
 
@@ -285,8 +285,8 @@
         button.addEventListener('click', function () {
             // Captura el ID y usuario desde los atributos del botón
             var ProductId = this.getAttribute('data-id');
-            var ProductName = this.getAttribute('data-producto');
-            var ProductBarra = this.getAttribute('data-barra');
+            var ProductName = this.getAttribute('data-nombre');
+            var ProductBarra = this.getAttribute('data-codigobarra');
             var ProductMarca = this.getAttribute('data-marca');
             var ProductCategoria = this.getAttribute('data-categoria');
             var ProductPrecio = this.getAttribute('data-precio');
@@ -318,7 +318,7 @@
             var product = this.getAttribute('data-producto');
 
             // Asigna los valores capturados y los traslada al modal
-            document.getElementById('modal-productid').value = productId;
+            document.getElementById('modal-product-id').value = productId;
             document.getElementById('modal-product').textContent = product;
 
             // Muestra el modal manualmente usando Bootstrap

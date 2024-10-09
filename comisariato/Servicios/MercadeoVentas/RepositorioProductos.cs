@@ -8,6 +8,7 @@ namespace SistemaILP.comisariato.Servicios.MercadeoVentas
     {
         Task<List<Productos>> ObtieneTodoProductos();
         Task<Productos> ObtinePorProductoId(int id);
+        Task<bool> PaEditarProducto(Productos producto);
         Task<bool> PaEliminarProducto(int id);
     }
     public class RepositorioProductos : IRepositorioProducto
@@ -42,6 +43,32 @@ namespace SistemaILP.comisariato.Servicios.MercadeoVentas
 
             return pro.FirstOrDefault();
         }
+
+        public async Task<bool> PaEditarProducto(Productos producto)
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                await connection.ExecuteAsync(@"
+                       EXEC paEditarProducto @productoid, @nombre, @codigobarra, @marca, @categoria, @precio ",
+                       new
+                       {
+                           productoid = producto.ProductoId,
+                           nombre = producto.Nombre,
+                           codigobarra = producto.CodigoBarra,
+                           marca = producto.Marca,
+                           categoria = producto.Categoria,
+                           precio = producto.Precio,
+
+                       });
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         public async Task<bool> PaEliminarProducto(int productoId)
         {
             try

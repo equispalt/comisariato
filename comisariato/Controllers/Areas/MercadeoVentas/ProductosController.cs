@@ -44,6 +44,48 @@ namespace SistemaILP.comisariato.Controllers.Areas.MercadeoVenta
 
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EditarProducto(int id, Productos updatedProd)
+        {
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
+
+            try
+            {
+                // Buscar el usuario por ID
+                Productos producto = await _repositorioProducto.ObtinePorProductoId(id);
+
+                if (producto == null)
+                {
+                    return RedirectToAction("Error", "Home");
+                }
+
+                producto.Nombre = updatedProd.Nombre;
+                producto.CodigoBarra = updatedProd.CodigoBarra;
+                producto.Marca = updatedProd.Marca;
+                producto.Categoria = updatedProd.Categoria;
+                producto.Precio = updatedProd.Precio;
+
+                // Guardar los cambios
+                bool editado = await _repositorioProducto.PaEditarProducto(producto);
+
+                if (editado)
+                {
+                    return RedirectToAction("Index", "Productos");
+                }
+
+                return RedirectToAction("Error", "Home");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        [HttpPost]
         public async Task<IActionResult> EliminarProducto(int id)
         {
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();

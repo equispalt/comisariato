@@ -97,7 +97,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
 
 
 
-        //---------- Eliminar Usuario    ----------
+        //---------- Editar Usuario    ----------
         [HttpPost]
         public async Task<IActionResult> EditarUsuario(int id, Usuarios updatedUser)
         {
