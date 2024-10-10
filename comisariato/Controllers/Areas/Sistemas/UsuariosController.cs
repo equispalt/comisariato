@@ -81,6 +81,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             }
             try
             {
+
                 newUser.Password = _encryptService.ConvertirSHA256(newUser.Password);
 
                 bool creado = await _repositorioUsuario.PaCrearUsuario(newUser);

@@ -34,15 +34,17 @@
                                     </button>
                                     <div class="dropdown-menu" style="background-color: #f0d8a8">
 
-                                        <a class="dropdown-item btn-editar" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario" data-estadoid="@usuario.EstadoId" data-estado="@usuario.NombreEstado" data-target="#modalEditarUsuario">
-                                            <i class="fa fa-exchange"></i> Cambiar estado</a>
-
                                         <a class="dropdown-item btn-editar-password" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario" data-target="#modalEditarPassword">
                                             <i class="fa fa-key"></i> Cambiar Contraseña
                                         </a>
                                         <a class="dropdown-item btn-eliminar" data-toggle="modal" data-id="@usuario.UsuarioId" data-nombre="@usuario.NombreEmpleado" data-target="#modalEliminarUsuario">
                                             <i class="fa fa-trash"></i> Eliminar
                                         </a>
+
+                                        <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item btn-editar" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario" data-estadoid="@usuario.EstadoId" data-estado="@usuario.NombreEstado" data-target="#modalEditarUsuario">
+                                                <i class="fa fa-exchange"></i> Cambiar estado
+                                            </a>
                                     </div>
                                 </div>
                             </td>
@@ -117,7 +119,7 @@
                     <label for="modalCpwd" class="col-form-label">Confirmar Contraseña:</label>
                     <input type="password" class="form-control" id="modalCpwd" name="cpwd" required />
 
-                    <div id="passworderror" class="alert alert-danger" style="display: none;">Las contraseñas no coinciden.</div>
+                    <div id="passworderror" class="alert alert-danger" style="display: none;">Las contraseñas no coinciden</div>
 
                     <label for="empleadosDropdown" class="col-form-label">Empleado:</label>
                     <select class="form-control" id="empleadosDropdown" name="empleadoid">
@@ -127,6 +129,7 @@
                             <option value="@empleado.EmpleadoId">@empleado.Nombre</option>
                         }
                     </select>
+                    <div id="empleadoError" class="alert alert-danger" style="display: none;">Debe seleccionar un empleado</div>
 
                     <label for="rolesDropdown" class="col-form-label">Roles:</label>
                     <select class="form-control" id="rolesDropdown" name="rolid">
@@ -136,6 +139,8 @@
                             <option value="@rol.RolId">@rol.Nombre</option>
                         }
                     </select>
+                    <div id="rolError" class="alert alert-danger" style="display: none;">Debe seleccionar un rol</div>
+
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -269,6 +274,11 @@
         var passwordErrorDiv = document.getElementById('passworderror');
         var userErrorDiv = document.getElementById('userError');
 
+        var empDropdown = document.getElementById('empleadosDropdown');
+        var rolDropdown = document.getElementById('rolesDropdown');
+        var empErrorDiv = document.getElementById('empleadoError');
+        var rolErrorDiv = document.getElementById('rolError');
+
         if (password !== confirmPassword) {
             e.preventDefault();  // Evita el envío del formulario
             passwordErrorDiv.style.display = 'block';  // Muestra el error de las contraseñas
@@ -285,6 +295,23 @@
             e.preventDefault();  // Evita el envío del formulario
             userErrorDiv.style.display = 'block';  // Muestra el error de que el usuario ya existe
         }
+
+        // Validar campos de selección
+        if (empDropdown.value === "") {
+            e.preventDefault();  // Evita el envío del formulario
+            empErrorDiv.style.display = 'block';  // Muestra un mensaje de alerta
+        } else {
+            empErrorDiv.style.display = 'none';  // Oculta el mensaje de error si se seleccionó un empleado
+        }
+
+        if (rolDropdown.value === "") {
+            e.preventDefault();  // Evita el envío del formulario
+            rolErrorDiv.style.display = 'block'; // Muestra un mensaje de alerta
+        } else {
+            rolErrorDiv.style.display = 'none';  // Oculta el mensaje de error si se seleccionó un rol
+        }
+
+
     });
     </script>
     
