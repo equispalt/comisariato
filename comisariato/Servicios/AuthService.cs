@@ -11,6 +11,7 @@ namespace SistemaILP.comisariato.Servicios
     public interface IAuthService
     {
         Task<int> Login(Usuarios usuarios);
+        Task<bool> PaValidarEstadoUsuario (string usuario);
         Task SetSesion(Usuarios usuarios);
     }
     public class AuthService : IAuthService
@@ -43,7 +44,14 @@ namespace SistemaILP.comisariato.Servicios
             return usuario.UsuarioId;
         }
 
-
+        public async Task<bool> PaValidarEstadoUsuario(string usuario)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            var existe = await connection.ExecuteScalarAsync<bool>(@"
+            EXEC paValidarEstadoUsuario @usuario",
+            new { usuario });
+            return existe;
+        }
         public async Task SetSesion(Usuarios usuario)
         {
             List<Claim> sesion = new List<Claim>()

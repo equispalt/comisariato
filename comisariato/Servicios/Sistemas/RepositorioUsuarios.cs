@@ -79,11 +79,10 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
             {
                 using var connection = new SqlConnection(_connectionString);
                 await connection.ExecuteAsync(@"
-                       EXEC paEditarUsuario @usuarioid, @usuario",
+                       EXEC paEditarUsuario @usuarioid ",
                        new
                        {
                            usuarioid = usuario.UsuarioId,
-                           usuario = usuario.Usuario,
                        });
                 return true;
             }

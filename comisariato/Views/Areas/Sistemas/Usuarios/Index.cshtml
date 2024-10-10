@@ -35,7 +35,7 @@
                                     <div class="dropdown-menu" style="background-color: #f0d8a8">
 
                                         <a class="dropdown-item btn-editar" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario"  data-target="#modalEditarUsuario">
-                                            <i class="fa fa-pencil"></i> Editar</a>
+                                            <i class="fa fa-pencil"></i> Inactivar</a>
 
                                         <a class="dropdown-item btn-editar-password" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario" data-target="#modalEditarPassword">
                                             <i class="fa fa-key"></i> Cambiar Contraseña
@@ -161,8 +161,7 @@
                 <form action="@Url.Action("EditarUsuario", "Usuarios")" method="post">
                     <input type="hidden" id="modal-user-id" name="id" />
 
-                    <label for="modal-user" class="col-form-label">Usuario:</label>
-                    <input type="text" class="form-control" id="modal-user" name="usuario" />
+                    <p>¿Estás seguro que deseas inactivar al usuario <strong id="modal-username"></strong>?</p>
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-warning">Guardar Cambios</button>

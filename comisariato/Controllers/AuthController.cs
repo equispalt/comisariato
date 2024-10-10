@@ -63,6 +63,13 @@ namespace SistemaILP.comisariato.Controllers
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> EstadoUsuario(string usuario)
+        {
+            bool existe = await _authService.PaValidarEstadoUsuario(usuario);
+            return Json(new { existe });
+        }
+
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

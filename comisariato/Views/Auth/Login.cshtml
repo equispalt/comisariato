@@ -69,16 +69,21 @@
                         <h2><strong>Ingreso al sistema</strong></h2>
                     </div>
 
-                    <form action="@Url.Action("Login","Auth")" method="post" class="login-form">
+                    <form id="btn-login" action="@Url.Action("Login","Auth")" method="post" class="login-form">
+                        
                         <div class="form-group">
-                            <label for="exampleInputEmail1" class="">Usuario</label>
-                            <input type="text" name="Usuario" class="form-control" placeholder="Ingrese su usuario">
+                            <label for="formUser" class="">Usuario</label>
+                            <input type="text" id="formUser" name="Usuario" class="form-control" placeholder="Ingrese su usuario">
                         </div>
+
+                        <div id="userError" class="alert alert-danger" style="display: none;">Usuario inactivo</div>
+                        
                         <div class="form-group">
                             <label for="exampleInputPassword1" class="">Contraseña</label>
                             <input type="password" name="Password" class="form-control" placeholder="Ingrese su contraseña">
                         </div>
-                        <button type="submit" name="button" class="btn btn-login float-right btn-primary">Aceptar</button>
+                        
+                        <button type="submit" name="button" class="btn float-right btn-primary">Aceptar</button>
                     </form>
                 </div>
             </div>
@@ -86,6 +91,39 @@
     </section>
 </body>
 
-
 </html>
 
+
+<script>
+    let userExists = false;  // Variable global para verificar si el usuario esta activo
+
+    // Evento blur para verificar si el usuario esta activo cuando se pierde el foco del campo de usuario
+    document.getElementById('formUser').addEventListener('blur', function () {
+        var username = this.value;
+        if (username) {
+            fetch('/Auth/EstadoUsuario?usuario=' + username)
+                .then(response => response.json())
+                .then(data => {
+                    var userErrorDiv = document.getElementById('userError');
+                    if (data.existe) {
+                        userErrorDiv.style.display = 'none';
+                        userExists = false;  // Marcamos que el usuario ya existe
+                    } else {
+                        userErrorDiv.style.display = 'block';
+                        userExists = true;  // Marcamos que el usuario no existe
+                    }
+                });
+        }
+    });
+
+    // Verifica si el usuario esta activo antes de permitir el envío
+    document.getElementById('btn-login').addEventListener('submit', function (e) {
+        var userErrorDiv = document.getElementById('userError');
+
+        // Evita el envío si el usuario esta inactivo
+        if (userExists) {
+            e.preventDefault();  // Evita el envío del formulario
+            userErrorDiv.style.display = 'block';  // Muestra el error de que el usuario ya existe
+        }
+    });
+</script>
