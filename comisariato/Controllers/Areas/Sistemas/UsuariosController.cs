@@ -37,6 +37,8 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
 
             try
             {
+                List<Estados> Estados = await _datosDtoService.ObtieneOpcionEstadoUsuario();
+                ViewBag.Estados = Estados;
 
                 List<Roles> Roles = await _datosDtoService.ObtieneTodoRoles();
 
@@ -117,7 +119,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
                     return RedirectToAction("Error", "Home");
                 }
 
-                usuario.Usuario = updatedUser.Usuario;
+                usuario.EstadoId = updatedUser.EstadoId;
 
                 // Guardar los cambios
                 bool editado = await _repositorioUsuario.PaEditarUsuario(usuario);

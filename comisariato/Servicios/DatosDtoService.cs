@@ -6,7 +6,7 @@ namespace SistemaILP.comisariato.Servicios
 {
     public interface IDatosDtoService
     {
-        Task<List<Estados>> ObtieneTodoEstados();
+        Task<List<Estados>> ObtieneOpcionEstadoUsuario();
         Task<List<Roles>> ObtieneTodoRoles();
         Task<List<Empleados>> ObtieneTodoEmpleados();
     }
@@ -19,11 +19,11 @@ namespace SistemaILP.comisariato.Servicios
             _connectionString = configuration.GetConnectionString("ConnectionComisariato")?? "";
         }
 
-        public async Task<List<Estados>> ObtieneTodoEstados()
+        public async Task<List<Estados>> ObtieneOpcionEstadoUsuario()
         {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Estados> estados = await connection.QueryAsync<Estados>(@" 
-                EXEC obtieneEstadosDto
+                EXEC obtieneOpcionEstadoUsuarioDto
                 ");
             return estados.ToList();
         }

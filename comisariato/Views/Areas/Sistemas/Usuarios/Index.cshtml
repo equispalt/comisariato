@@ -34,8 +34,8 @@
                                     </button>
                                     <div class="dropdown-menu" style="background-color: #f0d8a8">
 
-                                        <a class="dropdown-item btn-editar" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario"  data-target="#modalEditarUsuario">
-                                            <i class="fa fa-pencil"></i> Inactivar</a>
+                                        <a class="dropdown-item btn-editar" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario" data-estadoid="@usuario.EstadoId" data-estado="@usuario.NombreEstado" data-target="#modalEditarUsuario">
+                                            <i class="fa fa-exchange"></i> Cambiar estado</a>
 
                                         <a class="dropdown-item btn-editar-password" data-toggle="modal" data-id="@usuario.UsuarioId" data-usuario="@usuario.Usuario" data-target="#modalEditarPassword">
                                             <i class="fa fa-key"></i> Cambiar Contraseña
@@ -152,7 +152,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalEditarLabel">Editar Usuario</h5>
+                <h5 class="modal-title" id="modalEditarLabel">Cambiar Estado Usuario</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -161,7 +161,16 @@
                 <form action="@Url.Action("EditarUsuario", "Usuarios")" method="post">
                     <input type="hidden" id="modal-user-id" name="id" />
 
-                    <p>¿Estás seguro que deseas inactivar al usuario <strong id="modal-username"></strong>?</p>
+                    <p>Cambiar estado de <strong id="modal-user-user"></strong>?</p>
+
+                    <label for="estadosDropdown" class="col-form-label">Estado:</label>
+                    <select class="form-control" id="estadosDropdown" name="estadoid">
+                       
+                        @foreach (var estado in ViewBag.Estados as List<Estados>)
+                        {
+                            <option value="@estado.EstadoId">@estado.Nombre</option>
+                        }
+                    </select>
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-warning">Guardar Cambios</button>
@@ -278,8 +287,6 @@
         }
     });
     </script>
-
-
     
 
     <script>
@@ -288,15 +295,22 @@
         button.addEventListener('click', function () {
             // Captura el ID y usuario desde los atributos del botón
             var userId = this.getAttribute('data-id');
-            var userName = this.getAttribute('data-usuario');
+            var userUsuario = this.getAttribute('data-usuario');
+            var userEstadoId = this.getAttribute('data-estadoid')
+
+            // console.log('Estado ID:', userEstadoId); // Verifica qué valor está llegando
 
             // Asigna los valores capturados al modal
             document.getElementById('modal-user-id').value = userId; // Coloca el ID en el input hidden
-            document.getElementById('modal-user').value = userName; // Coloca el nombre de usuario
+            document.getElementById('modal-user-user').textContent = userUsuario; // Coloca el nombre de usuario
+
+            // Selecciona el estado actual en el dropdown
+            var estadosDropdown = document.getElementById('estadosDropdown');
+            estadosDropdown.value = userEstadoId; // Selecciona el valor correcto basado en el ID del estado
 
             // Muestra el modal manualmente usando Bootstrap
             var modalEditar = new bootstrap.Modal(document.getElementById('modalEditarUsuario'));
-            modal.show();
+            modalEditar.show();
         });
     });
     </script>
