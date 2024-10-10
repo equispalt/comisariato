@@ -45,6 +45,39 @@ namespace SistemaILP.comisariato.Controllers.Areas.Finanzas
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> ExisteCodigoEmpleado(string codigo)
+        {
+            bool existe = await _repositorioEmpleado.PaValidarCodigoEmpleado(codigo);
+            return Json(new { existe });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CrearEmpleado(Empleados newEmp)
+        {
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
+            try
+            {
+
+                bool creado = await _repositorioEmpleado.PaCrearEmpleado(newEmp);
+
+                if (creado)
+                {
+                    return RedirectToAction("Index", "Empleados");
+                }
+                return RedirectToAction("Error", "Home");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> EditarEmpleado(int id, Empleados updatedEmp)
         {

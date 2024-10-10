@@ -9,6 +9,8 @@ namespace SistemaILP.comisariato.Servicios.Finanzas
     {
         Task<List<Empleados>> ObtieneTodoEmpleados();
         Task<Empleados> ObtienePorEmpleadoId(int id);
+        Task<bool> PaValidarCodigoEmpleado(string codigo);
+        Task<bool> PaCrearEmpleado(Empleados empleado);
         Task<bool> PaEditarEmpleado(Empleados empleado);
         Task<bool> PaEliminarEmpleado(int id);
     }
@@ -41,6 +43,37 @@ namespace SistemaILP.comisariato.Servicios.Finanzas
                     empleadoid = id
                 });
             return emp.FirstOrDefault();
+        }
+
+        public async Task<bool> PaValidarCodigoEmpleado(string codigo)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            var existe = await connection.ExecuteScalarAsync<bool>(@"
+            EXEC paValidarCodigoEmpleado @codigo",
+            new { codigo });
+            return existe;
+        }
+
+        public async Task<bool> PaCrearEmpleado(Empleados empleado)
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                await connection.ExecuteAsync(@"
+                EXEC paCrearEmpleado @codigo, @nombre, @nit, @dpi ",
+                new
+                {
+                    codigo = empleado.Codigo,
+                    nombre = empleado.Nombre,
+                    nit = empleado.NIT,
+                    dpi = empleado.DPI,
+                });
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> PaEditarEmpleado(Empleados empleado)
