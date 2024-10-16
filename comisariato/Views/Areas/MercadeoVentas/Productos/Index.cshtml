@@ -20,7 +20,7 @@
                         <th style="width: 100px;">Codigo de barras</th>
                         <th style="width: 100px;">Marca</th>
                         <th style="width: 100px;">Categoria</th>
-                        <th style="width: 50px;">precio</th>
+                        <th style="width: 50px;">Precio</th>
                         <th style="width: 75px;">Estado</th>
                         <th style="width: 50px;">Fecha Modificacion</th>
                     </tr>
@@ -107,49 +107,43 @@
     </div>
 </div>
 <!-- /.card -->
-@*  <!-- Modal de Crear usuario -->
-<div class="modal fade" id="modalCrearUsuario" tabindex="-1" role="dialog" aria-labelledby="modalCrearLabel" aria-hidden="true">
+ <!-- Modal de Crear Producto -->
+<div class="modal fade" id="modalCrearProducto" tabindex="-1" role="dialog" aria-labelledby="modalCrearLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalCrearLabel">Crear Usuario</h5>
+                <h5 class="modal-title" id="modalCrearLabel">Crear Producto</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="btn-crear" action="@Url.Action("CrearUsuario", "Usuarios")" method="post">
+                <form id="btn-crear" action="@Url.Action("CrearProducto", "Productos")" method="post">
 
-                    <label for="modalUser" class="col-form-label">Usuario:</label>
-                    <input type="text" class="form-control" id="modalUser" name="usuario" required />
+                    <label for="modalCod" class="col-form-label">Codigo:</label>
+                    <input type="text" class="form-control" id="modalCod" name="codigosilp" required />
 
-                    <div id="userError" class="alert alert-danger" style="display: none;">El usuario ya existe.</div>
+                    <div id="codError" class="alert alert-danger" style="display: none;">El Codigo ya existe.</div>
 
-                    <label for="modalPwd" class="col-form-label">Contraseña:</label>
-                    <input type="password" class="form-control" id="modalPwd" name="password" required />
+                    <label for="modalNom" class="col-form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="modalNom" name="nombre" required />
 
-                    <label for="modalCpwd" class="col-form-label">Confirmar Contraseña:</label>
-                    <input type="password" class="form-control" id="modalCpwd" name="cpwd" required />
+                    <label for="modalCodBa" class="col-form-label">Codigo de Barra:</label>
+                    <input type="text" class="form-control" id="modalCodBa" name="codigobarra" required />
 
-                    <div id="passworderror" class="alert alert-danger" style="display: none;">Las contraseñas no coinciden.</div>
+                    <div id="codbaError" class="alert alert-danger" style="display: none;">El Codigo de barra ya existe.</div>
 
-                    <label for="empleadosDropdown" class="col-form-label">Empleado:</label>
-                    <select class="form-control" id="empleadosDropdown" name="empleadoid">
-                        <option value="">Seleccione un empleado</option>
-                        @foreach (var empleado in ViewBag.Empleados as List<Empleados>)
-                        {
-                            <option value="@empleado.EmpleadoId">@empleado.Nombre</option>
-                        }
-                    </select>
+                    <label for="modalDes" class="col-form-label">Descripcion</label>
+                    <input type="text" class="form-control" id="modalDes" name="descripcion" required />
 
-                    <label for="rolesDropdown" class="col-form-label">Roles:</label>
-                    <select class="form-control" id="rolesDropdown" name="rolid">
-                        <option value="">Seleccione un rol</option>
-                        @foreach (var rol in ViewBag.Roles as List<Roles>)
-                        {
-                            <option value="@rol.RolId">@rol.Nombre</option>
-                        }
-                    </select>
+                    <label for="modalMar" class="col-form-label">Marca</label>
+                    <input type="text" class="form-control" id="modalMar" name="marca" required />
+
+                    <label for="modalCat" class="col-form-label">Categoria</label>
+                    <input type="text" class="form-control" id="modalCat" name="categoria" required />
+
+                    <label for="modalPre" class="col-form-label">Precio</label>
+                    <input type="number" class="form-control" id="modalPre" name="precio" required min="0.01" step="0.01" />
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -159,9 +153,9 @@
             </div>
         </div>
     </div>
-</div> *@
+</div>
 
-<!-- Modal de Editar usuario -->
+<!-- Modal de Editar Producto -->
 <div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -201,7 +195,7 @@
 </div>
 
 
-<!-- Modal de eliminar usuario -->
+<!-- Modal de eliminar Producto -->
 <div class="modal fade" id="modalEliminarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEliminarLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -227,57 +221,68 @@
     </div>
 </div>
 
-@*
-<script>
-    let userExists = false;  // Variable global para verificar si el usuario ya existe
+ <script>
+    let codExists = false;   // Variable global para verificar si el producto ya existe
+    let codbaExists = false; // Variable global para verificar si el codigo de barra ya existe
 
-    // Evento blur para verificar si el usuario ya existe cuando se pierde el foco del campo de usuario
-    document.getElementById('modalUser').addEventListener('blur', function () {
-        var username = this.value;
-        if (username) {
-            fetch('/Usuarios/ExisteUsuario?usuario=' + username)
+    // Evento blur para verificar si el producto ya existe cuando se pierde el foco del campo de producto
+    document.getElementById('modalCod').addEventListener('blur', function () {
+        var codigosilp = this.value;
+        if (codigosilp) {
+            fetch('/Productos/ExisteCodigoProducto?codigosilp=' + codigosilp)
                 .then(response => response.json())
                 .then(data => {
-                    var userErrorDiv = document.getElementById('userError');
+                    var codErrorDiv = document.getElementById('codError');
                     if (data.existe) {
-                        userErrorDiv.style.display = 'block';
-                        userExists = true;  // Marcamos que el usuario ya existe
+                        codErrorDiv.style.display = 'block';
+                        codExists = true;  // Marcamos que el producto ya existe
                     } else {
-                        userErrorDiv.style.display = 'none';
-                        userExists = false;  // Marcamos que el usuario no existe
+                        codErrorDiv.style.display = 'none';
+                        codExists = false;  // Marcamos que el producto no existe
                     }
                 });
         }
     });
 
-    // Verifica si las contraseñas coinciden y si el usuario ya existe antes de permitir el envío
-    document.getElementById('btn-crear').addEventListener('submit', function (e) {
-        var password = document.getElementById('modalPwd').value;
-        var confirmPassword = document.getElementById('modalCpwd').value;
-        var passwordErrorDiv = document.getElementById('passworderror');
-        var userErrorDiv = document.getElementById('userError');
 
-        if (password !== confirmPassword) {
-            e.preventDefault();  // Evita el envío del formulario
-            passwordErrorDiv.style.display = 'block';  // Muestra el error de las contraseñas
 
-            setTimeout(function () {
-                passwordErrorDiv.style.display = 'none';
-            }, 1500);
-        } else {
-            passwordErrorDiv.style.display = 'none';  // Oculta el error de las contraseñas
-        }
-
-        // Evita el envío si el usuario ya existe
-        if (userExists) {
-            e.preventDefault();  // Evita el envío del formulario
-            userErrorDiv.style.display = 'block';  // Muestra el error de que el usuario ya existe
+    // Evento blur para verificar si el codigo de barra ya existe cuando se pierde el foco del campo de codigobarra
+    document.getElementById('modalCodBa').addEventListener('blur', function () {
+        var codigobarra = this.value;
+        if (codigobarra) {
+            fetch('/Productos/ExisteCodigoBarraProducto?codigobarra=' + codigobarra)
+                .then(response => response.json())
+                .then(data => {
+                    var codbaErrorDiv = document.getElementById('codbaError');
+                    if (data.existe) {
+                        codbaErrorDiv.style.display = 'block';
+                        codbaExists = true;  // Marcamos que el codigobarra ya existe
+                    } else {
+                        codbaErrorDiv.style.display = 'none';
+                        codbaExists = false;  // Marcamos que el codigobarra no existe
+                    }
+                });
         }
     });
-</script>
+
+    //Verificar si el producto ya existe antes de permitir el envío
+    document.getElementById('btn-crear').addEventListener('submit', function (e) {
+        var codErrorDiv = document.getElementById('codError');
+        var codbaErrorDiv = document.getElementById('codbaError');
+
+        // Evita el envío si el producto ya existe
+        if (codExists) {
+            e.preventDefault();  // Evita el envío del formulario
+            codErrorDiv.style.display = 'block';  // Muestra el error de que el producto ya existe
+        }
+        if (codbaExists) {
+            e.preventDefault();  // Evita el envío del formulario
+            codbaErrorDiv.style.display = 'block';  // Muestra el error de que el codigo barra ya existe
+        }
+    });
+ </script>
 
 
- *@
 
     <script>
     // Captura el ID y producto cuando haces clic en "btn-editar"

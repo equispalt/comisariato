@@ -44,6 +44,46 @@ namespace SistemaILP.comisariato.Controllers.Areas.MercadeoVenta
 
         }
 
+        [HttpGet]
+        public async Task<JsonResult> ExisteCodigoProducto(string codigosilp)
+        {
+            bool existe = await _repositorioProducto.PaValidarCodigoProducto(codigosilp);
+            return Json(new { existe });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> ExisteCodigoBarraProducto(string codigobarra)
+        {
+            bool existe = await _repositorioProducto.PaValidarCodigoBarraProducto(codigobarra);
+            return Json(new { existe });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CrearProducto(Productos newProducto)
+        {
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
+            try
+            {
+
+                bool creado = await _repositorioProducto.PaCrearProducto(newProducto);
+
+                if (creado)
+                {
+                    return RedirectToAction("Index", "Productos");
+                }
+                return RedirectToAction("Error", "Home");
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> EditarProducto(int id, Productos updatedProd)
         {

@@ -8,6 +8,9 @@ namespace SistemaILP.comisariato.Servicios.MercadeoVentas
     {
         Task<List<Productos>> ObtieneTodoProductos();
         Task<Productos> ObtienePorProductoId(int id);
+        Task<bool> PaValidarCodigoProducto(string codigosilp);
+        Task<bool> PaValidarCodigoBarraProducto(string codigobarra);
+        Task<bool> PaCrearProducto(Productos producto);
         Task<bool> PaEditarProducto(Productos producto);
         Task<bool> PaEliminarProducto(int id);
     }
@@ -42,6 +45,50 @@ namespace SistemaILP.comisariato.Servicios.MercadeoVentas
             });
 
             return pro.FirstOrDefault();
+        }
+
+        public async Task<bool> PaValidarCodigoProducto(string codigosilp)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            var existe = await connection.ExecuteScalarAsync<bool>(@"
+            EXEC paValidarCodigoProducto @codigosilp",
+            new { codigosilp });
+            return existe;
+        }
+
+        public async Task<bool> PaValidarCodigoBarraProducto(string codigobarra)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            var existe = await connection.ExecuteScalarAsync<bool>(@"
+            EXEC paValidarCodigoBarraProducto @codigobarra",
+            new { codigobarra });
+            return existe;
+        }
+
+        public async Task<bool> PaCrearProducto(Productos producto)
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                await connection.ExecuteAsync(@"
+                EXEC paCrearProducto @codigosilp, @nombre, @codigobarra, @descripcion, @marca, @categoria, @precio ",
+                new
+                {
+                    codigosilp = producto.CodigoSILP,
+                    nombre = producto.Nombre,
+                    codigobarra = producto.CodigoBarra,
+                    descripcion = producto.Descripcion,
+                    marca = producto.Marca,
+                    categoria = producto.Categoria,
+                    precio = producto.Precio, 
+
+                });
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> PaEditarProducto(Productos producto)
