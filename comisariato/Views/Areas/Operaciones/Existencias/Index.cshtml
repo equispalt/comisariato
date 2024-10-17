@@ -3,13 +3,13 @@
 
 <div class="card">
     <h5 style="padding-left: 20px; margin-top: 10px" class="card-title"><i class="fas fa-dolly"></i> Consulta De Existencias</h5>
-       <div class="card-header">
+    <div class="card-header">
         <div class="card-tools" style="padding-right: 1900px; margin-bottom: 10px">
-            <input type="text" name="codigosilp" class="form form-text" placeholder="Filtrar por código" style="text-align: center;" />
+            <input type="text" id="codigosilp" class="form form-text" placeholder="Filtrar por código" style="text-align: center;" oninput="filtrarProductos()" />
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0" style="height: 500px;">
-            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered">
+            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered" id="tablaExistencias">
                 <thead>
                     <tr>
                         <th style="width: 190px; text-align: center;">Codigo</th>
@@ -71,3 +71,25 @@
     </div>
 </div>
 <!-- /.card -->
+
+<script>
+    function filtrarProductos() {
+        const input = document.getElementById('codigosilp');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('tablaExistencias');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < tr.length; i++) { // Comienza desde 1 para omitir el encabezado
+            const tdCodigo = tr[i].getElementsByTagName('td')[0]; // Primer columna: Codigo
+            if (tdCodigo) {
+                const txtValue = tdCodigo.textContent || tdCodigo.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1 || filter === "") {
+                    tr[i].style.display = ""; // Muestra la fila
+                } else {
+                    tr[i].style.display = "none"; // Oculta la fila
+                }
+            }
+        }
+    }
+</script>
+
