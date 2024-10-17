@@ -1,0 +1,73 @@
+﻿@using SistemaILP.comisariato.Data;
+@model Paginacion<Existencias>;
+
+<div class="card">
+    <h5 style="padding-left: 20px; margin-top: 10px" class="card-title"><i class="fas fa-dolly"></i> Consulta De Existencias</h5>
+       <div class="card-header">
+        <div class="card-tools" style="padding-right: 1900px; margin-bottom: 10px">
+            <input type="text" name="codigosilp" class="form form-text" placeholder="Filtrar por código" style="text-align: center;" />
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 500px;">
+            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 190px; text-align: center;">Codigo</th>
+                        <th>Producto</th>
+                        <th style="width: 150px;">Cantidad</th>
+                        <th style="width: 200px;">Estado</th>
+                        <th style="width: 300px;">Ubicacion</th>
+                        <th style="width: 300px;">Fecha Modificacion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var existencia in Model)
+                    {
+                        <tr>
+                            <td>@existencia.CodigoSILP</td>
+                            <td>@existencia.NombreProducto</td>
+                            <td>@existencia.Disponible</td>
+                            <td>@existencia.NombreEstado</td>
+                            <td>@existencia.NombreComisariato</td>
+                            <td>@existencia.FechaMod</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <hr>
+
+            @{
+                var anteriordeshabilitado = !Model.PaginasAnteriores ? "disable" : "";
+                var siguientedeshabilitado = !Model.PaginasPosteriores ? "disable" : "";
+            }
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm justify-content-end">
+                    <!-- Botón Anterior -->
+                    <li class="page-item @(Model.PaginaInicio == 1 ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio - 1)" tabindex="@(Model.PaginaInicio == 1 ? "-1" : "")">Anterior</a>
+                    </li>
+
+                    <!-- Botones de páginas -->
+                    @for (var i = 1; i <= Model.PaginasTotales; i++)
+                    {
+                        <li class="page-item @(i == Model.PaginaInicio ? "active" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-numpag="@i">@i</a>
+                            @if (i == Model.PaginaInicio)
+                            {
+                                <span class="sr-only">(current)</span>
+                            }
+                        </li>
+                    }
+
+                    <!-- Botón Siguiente -->
+                    <li class="page-item @(Model.PaginaInicio == Model.PaginasTotales ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio + 1)" tabindex="@(Model.PaginaInicio == Model.PaginasTotales ? "-1" : "")">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+<!-- /.card -->

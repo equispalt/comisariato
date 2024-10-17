@@ -18,9 +18,7 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Areas\Reportes\" />
-    <Folder Include="Controllers\Areas\Operaciones\" />
     <Folder Include="Views\Areas\Reportes\" />
-    <Folder Include="Views\Areas\Operaciones\" />
     <Folder Include="wwwroot\img\Login\" />
   </ItemGroup>
 

@@ -1,6 +1,6 @@
 ﻿namespace SistemaILP.comisariato.Models
 {
-    public class Existencia
+    public class Existencias
     {
         public long ExistenciaId { get; set; }
         public int ComisariatoId { get; set; }
@@ -14,6 +14,12 @@
         public int MonedaId { get; set; }
         public int UsuarioId { get; set; }
         public DateTime FechaMod { get; set; }
+
+        // relacionado a otras tablas
+        public string NombreComisariato { get; set; }
+        public string CodigoSILP { get; set; }
+        public string NombreProducto { get; set; }
+        public string NombreEstado { get; set; }
     }
 
 }
