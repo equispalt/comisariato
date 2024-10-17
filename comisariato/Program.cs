@@ -38,6 +38,7 @@ builder.Services.AddScoped<IDatosDtoService, DatosDtoService>();
 builder.Services.AddScoped<IEncryptService, EncryptService>();
 builder.Services.AddScoped<IPermisosService, PermisosService>();
 
+builder.Services.AddTransient<IRepositorioComisariatos, RepositorioComisariatos>();
 builder.Services.AddTransient<IRepositorioProgramas, RepositorioProgramas>();
 builder.Services.AddTransient<IRepositorioRoles, RepositorioRoles>();
 builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuarios>();

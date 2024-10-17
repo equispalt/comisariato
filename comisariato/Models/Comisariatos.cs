@@ -8,5 +8,8 @@
         public int EstadoId { get; set; }
         public int ProgramaId { get; set; }
         public DateTime FechaMod { get; set; }
+
+        // relaciona a estados
+        public string NombreEstado { get; set; }
     }
 }
