@@ -4,18 +4,22 @@
 <div class="card">
     <h5 style="padding-left: 20px; margin-top: 10px" class="card-title"><i class="fas fa-cubes"></i> Consulta De Producto</h5>
     <div class="card-header">
-        <div class="card-tools" style="padding-right: 10px; margin-bottom: 10px">
-            <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#modalCrearProducto">
-                <i class="fas fa-plus"></i> Nuevo Producto
-            </button>
-        </div>
+<div class="card-tools" style="display: flex; justify-content: space-between; padding-right: 10px; margin-bottom: 10px; align-items: center;">
+    <input type="text" id="codigosilp" class="form form-text" placeholder="Filtrar por código" style="text-align: center; flex-grow: 1; margin-right: 1680px;" oninput="filtrarProductos()" />
+    
+    <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#modalCrearProducto">
+        <i class="fas fa-plus"></i> Nuevo Producto
+    </button>
+</div>
+
+
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0" style="height: 500px;">
-            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered">
+            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered " id="tablaProductos">
                 <thead>
                     <tr>
                         <th style="width: 75px;"></th>
-                        <th style="width: 75px">Codigo</th>
+                        <th style="width: 195px; text-align: center">Codigo</th>
                         <th>Nombre</th>
                         <th style="width: 100px;">Codigo de barras</th>
                         <th style="width: 100px;">Marca</th>
@@ -58,7 +62,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>@Producto.CodigoSILP</td>
+                            <td style="text-align: center">@Producto.CodigoSILP</td>
                             <td>@Producto.Nombre</td>
                             <td>@Producto.CodigoBarra</td>
                             <td>@Producto.Marca</td>
@@ -333,3 +337,23 @@
     });
     </script>
 
+ <script>
+    function filtrarProductos() {
+        const input = document.getElementById('codigosilp');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('tablaProductos');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < tr.length; i++) { // Comienza desde 1 para omitir el encabezado
+            const tdCodigo = tr[i].getElementsByTagName('td')[1]; // segunda columna: Codigo
+            if (tdCodigo) {
+                const txtValue = tdCodigo.textContent || tdCodigo.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1 || filter === "") {
+                    tr[i].style.display = ""; // Muestra la fila
+                } else {
+                    tr[i].style.display = "none"; // Oculta la fila
+                }
+            }
+        }
+    }
+ </script>
