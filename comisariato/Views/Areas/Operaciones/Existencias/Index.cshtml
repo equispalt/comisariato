@@ -14,8 +14,8 @@
                     <tr>
                         <th style="width: 190px; text-align: center;">Codigo</th>
                         <th>Producto</th>
-                        <th style="width: 150px;">Cantidad</th>
-                        <th style="width: 200px;">Estado</th>
+                        <th style="width: 150px; text-align: center;">Cantidad</th>
+                        <th style="width: 200px; text-align: center;">Estado</th>
                         <th style="width: 300px;">Ubicacion</th>
                         <th style="width: 300px;">Fecha Modificacion</th>
                     </tr>
@@ -24,10 +24,10 @@
                     @foreach (var existencia in Model)
                     {
                         <tr>
-                            <td>@existencia.CodigoSILP</td>
+                            <td style="width: 190px; text-align: center;">@existencia.CodigoSILP</td>
                             <td>@existencia.NombreProducto</td>
-                            <td>@existencia.Disponible</td>
-                            <td>@existencia.NombreEstado</td>
+                            <td style="text-align: center;">@existencia.Disponible</td>
+                            <td style="text-align: center;">@existencia.NombreEstado</td>
                             <td>@existencia.NombreComisariato</td>
                             <td>@existencia.FechaMod</td>
                         </tr>

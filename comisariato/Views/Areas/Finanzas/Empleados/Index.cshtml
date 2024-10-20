@@ -4,18 +4,21 @@
 <div class="card">
     <h5 style="padding-left: 20px; margin-top: 10px" class="card-title"><i class="fas fa-users"></i> Consulta De Empleado</h5>
     <div class="card-header">
-        <div class="card-tools" style="padding-right: 10px; margin-bottom: 10px">
+        <div class="card-tools" style="display: flex; justify-content: space-between; padding-right: 10px; margin-bottom: 10px; align-items: center;">
+          
+            <input type="text" id="codigo" class="form form-text" placeholder="Filtrar por código" style="text-align: center; flex-grow: 1; margin-right: 1680px;" oninput="filtrarEmpleados()" />
+            
             <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#modalCrearEmpleado">
                 <i class="fas fa-plus"></i> Nuevo Empleado
             </button>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0" style="height: 500px;">
-            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered">
+            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered" id="tablaEmpleados">
                 <thead>
                     <tr>
                         <th style="width: 75px;"></th>
-                        <th style="width: 75px">Codigo</th>
+                        <th style="width: 195px; text-align: center">Codigo</th>
                         <th>Empleado</th>
                         <th style="width: 100px;">NIT</th>
                         <th style="width: 100px;">DPI</th>
@@ -51,7 +54,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>@Empleado.Codigo</td>
+                            <td style="text-align: center">@Empleado.Codigo</td>
                             <td>@Empleado.Nombre</td>
                             <td>@Empleado.NIT</td>
                             <td>@Empleado.DPI</td>
@@ -279,4 +282,26 @@
     });
 
     </script>
+
+
+ <script>
+    function filtrarEmpleados() {
+        const input = document.getElementById('codigo');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('tablaEmpleados');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < tr.length; i++) { // Comienza desde 1 para omitir el encabezado
+            const tdCodigo = tr[i].getElementsByTagName('td')[1]; // segunda columna: Codigo
+            if (tdCodigo) {
+                const txtValue = tdCodigo.textContent || tdCodigo.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1 || filter === "") {
+                    tr[i].style.display = ""; // Muestra la fila
+                } else {
+                    tr[i].style.display = "none"; // Oculta la fila
+                }
+            }
+        }
+    }
+ </script>
 

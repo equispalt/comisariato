@@ -4,19 +4,22 @@
 <div class="card">
     <h5  style="padding-left: 20px; margin-top: 10px" class="card-title"><i class="fas fa-user-check"></i> Consulta De Usuarios</h5>
     <div class="card-header">
-        <div class="card-tools" style="padding-right: 10px; margin-bottom: 10px" >
+        <div class="card-tools" style="display: flex; justify-content: space-between; padding-right: 10px; margin-bottom: 10px; align-items: center;">
+
+            <input type="text" id="usuario" class="form form-text" placeholder="Filtrar por usuario" style="text-align: center; flex-grow: 1; margin-right: 360px;" oninput="filtrarUsuarios()" />
+
             <button class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#modalCrearUsuario">
                 <i class="fas fa-plus"></i> Nuevo Usuario
             </button>
         </div>
         <!-- /.card-header -->
         <div class="card-body table-responsive p-0" style="height: 500px;">
-            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered">
+            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered" id="tablaUsuarios">
                 <thead>
                     <tr>
                         <th style="width: 75px;"></th>
                         <th>Nombre</th>
-                        <th style="width: 250px;">Usuario</th>
+                        <th style="width: 200px; text-align:center">Usuario</th>
                         <th style="width: 150px;">Rol</th>
                         <th style="width: 100px;">Estado</th>
                         <th style="width: 200px;">Fecha Modificacion</th>
@@ -49,7 +52,7 @@
                                 </div>
                             </td>
                             <td>@usuario.NombreEmpleado</td>
-                            <td>@usuario.Usuario</td>
+                            <td style="text-align: center">@usuario.Usuario</td>
                             <td>@usuario.NombreRol</td>
                             <td>@usuario.NombreEstado</td>
                             <td>@usuario.FechaMod</td>
@@ -391,3 +394,23 @@
 
     </script>
 
+ <script>
+    function filtrarUsuarios() {
+        const input = document.getElementById('usuario');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('tablaUsuarios');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < tr.length; i++) { // Comienza desde 1 para omitir el encabezado
+            const tdCodigo = tr[i].getElementsByTagName('td')[2]; // segunda columna: Codigo
+            if (tdCodigo) {
+                const txtValue = tdCodigo.textContent || tdCodigo.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1 || filter === "") {
+                    tr[i].style.display = ""; // Muestra la fila
+                } else {
+                    tr[i].style.display = "none"; // Oculta la fila
+                }
+            }
+        }
+    }
+ </script>
