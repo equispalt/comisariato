@@ -1,0 +1,125 @@
+﻿@using SistemaILP.comisariato.Data;
+@model Paginacion<FacVentas>;
+
+<div class="card">
+    <h4 style="padding-left: 20px; margin-top: 10px" class="card-title"><i class="fas fa-file-invoice"></i> Consulta De Facturas</h4>
+    <div class="card-header">
+        <div class="card-tools" style="padding-right: 1825px; margin-bottom: 10px">
+            <input type="text" id="consecutivo" class="form form-text" placeholder="Filtrar por numero" style="text-align: center;" oninput="filtrarFactura()" />
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 500px;">
+            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered" id="tablaFacturas">
+                <thead>
+                    <tr>
+                        <th style="width: 75px;"></th>
+                        <th style="width: 190px; text-align: center;">Numero</th>
+                        <th style="width: 190px; text-align: center;">Serie</th>
+                        <th style="width: 190px; text-align: center;">Fecha Emision</th>
+                        <th>Empleado</th>
+                        <th style="width: 200px; text-align: center;">Tipo de Pago</th>
+                        <th style="width: 150px; text-align: center;">Total</th>
+                        <th style="width: 100px; text-align: center;">Estado</th>
+                        <th style="width: 250px;">Comisariato</th>
+                        <th style="width: 200px;">Vendedor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var factura in Model)
+                    {
+                        <tr>
+                            <td>
+                                <!-- Menú desplegable en la celda -->
+                                <div class="dropdown">
+                                    <button class="btn btn-primary btn-sm " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-bars"></i>
+                                    </button>
+                                    <div class="dropdown-menu" style="background-color: #f0d8a8">
+
+                                        <a class="dropdown-item btn-reimprimir" data-toggle="modal"
+                                           data-id="@factura.FacVentaId"
+                                           data-target="#modalReimprimirFactura">
+                                            <i class="fa fa-print"></i> Reimprimir
+                                        </a>
+
+                                        <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item btn-eliminar" data-toggle="modal"
+                                               data-id="@factura.FacVentaId"
+                                               data-target="#modalAnularFactura">
+                                            <i class="fa fa-ban"></i> Anular Factura
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td style="width: 190px; text-align: center;">@factura.Consecutivo</td>
+                            <td style="text-align: center;">@factura.Serie</td>
+                            <td style="text-align: center;">@factura.FechaMod</td>
+                            <td>@factura.NombreEmpleado</td>
+                            <td>@factura.NombreTipoPago</td>
+                            <td style="text-align: right;">@factura.Total</td>
+                            <td style="text-align: center;">@factura.NombreEstado</td>
+                            <td>@factura.NombreComisariato</td>
+                            <td>@factura.NombreUsuario</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <hr>
+
+            @{
+                var anteriordeshabilitado = !Model.PaginasAnteriores ? "disable" : "";
+                var siguientedeshabilitado = !Model.PaginasPosteriores ? "disable" : "";
+            }
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm justify-content-end">
+                    <!-- Botón Anterior -->
+                    <li class="page-item @(Model.PaginaInicio == 1 ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio - 1)" tabindex="@(Model.PaginaInicio == 1 ? "-1" : "")">Anterior</a>
+                    </li>
+
+                    <!-- Botones de páginas -->
+                    @for (var i = 1; i <= Model.PaginasTotales; i++)
+                    {
+                        <li class="page-item @(i == Model.PaginaInicio ? "active" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-numpag="@i">@i</a>
+                            @if (i == Model.PaginaInicio)
+                            {
+                                <span class="sr-only">(current)</span>
+                            }
+                        </li>
+                    }
+
+                    <!-- Botón Siguiente -->
+                    <li class="page-item @(Model.PaginaInicio == Model.PaginasTotales ? "disabled" : "")">
+                        <a class="page-link" asp-action="Index" asp-route-numpag="@(Model.PaginaInicio + 1)" tabindex="@(Model.PaginaInicio == Model.PaginasTotales ? "-1" : "")">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</div>
+<!-- /.card -->
+
+ <script>
+    function filtrarFactura() {
+        const input = document.getElementById('consecutivo');
+        const filter = input.value.toLowerCase();
+        const table = document.getElementById('tablaFacturas');
+        const tr = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < tr.length; i++) { // Comienza desde 1 para omitir el encabezado
+            const tdCodigo = tr[i].getElementsByTagName('td')[1]; // segunda columna: Numero
+            if (tdCodigo) {
+                const txtValue = tdCodigo.textContent || tdCodigo.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1 || filter === "") {
+                    tr[i].style.display = ""; // Muestra la fila
+                } else {
+                    tr[i].style.display = "none"; // Oculta la fila
+                }
+            }
+        }
+    }
+</script>

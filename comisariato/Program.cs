@@ -46,6 +46,7 @@ builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuarios>();
 builder.Services.AddTransient<IRepositorioEmpleado, RepositorioEmpleados>();
 builder.Services.AddTransient<IRepositorioProducto, RepositorioProductos>();
 builder.Services.AddTransient<IRepositorioExistencias, RepositorioExistencias>();
+builder.Services.AddTransient<IRepositorioFacturas, RepositorioFacturas>();
 
 var app = builder.Build();
 
