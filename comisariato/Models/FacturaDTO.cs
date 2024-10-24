@@ -1,6 +1,6 @@
 ﻿namespace SistemaILP.comisariato.Models
 {
-    public class FacVentas
+    public class FacturaDTO
     {
         public long FacVentaId { get; set; }
         public int ComisariatoId { get; set; }
@@ -19,16 +19,32 @@
         public int Empresaid { get; set; }
 
 
-        public List<FacVentasDet> lstFacVentasDet { get; set; }
-
         // otras referencias
 
         public string NombreEmpleado { get; set; }
-        public string NIT {  get; set; }
+        public string NIT { get; set; }
         public string NombreUsuario { get; set; }
         public string NombreComisariato { get; set; }
         public string NombreEstado { get; set; }
-        public string NombreTipoPago { get; set; } 
+        public string NombreTipoPago { get; set; }
+
+        // Detalle
+        public long FacVentasDetId { get; set; }
+        public long FacVentasId { get; set; }
+        public long ProductoId { get; set; }
+        public string CodigoSILP { get; set; }
+        public string NombreProducto { get; set; }
+        public string Descripcion { get; set; }
+        public int? Cantidad { get; set; }
+        public decimal CostoUnidad { get; set; }
+        public decimal DescuentoUnidad { get; set; }
+        public decimal IVA_Unidad { get; set; }
+        public decimal PrecioUnidad { get; set; }
+        public decimal TotalLinea { get; set; }
+
+
+
+
 
     }
 }

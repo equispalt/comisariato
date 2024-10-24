@@ -36,6 +36,10 @@
                                     </button>
                                     <div class="dropdown-menu" style="background-color: #f0d8a8">
 
+                                        <a class="dropdown-item btn-verfactura" asp-action="VerFactura" asp-controller="Facturas" asp-route-facturaid="@factura.FacVentaId">
+                                            <i class="fa fa-eye"></i> Ver Detalle
+                                        </a>
+
                                         <a class="dropdown-item btn-reimprimir" data-toggle="modal"
                                            data-id="@factura.FacVentaId"
                                            data-target="#modalReimprimirFactura">
@@ -103,6 +107,7 @@
 </div>
 <!-- /.card -->
 
+
  <script>
     function filtrarFactura() {
         const input = document.getElementById('consecutivo');
@@ -123,3 +128,5 @@
         }
     }
 </script>
+
+

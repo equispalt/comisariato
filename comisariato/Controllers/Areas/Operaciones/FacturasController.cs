@@ -39,5 +39,33 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                 return RedirectToAction("Error", "Home");
             }
         }
+
+
+        public async Task<IActionResult> VerFactura(int facturaId)
+        {
+            try
+            {
+                //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+                //if (esPermitido == false)
+                //{
+                //    return RedirectToAction("Error403", "Home");
+                //}
+
+                var oEncFac = await _repositorioFacturas.ObtieneEncFactura(facturaId);
+                var oDetFac = await _repositorioFacturas.ObtieneDetFactura(facturaId);
+
+                // Pasar datos a la vista
+                ViewBag.VoFacEnc = oEncFac;
+                ViewBag.VoFacDet = oDetFac;
+
+                return View();
+
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
     }
 }

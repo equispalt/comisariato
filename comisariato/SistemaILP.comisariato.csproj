@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\Factura.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.1" />
@@ -19,7 +23,6 @@
   <ItemGroup>
     <Folder Include="Controllers\Areas\Reportes\" />
     <Folder Include="Views\Areas\Reportes\" />
-    <Folder Include="wwwroot\img\Login\" />
   </ItemGroup>
 
 </Project>

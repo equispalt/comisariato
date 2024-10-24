@@ -1,0 +1,105 @@
+﻿@using SistemaILP.comisariato.Data;
+@model FacturaDTO
+
+<link rel="stylesheet" href="~/css/Factura.css" />
+
+<div class="card">
+    <h4 style="padding-left: 20px; margin-top: 30px; margin-bottom: 10px " class="card-title"><i class="fas fa-file-invoice"></i> Detalle De Factura</h4>
+    <div class="card-header">
+
+        <a class="btn btn-primary" style="margin-bottom:20px"> Imprimir Factura</a>
+        <br />
+        <div class="card-body table-responsive p-0" style="height: auto;">
+<div class="invoice-box">
+    <!-- Encabezado de la factura -->
+    <table class="header-table">
+        <tr class="top">
+            <td class="title">
+                <img src="~/img/logo_lapopular.png" alt="Industria La Popular" style="width: 100%; max-width: 300px" />
+            </td>
+            <td class="date">
+                <!-- Clase date alineada a la derecha -->
+                Factura #: 123<br />
+                Emitida: 1 de enero de 2023<br />
+                Vencimiento: 1 de febrero de 2023
+            </td>
+        </tr>
+
+        <tr class="information">
+            <td>
+                Sparksuite, Inc.<br />
+                12345 Sunny Road<br />
+                Sunnyville, TX 12345
+            </td>
+            <td>
+                Acme Corp.<br />
+                Juan Pérez<br />
+                juan@example.com
+            </td>
+        </tr>
+
+        <tr class="heading">
+            <td>Método de Pago</td>
+            <td>Cajero</td>
+        </tr>
+
+        <tr class="details">
+            <td>Credito</td>
+            <td>Doña Tencha</td>
+        </tr>
+    </table>
+
+    <!-- Detalles de la factura -->
+    <table class="details-table">
+        <tr class="heading">
+            <td>Código</td>
+            <td class="descripcion">Descripción</td>
+            <td>Precio</td>
+            <td>Cantidad</td>
+            <td class="subtotal">Subtotal</td>
+        </tr>
+
+        <tr class="item">
+            <td class="codigo">001</td>
+            <td class="descripcion">Diseño de sitio web para Industria la Popular y sus filiales GT NC CR</td>
+            <td>$300.00</td>
+            <td>1</td>
+            <td class="subtotal">$300.00</td>
+        </tr>
+
+        <tr class="item">
+            <td class="codigo">002</td>
+            <td class="descripcion">Hosting (3 meses)</td>
+            <td>$25.00</td>
+            <td>3</td>
+            <td class="subtotal">$75.00</td>
+        </tr>
+
+        <tr class="item last">
+            <td class="codigo">003</td>
+            <td class="descripcion">Dominio (1 año)</td>
+            <td>$10.00</td>
+            <td>1</td>
+            <td class="subtotal">$10.00</td>
+
+        </tr>
+
+        <tr class="total">
+            <td colspan="4"></td>
+            <td class="subtotal">
+                <strong>IVA:</strong> $385.00 </br>
+                <strong>TOTAL: </strong> $385.00
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+<br/>
+            <a asp-controller="Facturas" asp-action="Index" class="btn btn-warning" style="text-align: center;"> Regresar a Lista de Factura</a>
+        </div>
+        <!-- /.card-body -->
+
+    </div>
+</div>
+<!-- /.card -->
