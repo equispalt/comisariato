@@ -36,7 +36,6 @@
         public string NombreProducto { get; set; }
         public string Descripcion { get; set; }
         public int? Cantidad { get; set; }
-        public decimal CostoUnidad { get; set; }
         public decimal DescuentoUnidad { get; set; }
         public decimal IVA_Unidad { get; set; }
         public decimal PrecioUnidad { get; set; }
