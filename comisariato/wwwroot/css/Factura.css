@@ -1,12 +1,6 @@
 ﻿
 
 
-/*    body {
-            font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
-            text-align: center;
-            color: #777;
-        }
-*/
 .invoice-box {
     max-width: 800px;
     margin: auto;
@@ -98,6 +92,14 @@
     /* Alinea la columna de Descripción a la izquierda, pegada al código */
     .details-table td.descripcion {
         text-align: left;
+    }
+
+    .details-table td.precio {
+        text-align: right;
+    }
+
+    .details-table td.cantidad {
+        text-align: center;
     }
 
     /* Alinea Subtotal a la derecha */

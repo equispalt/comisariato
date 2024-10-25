@@ -51,9 +51,6 @@ builder.Services.AddTransient<IRepositorioFacturas, RepositorioFacturas>();
 
 var app = builder.Build();
 
-// Configura Rotativa
-RotativaConfiguration.Setup(app.Environment.WebRootPath, "../Rotativa");
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -66,6 +63,7 @@ app.UseSession();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 
 app.UseRouting();
 
@@ -81,6 +79,9 @@ app.MapControllerRoute(
     name: "modulos",
     pattern: "Areas/{module}/{controller=Home}/{action=Index}/{id?}");
 
+// Configura Rotativa
+IWebHostEnvironment env = app.Environment;
 
+Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath,"../Rotativa");
 
 app.Run();

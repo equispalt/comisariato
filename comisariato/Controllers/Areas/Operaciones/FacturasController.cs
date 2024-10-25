@@ -4,6 +4,7 @@ using SistemaILP.comisariato.Data;
 using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Operaciones;
+using System;
 
 namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
 {
@@ -72,6 +73,12 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         {
             try
             {
+                //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+                //if (esPermitido == false)
+                //{
+                //    return RedirectToAction("Error403", "Home");
+                //}
+
                 // Obtener el encabezado y los detalles de la factura
                 var oEncFac = await _repositorioFacturas.ObtieneEncFactura(facturaId);
                 var oDetFac = await _repositorioFacturas.ObtieneDetFactura(facturaId);
@@ -91,7 +98,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                     FileName = $"Factura_{oEncFac.FacVentaId}.pdf", // Nombre del archivo PDF
                     PageSize = Rotativa.AspNetCore.Options.Size.Letter,    // Opcional: Tamaño de la página
                     PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait, // Orientación
-                    CustomSwitches = "--no-stop-slow-scripts" // Opcional: configuración adicional
+                    CustomSwitches = "--no-stop-slow-scripts", // Opcional: configuración adicional
                 };
             }
             catch (Exception ex)
@@ -99,6 +106,39 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                 return RedirectToAction("Error", "Home");
             }
         }
+
+        //public async Task<IActionResult> ImprimirFactura(int facturaId)
+        //{
+        //    try
+        //    {
+        //        //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+        //        //if (esPermitido == false)
+        //        //{
+        //        //    return RedirectToAction("Error403", "Home");
+        //        //}
+
+        //        // Obtener el encabezado y los detalles de la factura
+        //        var oEncFac = await _repositorioFacturas.ObtieneEncFactura(facturaId);
+        //        var oDetFac = await _repositorioFacturas.ObtieneDetFactura(facturaId);
+
+        //        if (oEncFac == null || oDetFac == null)
+        //        {
+        //            return RedirectToAction("Error", "Home"); // Manejo de error si no se encuentran datos
+        //        }
+
+        //        // Pasar datos a la vista
+        //        ViewBag.VoFacEnc = oEncFac;
+        //        ViewBag.VoFacDet = oDetFac;
+
+        //        // Generar PDF usando la vista parcial o la vista completa de la factura
+        //        return View();
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return RedirectToAction("Error", "Home");
+        //    }
+        //}
 
 
 

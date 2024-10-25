@@ -40,9 +40,7 @@
                                             <i class="fa fa-eye"></i> Ver Detalle
                                         </a>
 
-                                        <a class="dropdown-item btn-reimprimir" data-toggle="modal"
-                                           data-id="@factura.FacVentaId"
-                                           data-target="#modalReimprimirFactura">
+                                        <a class="dropdown-item btn-reimprimir" asp-controller="Facturas" asp-action="ImprimirFactura" asp-route-facturaid="@factura.FacVentaId">
                                             <i class="fa fa-print"></i> Reimprimir
                                         </a>
 
