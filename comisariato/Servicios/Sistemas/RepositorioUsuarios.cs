@@ -47,24 +47,25 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
         {
             using var connection = new SqlConnection(_connectionString);
             var existe = await connection.ExecuteScalarAsync<bool>(@"
-            EXEC paValidarUsuario @usuario", 
+            EXEC paValidarUsuario @usuario",
             new { usuario });
             return existe;
         }
 
 
-        public async Task<bool> PaCrearUsuario(Usuarios usuario) 
+        public async Task<bool> PaCrearUsuario(Usuarios usuario)
         {
             try
             {
                 using var connection = new SqlConnection(_connectionString);
                 await connection.ExecuteAsync(@"
                 EXEC paCrearUsuario @usuario, @password, @empleadoid, @rolid",
-                new { 
+                new
+                {
                     usuario = usuario.Usuario,
                     password = usuario.Password,
                     empleadoid = usuario.EmpleadoId,
-                    rolid     = usuario.RolId
+                    rolid = usuario.RolId
                 });
                 return true;
             }
@@ -83,7 +84,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
                        new
                        {
                            usuarioid = usuario.UsuarioId,
-                           estadoid =usuario.EstadoId,
+                           estadoid = usuario.EstadoId,
                        });
                 return true;
             }

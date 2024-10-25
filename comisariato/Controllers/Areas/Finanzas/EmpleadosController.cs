@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using SistemaILP.comisariato.Data;
 using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Finanzas;
-using System.Data.SqlTypes;
 
 namespace SistemaILP.comisariato.Controllers.Areas.Finanzas
 {
@@ -100,7 +98,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Finanzas
                 empleado.Nombre = updatedEmp.Nombre;
                 empleado.NIT = updatedEmp.NIT;
                 empleado.DPI = updatedEmp.DPI;
-  
+
 
                 // Guardar los cambios
                 bool editado = await _repositorioEmpleado.PaEditarEmpleado(empleado);
@@ -132,21 +130,21 @@ namespace SistemaILP.comisariato.Controllers.Areas.Finanzas
                 Empleados empleado = await _repositorioEmpleado.ObtienePorEmpleadoId(id);
                 if (empleado == null)
                 {
-                    return RedirectToAction("Error","Home");
+                    return RedirectToAction("Error", "Home");
                 }
 
-                bool eliminado =await _repositorioEmpleado.PaEliminarEmpleado(id);
+                bool eliminado = await _repositorioEmpleado.PaEliminarEmpleado(id);
 
                 if (eliminado)
                 {
-                    return RedirectToAction("Index","Empleados");
+                    return RedirectToAction("Index", "Empleados");
                 }
 
-                return RedirectToAction("Error","Home");
+                return RedirectToAction("Error", "Home");
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error","Home");
+                return RedirectToAction("Error", "Home");
             }
 
         }

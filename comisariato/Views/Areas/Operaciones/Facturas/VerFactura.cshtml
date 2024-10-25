@@ -1,13 +1,16 @@
 ﻿@using SistemaILP.comisariato.Data;
-@model FacturaDTO
 
-<link rel="stylesheet" href="~/css/Factura.css" />
+<link rel="stylesheet" href="@Url.Content("~/css/Factura.css")" />
 
 <div class="card">
     <h4 style="padding-left: 20px; margin-top: 30px; margin-bottom: 10px " class="card-title"><i class="fas fa-file-invoice"></i> Detalle De Factura</h4>
     <div class="card-header">
 
-        <a class="btn btn-primary" style="margin-bottom:20px"> Imprimir Factura</a>
+        @if (ViewBag.VoFacEnc != null)
+        {
+            <a asp-controller="Facturas" asp-action="ImprimirFactura" asp-route-facturaid="@ViewBag.VoFacEnc.FacVentaId" class="btn btn-primary" style="text-align: center; margin-bottom:20px"> Imprimir Factura</a>
+        }
+
         <br />
         <div class="card-body table-responsive p-0" style="height: auto;">
 <div class="invoice-box">

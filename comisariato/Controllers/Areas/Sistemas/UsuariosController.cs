@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using SistemaILP.comisariato.Data;
 using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
@@ -94,7 +93,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             }
             catch (Exception)
             {
-                return RedirectToAction("Error","Home");
+                return RedirectToAction("Error", "Home");
             }
         }
 

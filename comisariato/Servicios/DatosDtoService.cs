@@ -16,7 +16,7 @@ namespace SistemaILP.comisariato.Servicios
 
         public DatosDtoService(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("ConnectionComisariato")?? "";
+            _connectionString = configuration.GetConnectionString("ConnectionComisariato") ?? "";
         }
 
         public async Task<List<Estados>> ObtieneOpcionEstadoUsuario()
@@ -29,7 +29,7 @@ namespace SistemaILP.comisariato.Servicios
         }
 
         public async Task<List<Roles>> ObtieneTodoRoles()
-        { 
+        {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Roles> roles = await connection.QueryAsync<Roles>(@"
                 EXEC obtieneRolesDto

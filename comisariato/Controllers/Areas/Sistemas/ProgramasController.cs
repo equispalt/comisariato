@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.VisualBasic;
 using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Sistemas;
-using System.Reflection.Metadata.Ecma335;
 
 namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
 {
@@ -13,18 +11,18 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         private readonly IRepositorioProgramas _repositorioProgramas;
 
         public ProgramasController(IPermisosService permisosService, IRepositorioProgramas repositorioProgramas)
-        { 
+        {
             this._permisosService = permisosService;
-            this._repositorioProgramas=repositorioProgramas;
+            this._repositorioProgramas = repositorioProgramas;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
-            if (esPermitido == false) 
-            { 
-                return RedirectToAction("Error403","Home");
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
             }
 
             try
@@ -36,7 +34,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error","Home");
+                return RedirectToAction("Error", "Home");
             }
             return RedirectToAction("Error", "Home");
         }

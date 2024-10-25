@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.VisualBasic;
 using SistemaILP.comisariato.Models;
 
 namespace SistemaILP.comisariato.Servicios.Finanzas
@@ -20,10 +19,10 @@ namespace SistemaILP.comisariato.Servicios.Finanzas
 
         public RepositorioEmpleados(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("ConnectionComisariato")?? "";
+            _connectionString = configuration.GetConnectionString("ConnectionComisariato") ?? "";
         }
 
-        public async Task<List<Empleados>> ObtieneTodoEmpleados() 
+        public async Task<List<Empleados>> ObtieneTodoEmpleados()
         {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Empleados> emp = await connection.QueryAsync<Empleados>(@"
@@ -33,13 +32,13 @@ namespace SistemaILP.comisariato.Servicios.Finanzas
             return emp.ToList();
         }
 
-        public async Task<Empleados> ObtienePorEmpleadoId(int id) 
+        public async Task<Empleados> ObtienePorEmpleadoId(int id)
         {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Empleados> emp = await connection.QueryAsync<Empleados>(@"
                     EXEC  obtieneEmpleadoPorId @empleadoid",
-                new 
-                { 
+                new
+                {
                     empleadoid = id
                 });
             return emp.FirstOrDefault();
@@ -106,7 +105,7 @@ namespace SistemaILP.comisariato.Servicios.Finanzas
                 using var connection = new SqlConnection(_connectionString);
                 await connection.ExecuteAsync(@"
                     EXEC paEliminarEmpleado @empleadoid",
-                    new 
+                    new
                     {
                         empleadoid = empleadoId,
                     });

@@ -147,13 +147,13 @@ namespace SistemaILP.comisariato.Controllers.Areas.MercadeoVenta
 
                 if (eliminado)
                 {
-                    return RedirectToAction("Index","Productos");
+                    return RedirectToAction("Index", "Productos");
                 }
-                return RedirectToAction("Error","Home");
+                return RedirectToAction("Error", "Home");
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Error","Home");
+                return RedirectToAction("Error", "Home");
             }
 
         }

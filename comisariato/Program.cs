@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Rotativa.AspNetCore;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Finanzas;
 using SistemaILP.comisariato.Servicios.MercadeoVentas;
@@ -50,6 +51,9 @@ builder.Services.AddTransient<IRepositorioFacturas, RepositorioFacturas>();
 
 var app = builder.Build();
 
+// Configura Rotativa
+RotativaConfiguration.Setup(app.Environment.WebRootPath, "../Rotativa");
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -68,6 +72,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Auth}/{action=Login}/{id?}");
@@ -75,5 +80,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "modulos",
     pattern: "Areas/{module}/{controller=Home}/{action=Index}/{id?}");
+
+
 
 app.Run();

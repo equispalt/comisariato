@@ -1,0 +1,92 @@
+﻿@using SistemaILP.comisariato.Data;
+@model FacturaDTO
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/Factura.css" />
+
+<div class="invoice-box">
+    <!-- Encabezado de la factura -->
+    <table class="header-table">
+        <tr class="top">
+            <td class="title">
+                <img src="~/img/logo_lapopular.png" alt="Industria La Popular" style="width: 100%; max-width: 300px" />
+            </td>
+            <td class="date">
+                <!-- Clase date alineada a la derecha -->
+                Factura #: 123<br />
+                Emitida: 1 de enero de 2023<br />
+                Vencimiento: 1 de febrero de 2023
+            </td>
+        </tr>
+
+        <tr class="information">
+            <td>
+                Sparksuite, Inc.<br />
+                12345 Sunny Road<br />
+                Sunnyville, TX 12345
+            </td>
+            <td>
+                Acme Corp.<br />
+                Juan Pérez<br />
+                juan@example.com
+            </td>
+        </tr>
+
+        <tr class="heading">
+            <td>Método de Pago</td>
+            <td>Cajero</td>
+        </tr>
+
+        <tr class="details">
+            <td>Credito</td>
+            <td>Doña Tencha</td>
+        </tr>
+    </table>
+
+    <!-- Detalles de la factura -->
+    <table class="details-table">
+        <thead>
+            <tr class="heading">
+                <th>Código</th>
+                <th class="descripcion">Descripción</th>
+                <th class="text-center">Precio Unitario</th>
+                <th class="text-center">Cantidad</th>
+                <th class="subtotal">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (ViewBag.VoFacDet != null)
+            {
+                foreach (var detalle in ViewBag.VoFacDet)
+                {
+                    <tr class="item">
+                        <td class="codigo">@detalle.CodigoSILP</td>
+                        <td class="descripcion">@detalle.NombreProducto</td>
+                        <td class="text-center">@detalle.PrecioUnidad</td>
+                        <td class="text-center">@detalle.Cantidad</td>
+                        <td class="subtotal">@detalle.TotalLinea</td>
+                    </tr>
+                }
+            }
+        </tbody>
+        </tbody>
+        <tfoot>
+            <tr class="total">
+                <td colspan="3"></td>
+                <td class="subtotal">
+                    <strong>TOTAL:</strong>
+                    @if (ViewBag.VoFacEnc != null)
+                    {
+                        <span>Q. @ViewBag.VoFacEnc.Total</span>
+                    }
+                    else
+                    {
+                        <span>Q. 0.00</span> <!-- Valor predeterminado si no hay datos -->
+                    }
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

@@ -18,10 +18,12 @@
     <PackageReference Include="Microsoft.SqlServer.Server" Version="1.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.4" />
     <PackageReference Include="NETCore.Encrypt" Version="2.1.1" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\Areas\Reportes\" />
+    <Folder Include="Rotativa\" />
     <Folder Include="Views\Areas\Reportes\" />
   </ItemGroup>
 

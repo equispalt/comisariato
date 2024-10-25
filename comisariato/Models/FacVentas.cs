@@ -24,11 +24,11 @@
         // otras referencias
 
         public string NombreEmpleado { get; set; }
-        public string NIT {  get; set; }
+        public string NIT { get; set; }
         public string NombreUsuario { get; set; }
         public string NombreComisariato { get; set; }
         public string NombreEstado { get; set; }
-        public string NombreTipoPago { get; set; } 
+        public string NombreTipoPago { get; set; }
 
     }
 }

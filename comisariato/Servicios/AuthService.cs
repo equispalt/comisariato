@@ -11,7 +11,7 @@ namespace SistemaILP.comisariato.Servicios
     public interface IAuthService
     {
         Task<int> Login(Usuarios usuarios);
-        Task<bool> PaValidarEstadoUsuario (string usuario);
+        Task<bool> PaValidarEstadoUsuario(string usuario);
         Task SetSesion(Usuarios usuarios);
     }
     public class AuthService : IAuthService

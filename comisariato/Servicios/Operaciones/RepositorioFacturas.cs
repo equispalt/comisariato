@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using SistemaILP.comisariato.Models;
 
 namespace SistemaILP.comisariato.Servicios.Operaciones
@@ -32,15 +31,15 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
         public async Task<FacturaDTO> ObtieneEncFactura(int facturaId)
         {
 
-                using var connection = new SqlConnection(_connectionString);
-                IEnumerable<FacturaDTO> encFactura = await connection.QueryAsync<FacturaDTO>(@"
+            using var connection = new SqlConnection(_connectionString);
+            IEnumerable<FacturaDTO> encFactura = await connection.QueryAsync<FacturaDTO>(@"
                         EXEC obtieneEncFactura @facventaid
                      ", new
-                         {
-                            facventaid = facturaId
-                        });
+            {
+                facventaid = facturaId
+            });
 
-                return encFactura.FirstOrDefault();
+            return encFactura.FirstOrDefault();
         }
         public async Task<List<FacturaDTO>> ObtieneDetFactura(int facturaId)
         {

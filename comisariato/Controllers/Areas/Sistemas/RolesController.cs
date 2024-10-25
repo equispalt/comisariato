@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SistemaILP.comisariato.Data;
+using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Sistemas;
-using SistemaILP.comisariato.Models;
 
 namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
 {
@@ -15,14 +15,14 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         {
             this._permisosService = permisosService;
             this._repositorioRoles = repositorioRoles;
-        }   
+        }
 
         [HttpGet]
         public async Task<IActionResult> Index(int? numpag)
         {
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
-            if (esPermitido == false) 
-            { 
+            if (esPermitido == false)
+            {
                 return RedirectToAction("Error403", "Home");
             }
 

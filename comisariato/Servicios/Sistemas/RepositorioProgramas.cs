@@ -15,7 +15,7 @@ namespace SistemaILP.comisariato.Servicios.Sistemas
 
         public RepositorioProgramas(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("ConnectionComisariato")??"";
+            _connectionString = configuration.GetConnectionString("ConnectionComisariato") ?? "";
         }
 
         public async Task<List<Programas>> ObtieneTodoProgramas()

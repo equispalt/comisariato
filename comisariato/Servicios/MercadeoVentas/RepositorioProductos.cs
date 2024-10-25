@@ -38,10 +38,10 @@ namespace SistemaILP.comisariato.Servicios.MercadeoVentas
         {
             using var connection = new SqlConnection(_connectionString);
             IEnumerable<Productos> pro = await connection.QueryAsync<Productos>(@"
-                    EXEC obtieneProductoPorId @productoid", 
-            new 
-            { 
-                productoid = id           
+                    EXEC obtieneProductoPorId @productoid",
+            new
+            {
+                productoid = id
             });
 
             return pro.FirstOrDefault();
@@ -80,7 +80,7 @@ namespace SistemaILP.comisariato.Servicios.MercadeoVentas
                     descripcion = producto.Descripcion,
                     marca = producto.Marca,
                     categoria = producto.Categoria,
-                    precio = producto.Precio, 
+                    precio = producto.Precio,
 
                 });
                 return true;
@@ -120,11 +120,11 @@ namespace SistemaILP.comisariato.Servicios.MercadeoVentas
         {
             try
             {
-                using var connection = new SqlConnection (_connectionString);
+                using var connection = new SqlConnection(_connectionString);
                 await connection.ExecuteAsync(@"
                     EXEC paEliminarProducto @productoid",
-                    new 
-                    { 
+                    new
+                    {
                         productoid = productoId
                     });
 
