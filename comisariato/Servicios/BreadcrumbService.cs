@@ -21,6 +21,15 @@ namespace SistemaILP.comisariato.Servicios
             // Agregar el elemento de inicio
             items.Add(new BreadcrumbItem("Home", "/"));
 
+            // Obtener el valor del módulo desde los parámetros de la consulta
+            var module = httpContext.Request.Query["module"].ToString();
+
+            // Agregar el módulo al breadcrumb si existe
+            if (!string.IsNullOrEmpty(module))
+            {
+                items.Add(new BreadcrumbItem(module, "#")); // Puedes ajustar el enlace según sea necesario
+            }
+
             // Agregar elementos adicionales basados en la ruta
             if (routeData != null)
             {
@@ -58,7 +67,6 @@ namespace SistemaILP.comisariato.Servicios
 
             return items;
         }
-
 
 
     }
