@@ -12,15 +12,20 @@ namespace SistemaILP.comisariato.Controllers.Areas.Finanzas
     {
         private readonly IPermisosService _permisosService;
         private readonly IRepositorioEmpleado _repositorioEmpleado;
+        private readonly IBreadcrumbService _breadcrumbService;
 
-        public EmpleadosController(IPermisosService permisosService, IRepositorioEmpleado repositorioEmpleado)
+        public EmpleadosController(IPermisosService permisosService, IRepositorioEmpleado repositorioEmpleado, IBreadcrumbService breadcrumbService)
         {
             this._permisosService = permisosService;
             this._repositorioEmpleado = repositorioEmpleado;
+            this._breadcrumbService = breadcrumbService;
         }
 
         public async Task<IActionResult> Index(int? numpag)
         {
+            List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+            ViewBag.BreadcrumbItems = breadcrumbItems;
+
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
             if (esPermitido == false)

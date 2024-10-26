@@ -38,6 +38,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IDatosDtoService, DatosDtoService>();
 builder.Services.AddScoped<IEncryptService, EncryptService>();
 builder.Services.AddScoped<IPermisosService, PermisosService>();
+builder.Services.AddScoped<IBreadcrumbService, BreadcrumbService>();
 
 builder.Services.AddTransient<IRepositorioComisariatos, RepositorioComisariatos>();
 builder.Services.AddTransient<IRepositorioProgramas, RepositorioProgramas>();

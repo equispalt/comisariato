@@ -12,15 +12,20 @@ namespace SistemaILP.comisariato.Controllers.Areas.MercadeoVenta
     {
         private readonly IPermisosService _permisosService;
         private readonly IRepositorioProducto _repositorioProducto;
+        private readonly IBreadcrumbService _breadcrumbService;
 
-        public ProductosController(IPermisosService permisosService, IRepositorioProducto repositorioProducto)
+        public ProductosController(IPermisosService permisosService, IRepositorioProducto repositorioProducto, IBreadcrumbService breadcrumbService)
         {
             _permisosService = permisosService;
             _repositorioProducto = repositorioProducto;
+            _breadcrumbService = breadcrumbService;
         }
 
         public async Task<IActionResult> Index(int? numpag)
         {
+            List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+            ViewBag.BreadcrumbItems = breadcrumbItems;
+
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
             if (esPermitido == false)

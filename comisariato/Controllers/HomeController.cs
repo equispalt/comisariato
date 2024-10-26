@@ -9,15 +9,20 @@ namespace SistemaILP.comisariato.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IPermisosService _permisosService;
+        private readonly IBreadcrumbService _breadcrumbService;
 
-        public HomeController(ILogger<HomeController> logger, IPermisosService permisosService)
+        public HomeController(ILogger<HomeController> logger, IPermisosService permisosService, IBreadcrumbService breadcrumbService)
         {
             _logger = logger;
             _permisosService = permisosService;
+            _breadcrumbService = breadcrumbService;
         }
 
         public async Task<IActionResult> Index()
         {
+            List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+            ViewBag.BreadcrumbItems = breadcrumbItems;
+
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
             if (esPermitido == false)
@@ -44,4 +49,5 @@ namespace SistemaILP.comisariato.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+
 }

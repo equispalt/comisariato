@@ -14,19 +14,24 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
         private readonly IRepositorioUsuario _repositorioUsuario;
         private readonly IEncryptService _encryptService;
         private readonly IDatosDtoService _datosDtoService;
+        private readonly IBreadcrumbService _breadcrumbService;
 
-        public UsuariosController(IPermisosService permisosService, IRepositorioUsuario repositorioUsuario, IEncryptService encryptService, IDatosDtoService datosDtoService)
+        public UsuariosController(IPermisosService permisosService, IRepositorioUsuario repositorioUsuario, IEncryptService encryptService, IDatosDtoService datosDtoService, IBreadcrumbService breadcrumbService)
         {
             this._permisosService = permisosService;
             this._repositorioUsuario = repositorioUsuario;
             this._encryptService = encryptService;
             this._datosDtoService = datosDtoService;
+            this._breadcrumbService = breadcrumbService;
         }
 
         //---------- Listar Usuario    ----------
         [HttpGet]
         public async Task<IActionResult> Index(int? numpag)
         {
+            List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+            ViewBag.BreadcrumbItems = breadcrumbItems;
+
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
             if (esPermitido == false)

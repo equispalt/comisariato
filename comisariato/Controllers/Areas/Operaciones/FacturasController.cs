@@ -11,15 +11,20 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
     {
         private readonly IPermisosService _permisosService;
         private readonly IRepositorioFacturas _repositorioFacturas;
+        private readonly IBreadcrumbService _breadcrumbService;
 
-        public FacturasController(IPermisosService permisosService, IRepositorioFacturas repositorioFacturas)
+        public FacturasController(IPermisosService permisosService, IRepositorioFacturas repositorioFacturas, IBreadcrumbService breadcrumbService)
         {
             _permisosService = permisosService;
             _repositorioFacturas = repositorioFacturas;
+            _breadcrumbService = breadcrumbService;
         }
 
         public async Task<IActionResult> Index(int? numpag)
         {
+            List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+            ViewBag.BreadcrumbItems = breadcrumbItems;
+
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
             if (esPermitido == false)
             {

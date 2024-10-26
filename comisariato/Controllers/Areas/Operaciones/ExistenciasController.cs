@@ -10,16 +10,21 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
     {
         private readonly IPermisosService _permisosService;
         private readonly IRepositorioExistencias _repositorioExistencias;
+        private readonly IBreadcrumbService _breadcrumbService;
 
-        public ExistenciasController(IPermisosService permisosService, IRepositorioExistencias repositorioExistencias)
+        public ExistenciasController(IPermisosService permisosService, IRepositorioExistencias repositorioExistencias, IBreadcrumbService breadcrumbService)
         {
             _permisosService = permisosService;
             _repositorioExistencias = repositorioExistencias;
+            _breadcrumbService = breadcrumbService;
         }
 
         [HttpGet]
         public async Task<IActionResult> Index(int? numpag)
         {
+            List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+            ViewBag.BreadcrumbItems = breadcrumbItems;
+
             bool esPermitido = await _permisosService.ValidaPermisoPrograma();
             if (esPermitido == false)
             {

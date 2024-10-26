@@ -383,8 +383,20 @@
                         <div class="row mb-0">
                             <div class="col-sm-6">
                                 <ol class="breadcrumb float-sm-left">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                    <li class="breadcrumb-item active"></li>
+                                    @if (ViewBag.BreadcrumbItems != null)
+                                    {
+                                        foreach (var item in ViewBag.BreadcrumbItems)
+                                        {
+                                            if (item.IsActive)
+                                            {
+                                                <li class="breadcrumb-item active">@item.Title</li>
+                                            }
+                                            else
+                                            {
+                                                <li class="breadcrumb-item"><a href="@item.Url">@item.Title</a></li>
+                                            }
+                                        }
+                                    }
                                 </ol>
                             </div><!-- /.col -->
                         </div><!-- /.row -->
