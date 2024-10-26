@@ -18,9 +18,6 @@
         public int TipoPagoId { get; set; }
         public int Empresaid { get; set; }
 
-
-        public List<FacVentasDet> lstFacVentasDet { get; set; }
-
         // otras referencias
 
         public string NombreEmpleado { get; set; }

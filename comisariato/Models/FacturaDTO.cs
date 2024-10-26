@@ -2,6 +2,7 @@
 {
     public class FacturaDTO
     {
+        // Propiedades de la factura (FacVentas)
         public long FacVentaId { get; set; }
         public int ComisariatoId { get; set; }
         public string Serie { get; set; }
@@ -18,9 +19,7 @@
         public int TipoPagoId { get; set; }
         public int Empresaid { get; set; }
 
-
-        // otras referencias
-
+        // Otras referencias
         public string NombreEmpleado { get; set; }
         public string NIT { get; set; }
         public string NombreUsuario { get; set; }
@@ -28,7 +27,18 @@
         public string NombreEstado { get; set; }
         public string NombreTipoPago { get; set; }
 
-        // Detalle
+        // Detalles de la factura (FacVentasDet) agrupados en una lista
+        public List<DetalleFacturaDTO> DetallesFactura { get; set; }
+
+        // Constructor para inicializar la lista
+        public FacturaDTO()
+        {
+            DetallesFactura = new List<DetalleFacturaDTO>();
+        }
+    }
+
+    public class DetalleFacturaDTO
+    {
         public long FacVentasDetId { get; set; }
         public long FacVentasId { get; set; }
         public long ProductoId { get; set; }
@@ -40,10 +50,7 @@
         public decimal IVA_Unidad { get; set; }
         public decimal PrecioUnidad { get; set; }
         public decimal TotalLinea { get; set; }
-
-
-
-
-
     }
+
+
 }

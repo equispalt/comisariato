@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Rotativa.AspNetCore;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Finanzas;
 using SistemaILP.comisariato.Servicios.MercadeoVentas;
@@ -82,6 +81,6 @@ app.MapControllerRoute(
 // Configura Rotativa
 IWebHostEnvironment env = app.Environment;
 
-Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath,"../Rotativa");
+Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../Rotativa");
 
 app.Run();

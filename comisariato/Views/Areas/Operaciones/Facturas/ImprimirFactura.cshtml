@@ -1,5 +1,5 @@
 ﻿@using SistemaILP.comisariato.Data;
-@model FacturaDTO
+@model FacturaDTO;
 
 @{
     Layout = null;
@@ -17,23 +17,26 @@
                     <img src="~/img/logo_lapopular.png" style="width: 100%; max-width: 300px" />
                 </td>
                 <td class="date">
-                    <!-- Clase date alineada a la derecha -->
-                    Factura #: 123<br />
-                    Emitida: 1 de enero de 2023<br />
-                    Vencimiento: 1 de febrero de 2023
+                    <strong>FACTURA</strong> <br />
+                    Serie: @Model.Serie<br />
+                    Numero: @Model.Consecutivo<br />
+                    Emitida: @Model.FechaMod
                 </td>
             </tr>
 
             <tr class="information">
                 <td>
-                    Sparksuite, Inc.<br />
-                    12345 Sunny Road<br />
-                    Sunnyville, TX 12345
+                    Industria La Popular, Sociedad Anonima<br />
+                    NIT:  673218<br />
+                    KM 55.5 Antigua Carretera A, Escuintla, Escuintla<br />
+                    PBX: (502) 2420-0202<br />
+                    Oficina Central: Via 3 05-42, Zona 4 Guatemala
                 </td>
                 <td>
-                    Acme Corp.<br />
-                    Juan Pérez<br />
-                    juan@example.com
+                    <strong>CLIENTE</strong><br />
+                    <strong></strong> @Model.NombreEmpleado<br />
+                    <strong>NIT:</strong> @Model.NIT<br />
+                    <strong></strong>Ciudad
                 </td>
             </tr>
 
@@ -43,15 +46,15 @@
             </tr>
 
             <tr class="details">
-                <td>Credito</td>
-                <td>Doña Tencha</td>
+                <td>@Model.TipoPagoId</td>
+                <td>@Model.NombreUsuario</td>
             </tr>
         </table>
 
         <!-- Detalles de la factura -->
         <table class="details-table">
             <thead>
-                <tr class="heading">
+                <tr class="heading" style="background: #eee;">
                     <th>Código</th>
                     <th class="descripcion">Descripción</th>
                     <th class="text-center">Precio Unitario</th>
@@ -60,9 +63,9 @@
                 </tr>
             </thead>
             <tbody>
-                    @if (ViewBag.VoFacDet != null)
+                @if (Model.DetallesFactura != null)
                     {
-                        foreach (var detalle in ViewBag.VoFacDet)
+                        foreach (var detalle in Model.DetallesFactura)
                         {
                         <tr class="item">
                             <td class="codigo">@detalle.CodigoSILP</td>
@@ -79,14 +82,7 @@
                     <td colspan="3"></td>
                     <td class="subtotal">
                         <strong>TOTAL:</strong>
-                            @if (ViewBag.VoFacEnc != null)
-                            {
-                            <span>Q. @ViewBag.VoFacEnc.Total</span>
-                            }
-                            else
-                            {
-                            <span>Q. 0.00</span> <!-- Valor predeterminado si no hay datos -->
-                            }
+                            <span>Q. @Model.Total</span>
                     </td>
                 </tr>
             </tfoot>

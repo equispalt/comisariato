@@ -4,7 +4,6 @@ using SistemaILP.comisariato.Data;
 using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Operaciones;
-using System;
 
 namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
 {
@@ -42,32 +41,24 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
             }
         }
 
-
         public async Task<IActionResult> VerFactura(int facturaId)
         {
             try
             {
-                //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
-                //if (esPermitido == false)
-                //{
-                //    return RedirectToAction("Error403", "Home");
-                //}
+                var facturaDTO = await _repositorioFacturas.ObtieneFactura(facturaId);
 
-                var oEncFac = await _repositorioFacturas.ObtieneEncFactura(facturaId);
-                var oDetFac = await _repositorioFacturas.ObtieneDetFactura(facturaId);
-
-                // Pasar datos a la vista
-                ViewBag.VoFacEnc = oEncFac;
-                ViewBag.VoFacDet = oDetFac;
-
-                return View();
-
+                if (facturaDTO == null)
+                {
+                    return RedirectToAction("Error", "Home"); // Manejo de error si no se encuentra la factura
+                }
+                return View(facturaDTO);
             }
             catch (Exception ex)
             {
                 return RedirectToAction("Error", "Home");
             }
         }
+
 
         public async Task<IActionResult> ImprimirFactura(int facturaId)
         {
@@ -80,22 +71,17 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                 //}
 
                 // Obtener el encabezado y los detalles de la factura
-                var oEncFac = await _repositorioFacturas.ObtieneEncFactura(facturaId);
-                var oDetFac = await _repositorioFacturas.ObtieneDetFactura(facturaId);
+                var facturaDTO = await _repositorioFacturas.ObtieneFactura(facturaId);
 
-                if (oEncFac == null || oDetFac == null)
+                if (facturaDTO == null)
                 {
-                    return RedirectToAction("Error", "Home"); // Manejo de error si no se encuentran datos
+                    return RedirectToAction("Error", "Home");
                 }
 
-                // Pasar datos a la vista
-                ViewBag.VoFacEnc = oEncFac;
-                ViewBag.VoFacDet = oDetFac;
-
-                // Generar PDF usando la vista parcial o la vista completa de la factura
-                return new ViewAsPdf("ImprimirFactura")
+                // Generar PDF vista completa de la factura
+                return new ViewAsPdf("ImprimirFactura", facturaDTO)
                 {
-                    FileName = $"Factura_{oEncFac.FacVentaId}.pdf", // Nombre del archivo PDF
+                    FileName = $"Factura_{facturaDTO.FacVentaId}.pdf", // Nombre del archivo PDF
                     PageSize = Rotativa.AspNetCore.Options.Size.Letter,    // Opcional: Tamaño de la página
                     PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait, // Orientación
                     CustomSwitches = "--no-stop-slow-scripts", // Opcional: configuración adicional
@@ -106,41 +92,6 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                 return RedirectToAction("Error", "Home");
             }
         }
-
-        //public async Task<IActionResult> ImprimirFactura(int facturaId)
-        //{
-        //    try
-        //    {
-        //        //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
-        //        //if (esPermitido == false)
-        //        //{
-        //        //    return RedirectToAction("Error403", "Home");
-        //        //}
-
-        //        // Obtener el encabezado y los detalles de la factura
-        //        var oEncFac = await _repositorioFacturas.ObtieneEncFactura(facturaId);
-        //        var oDetFac = await _repositorioFacturas.ObtieneDetFactura(facturaId);
-
-        //        if (oEncFac == null || oDetFac == null)
-        //        {
-        //            return RedirectToAction("Error", "Home"); // Manejo de error si no se encuentran datos
-        //        }
-
-        //        // Pasar datos a la vista
-        //        ViewBag.VoFacEnc = oEncFac;
-        //        ViewBag.VoFacDet = oDetFac;
-
-        //        // Generar PDF usando la vista parcial o la vista completa de la factura
-        //        return View();
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return RedirectToAction("Error", "Home");
-        //    }
-        //}
-
-
 
     }
 }
