@@ -10,6 +10,7 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
         Task<FacturaDTO> ObtieneFactura(int facturaId);
         Task<FacturaDTO> PaObtenerEmpleadoPorNit(string nit);
         Task<DetalleFacturaDTO> PaObtenerProductoPorCodigo(string codigo);
+        Task<DetalleFacturaDTO> PaObtenerExistenciasProducto(int cantidad, string codigo);
     }
     public class RepositorioFacturas : IRepositorioFacturas
     {
@@ -80,6 +81,16 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
             return producto; // Retorna null si no se encuentra el producto
         }
 
+
+        public async Task<DetalleFacturaDTO> PaObtenerExistenciasProducto(int cantidad, string codigo)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            var producto = await connection.QueryFirstOrDefaultAsync<DetalleFacturaDTO>(@"
+            EXEC obtieneExistenciasProducto @cantidad, @codigo",
+                new { cantidad, codigo });
+
+            return producto; // Retorna null si no se encuentra el producto
+        }
 
 
     }

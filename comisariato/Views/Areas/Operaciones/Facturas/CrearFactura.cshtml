@@ -84,10 +84,10 @@
                 </div>
             </div> 
 
-            <div class="col-sm-1">
+            <div class="col-sm-2">
                 <div class="mb-2">
-                    <label for="txtcantidad" class="form-label">Cantidad</label>
-                    <input type="number" min="0" class="form-control form-control-sm" id="txtcantidad">
+                    <label id="lbldisponible" class="form-label">Cantidad Disponible: </label>
+                    <input type="number" min="0" class="form-control form-control-sm" id="txtcantidad" disabled>
                 </div>
             </div>
 
@@ -126,12 +126,12 @@
     </div>
 </div>
 
-<!-- Modal Consulta -->
+@* <!-- Modal Consulta -->
 <div id="modal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background-color: #fefefe; padding: 20px; border: 1px solid #888; z-index: 1000;">
     <span id="modal-message"></span>
     <button onclick="closeModal()">Cerrar</button>
 </div>
-
+ *@
 
 
 @*     <script>
@@ -301,18 +301,29 @@
                 .then(data => {
                     var txtProducto = document.getElementById('txtproducto');
                     var txtPrecio = document.getElementById('txtprecio');
+                    var lblDisponible = document.getElementById('lbldisponible');
 
                     if (data.existe) {
                         // Si existe, actualiza el label con el nombre del producto
-                        this.value = codigo
+                        this.value = codigo;
                         txtProducto.textContent = data.nombreProducto; // Nombre del producto
                         txtPrecio.textContent = data.precio.toFixed(2);
-                    }
-                    else {
+                        lblDisponible.textContent = 'Cantidad Disponible: ' + data.disponible;
+
+                        // Habilitar o deshabilitar el campo de cantidad
+                        if (data.disponible > 0) {
+                            document.getElementById('txtcantidad').disabled = false; // Habilitar si hay stock disponible
+                        } else {
+                            document.getElementById('txtcantidad').disabled = true; // Mantener deshabilitado si no hay stock
+                            alert('Producto encontrado, pero no hay disponibilidad en el inventario.'); // Notificación al usuario
+                        }
+                    } else {
                         // Si no existe, muestra la alerta
                         alert(data.mensaje); // Muestra el mensaje de error
                         txtProducto.textContent = ''; // Limpia el campo de producto
                         txtPrecio.textContent = ''; // Limpia el campo de precio
+                        lblDisponible.textContent = 'Cantidad Disponible';
+                        document.getElementById('txtcantidad').disabled = true; // Deshabilitar el campo de cantidad
                     }
                 })
                 .catch(error => {
@@ -320,9 +331,10 @@
                     // Manejo de errores
                 });
         } else {
-            // Si el campo NIT está vacío, limpiar el label
+            // Si el campo codigo está vacío, limpiar el label
             document.getElementById('txtproducto').textContent = '';
             document.getElementById('txtprecio').textContent = '';
         }
     });
- </script></>
+ </script>
+

@@ -140,7 +140,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         {
             var producto = await _repositorioFacturas.PaObtenerProductoPorCodigo(codigo);
 
-            if (producto != null)
+            if (producto != null) 
             {
                 return Json(new
                 {
@@ -148,12 +148,33 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                     productoId = producto.ProductoId,
                     nombreProducto = producto.NombreProducto,
                     codigo = producto.CodigoSILP,
-                    precio = producto.PrecioUnidad
+                    precio = producto.PrecioUnidad,
+                    disponible = producto.Disponible
                 });
             }
             else
             {
                 return Json(new { existe = false, mensaje = "Producto no encontrado, por favor verifique" });
+            }
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> ObtieneExistencias(int cantidad, string codigo)
+        {
+            var resultado = await _repositorioFacturas.PaObtenerExistenciasProducto(cantidad, codigo);
+
+            if (resultado != null)
+            {
+                // Si hay un mensaje que indica suficiente existencia
+                return Json(new
+                {
+                    existe = true,
+                    mensaje = resultado.Mensaje 
+                });
+            }
+            else
+            {
+                return Json(new { existe = false });
             }
         }
 
