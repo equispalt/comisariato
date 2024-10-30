@@ -154,7 +154,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
             }
             else
             {
-                return Json(new { existe = false, mensaje = "Producto no encontrado, por favor verifique" });
+                return Json(new { existe = false, mensaje = "Producto NO encontrado, por favor verifique" });
             }
         }
 

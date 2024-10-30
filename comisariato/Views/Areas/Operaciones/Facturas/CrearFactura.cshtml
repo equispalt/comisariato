@@ -1,4 +1,7 @@
-﻿
+﻿<!-- Asegúrate de incluir jQuery en el <head> o antes de tu script -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 <div class="card">
     <div class="card-header">
         <label class="form-label"><strong>FACTURA #</strong></label>
@@ -86,7 +89,7 @@
 
             <div class="col-sm-2">
                 <div class="mb-2">
-                    <label id="lbldisponible" class="form-label">Cantidad Disponible: </label>
+                    <span><strong>Cantidad Disponible: </strong></span><label id="lbldisponible" class="form-label"></label>
                     <input type="number" min="0" class="form-control form-control-sm" id="txtcantidad" disabled>
                 </div>
             </div>
@@ -108,7 +111,7 @@
             <div class="col-sm-12">
                 <table class="table table-bordered table-sm" id="tbProducto">
                     <thead>
-                        <tr class="table-dark">
+                        <tr style="background-color: lightsteelblue;">
                             <th scope="col">CodProd</th>
                             <th scope="col">Producto</th>
                             <th scope="col">Cantidad</th>
@@ -126,81 +129,173 @@
     </div>
 </div>
 
-@* <!-- Modal Consulta -->
-<div id="modal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background-color: #fefefe; padding: 20px; border: 1px solid #888; z-index: 1000;">
-    <span id="modal-message"></span>
-    <button onclick="closeModal()">Cerrar</button>
-</div>
- *@
+
+ <script>
+    // Evento blur para verificar si el NIT / codigo empleado ya existe cuando se pierde el foco del campo de NIT
+    document.getElementById('nitCliente').addEventListener('blur', function () {
+        var nit = this.value;
+        if (nit) {
+            fetch('/Facturas/ObtieneEmpleadoPorNit?nit=' + nit)
+                .then(response => response.json())
+                .then(data => {
+                    var txtCliente = document.getElementById('txtcliente');
+
+                    if (data.existe) {
+                        // Si existe, actualiza el label con el nombre del empleado
+                        txtCliente.textContent = data.nombreEmpleado; // Nombre del empleado
+                        this.value = data.nit; // NIT
+                        direccionCliente.textContent = 'Ciudad';
+                    } else {
+                        // Si no existe, muestra la alerta
+                        alert(data.mensaje); // Muestra el mensaje de error
+                        txtCliente.textContent = ''; // Limpia el campo de producto
+                        direccionCliente.textContent = ''; // Limpia el campo de precio
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Manejo de errores
+                });
+        } else {
+            // Si el campo NIT está vacío, limpiar el label
+            document.getElementById('txtcliente').textContent = '';
+        }
+    });
+ </script>
+
+ <script>
+    // Evento blur para verificar si el codigo existe cuando se pierde el foco del campo de codigo
+    document.getElementById('txtcodigo').addEventListener('blur', function () {
+        var codigo = this.value;
+        if (codigo) {
+            fetch('/Facturas/ObtieneProductoPorCodigo?codigo=' + codigo)
+                .then(response => response.json())
+                .then(data => {
+                    var txtProducto = document.getElementById('txtproducto');
+                    var txtPrecio = document.getElementById('txtprecio');
+                    var lblDisponible = document.getElementById('lbldisponible');
+
+                    if (data.existe) {
+                        // Si existe, actualiza el label con el nombre del producto
+                        this.value = codigo;
+                        txtProducto.textContent = data.nombreProducto; // Nombre del producto
+                        txtPrecio.textContent = data.precio.toFixed(2);
+                        lblDisponible.textContent = data.disponible;
+
+                        // Habilitar o deshabilitar el campo de cantidad
+                        if (data.disponible > 0) {
+                            document.getElementById('txtcantidad').disabled = false; // Habilitar si hay stock disponible
+                        } else {
+                            document.getElementById('txtcantidad').disabled = true; // Mantener deshabilitado si no hay stock
+                            alert('Producto Activo, pero no hay disponibilidad en el inventario.'); // Notificación al usuario
+                        }
+                    } else {
+                        // Si no existe, muestra la alerta
+                        alert(data.mensaje); // Muestra el mensaje de error
+                        txtProducto.textContent = ''; // Limpia el campo de producto
+                        txtPrecio.textContent = ''; // Limpia el campo de precio
+                        lblDisponible.textContent = '0';
+                        document.getElementById('txtcantidad').disabled = true; // Deshabilitar el campo de cantidad
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Manejo de errores
+                });
+        } else {
+            // Si el campo codigo está vacío, limpiar el label
+            document.getElementById('txtproducto').textContent = '';
+            document.getElementById('txtprecio').textContent = '';
+        }
+    });
+ </script>
 
 
-@*     <script>
 
-        // javaescript para actualizar campos de cliente
-        $(document).ready(function () {
-            $("#txtcliente").change(function () {
-                var selectedOption = $(this).find("option:selected");
-                var nitCliente = selectedOption.data("nit");
-                var direccionCliente = selectedOption.data("direccion");
+    <script>
+    $("#btnAgregar").on("click", function () {
+        // Capturar los valores de los campos
+        var precio = parseFloat($("#txtprecio").text()); // Obtener el precio desde el label
+        var cantidad = parseFloat($("#txtcantidad").val()); // Obtener la cantidad desde el input
 
-                // Actualiza los campos "NIT" y "Dirección"
-                $("#nitCliente").text(nitCliente);
-                $("#direccionCliente").text(direccionCliente);
-            });
-        });
+        // Validar que los campos tengan valores válidos
+        if (isNaN(precio) || isNaN(cantidad) || cantidad < 1) {
+            alert('Por favor, ingresa una cantidad válida y asegúrate de que el precio esté disponible.');
+            return; // Salir si hay valores inválidos
+        }
 
-        // javaescript para actualizar campo de precio
-        $("#txtproducto").change(function () {
-            var productoSeleccionado = $("#txtproducto option:selected");
-            var precioProducto = productoSeleccionado.data("precio");
+        // Obtener el valor de disponibilidad
+        var disponibilidad = parseFloat($("#lbldisponible").text().replace("Cantidad Disponible: ", "").trim());
 
-            // Actualiza el campo de precio
-            $("#txtprecio").val(precioProducto);
-        });
+        // Obtener el código del producto
+        var productoSeleccionado = $("#txtcodigo").val();
 
+        // Validar que el código del producto no esté vacío
+        if (!productoSeleccionado) {
+            alert('Por favor, ingresa un código de producto válido.');
+            return; // Salir si el código es inválido
+        }
 
-        $("#btnAgregar").on("click", function () {
-            var precio = parseFloat($("#txtprecio").val());
-            var cantidad = parseFloat($("#txtcantidad").val());
+        // Inicializar variable para total de cantidad existente
+        var cantidadTotal = 0;
 
-            if (total < 1 || cantidad < 1) {
-                return;
+        // Verificar si el producto ya existe en la tabla y calcular la cantidad total
+        var productoExistente = false;
+        $("#tbProducto tbody tr").each(function () {
+            if ($(this).find("td:eq(0)").text() === productoSeleccionado) { // Comprobar si el código ya existe
+                productoExistente = true;
+                cantidadTotal += parseFloat($(this).find("td:eq(2)").text()); // Sumar la cantidad existente
+                return false; // Salir del bucle
             }
-
-            var total = precio * cantidad;
-            total = total.toFixed(2);
-            var productoSeleccionado = $("#txtproducto option:selected");
-            var descripcionProducto = productoSeleccionado.data("descripcion");
-
-            if (productoSeleccionado.val() === "0") {
-                return;
-            }
-
-            var newRow = $("<tr>").append(
-                $("<td>").text($("#txtproducto").val()),
-                $("<td>").text(descripcionProducto),
-                $("<td>").text($("#txtcantidad").val()),
-                $("<td>").text($("#txtprecio").val()),
-                $("<td>").text(total)
-            );
-
-            // Agregar un botón para eliminar producto
-            var deleteButton = $("<button>").text("Eliminar");
-            deleteButton.addClass("btn btn-danger btn-sm");
-            deleteButton.click(function () {
-                newRow.remove(); // Eliminar la fila al hacer clic en el botón "Eliminar"
-            });
-
-            newRow.append($("<td>").append(deleteButton));
-            $("#tbProducto tbody").append(newRow);
-
-            $("#txtproducto").val("");
-            $("#txtcantidad").val("");
-            $("#txtprecio").val("");
-            $("#txtproducto").focus();
-
-            $("#txtproducto").val("0");
         });
+
+        // Verificar si la nueva cantidad junto con la cantidad existente no excede la disponibilidad
+        if (productoExistente) {
+            if (cantidadTotal + cantidad > disponibilidad) {
+                alert('La suma de la cantidad existente (' + cantidadTotal + ') y la nueva cantidad (' + cantidad + ') excede la cantidad disponible (' + disponibilidad + ').');
+                return; // Salir si excede la disponibilidad
+            }
+        } else {
+            // Si el producto no existe, verificar solo la cantidad
+            if (cantidad > disponibilidad) {
+                alert('La cantidad ingresada no puede ser mayor a la cantidad disponible (' + disponibilidad + ').');
+                return; // Salir si la cantidad es mayor a la disponibilidad
+            }
+        }
+
+        // Calcular el total
+        var total = precio * cantidad;
+        total = total.toFixed(2);
+
+        // Crear una nueva fila para la tabla
+        var newRow = $("<tr>").append(
+            $("<td>").text(productoSeleccionado), // Código del producto
+            $("<td>").text($("#txtproducto").text()), // Nombre del producto
+            $("<td>").text(cantidad), // Cantidad ingresada
+            $("<td>").text(precio.toFixed(2)), // Precio del producto
+            $("<td>").text(total) // Total calculado
+        );
+
+        // Agregar un botón para eliminar el producto
+        var deleteButton = $("<button>").text("Eliminar");
+        deleteButton.addClass("btn btn-danger btn-sm");
+        deleteButton.click(function () {
+            newRow.remove(); // Eliminar la fila al hacer clic en el botón "Eliminar"
+        });
+
+        newRow.append($("<td>").append(deleteButton)); // Agregar el botón a la fila
+        $("#tbProducto tbody").append(newRow); // Agregar la nueva fila a la tabla
+
+        // Limpiar los campos
+        $("#txtcantidad").val(""); // Limpiar el campo de cantidad
+        $("#txtproducto").text(""); // Limpiar el label de producto
+        $("#txtprecio").text(""); // Limpiar el label de precio
+        $("#txtcodigo").val(""); // Limpiar el campo de código
+        $("#txtcodigo").focus(); // Regresar el foco al campo de código
+    });
+
+
+
 
 
 
@@ -256,85 +351,4 @@
                 }
             });
         })
-    </script> *@
-
- <script>
-    // Evento blur para verificar si el NIT ya existe cuando se pierde el foco del campo de NIT
-    document.getElementById('nitCliente').addEventListener('blur', function () {
-        var nit = this.value;
-        if (nit) {
-            fetch('/Facturas/ObtieneEmpleadoPorNit?nit=' + nit)
-                .then(response => response.json())
-                .then(data => {
-                    var txtCliente = document.getElementById('txtcliente');
-
-                    if (data.existe) {
-                        // Si existe, actualiza el label con el nombre del empleado
-                        txtCliente.textContent = data.nombreEmpleado; // Nombre del empleado
-                        this.value = data.nit; // NIT
-                        direccionCliente.textContent = 'Ciudad';
-                    } else {
-                        // Si no existe, muestra la alerta
-                        alert(data.mensaje); // Muestra el mensaje de error
-                        txtCliente.textContent = ''; // Limpia el campo de producto
-                        direccionCliente.textContent = ''; // Limpia el campo de precio
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Manejo de errores
-                });
-        } else {
-            // Si el campo NIT está vacío, limpiar el label
-            document.getElementById('txtcliente').textContent = '';
-        }
-    });
- </script></>
-
- <script>
-    // Evento blur para verificar si el codigo existe cuando se pierde el foco del campo de codigo
-    document.getElementById('txtcodigo').addEventListener('blur', function () {
-        var codigo = this.value;
-        if (codigo) {
-            fetch('/Facturas/ObtieneProductoPorCodigo?codigo=' + codigo)
-                .then(response => response.json())
-                .then(data => {
-                    var txtProducto = document.getElementById('txtproducto');
-                    var txtPrecio = document.getElementById('txtprecio');
-                    var lblDisponible = document.getElementById('lbldisponible');
-
-                    if (data.existe) {
-                        // Si existe, actualiza el label con el nombre del producto
-                        this.value = codigo;
-                        txtProducto.textContent = data.nombreProducto; // Nombre del producto
-                        txtPrecio.textContent = data.precio.toFixed(2);
-                        lblDisponible.textContent = 'Cantidad Disponible: ' + data.disponible;
-
-                        // Habilitar o deshabilitar el campo de cantidad
-                        if (data.disponible > 0) {
-                            document.getElementById('txtcantidad').disabled = false; // Habilitar si hay stock disponible
-                        } else {
-                            document.getElementById('txtcantidad').disabled = true; // Mantener deshabilitado si no hay stock
-                            alert('Producto encontrado, pero no hay disponibilidad en el inventario.'); // Notificación al usuario
-                        }
-                    } else {
-                        // Si no existe, muestra la alerta
-                        alert(data.mensaje); // Muestra el mensaje de error
-                        txtProducto.textContent = ''; // Limpia el campo de producto
-                        txtPrecio.textContent = ''; // Limpia el campo de precio
-                        lblDisponible.textContent = 'Cantidad Disponible';
-                        document.getElementById('txtcantidad').disabled = true; // Deshabilitar el campo de cantidad
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Manejo de errores
-                });
-        } else {
-            // Si el campo codigo está vacío, limpiar el label
-            document.getElementById('txtproducto').textContent = '';
-            document.getElementById('txtprecio').textContent = '';
-        }
-    });
- </script>
-
+    </script>
