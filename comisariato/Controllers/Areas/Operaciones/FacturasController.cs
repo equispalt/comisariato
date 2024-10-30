@@ -12,12 +12,14 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         private readonly IPermisosService _permisosService;
         private readonly IRepositorioFacturas _repositorioFacturas;
         private readonly IBreadcrumbService _breadcrumbService;
+        private readonly IDatosDtoService _datosDtoService;
 
-        public FacturasController(IPermisosService permisosService, IRepositorioFacturas repositorioFacturas, IBreadcrumbService breadcrumbService)
+        public FacturasController(IPermisosService permisosService, IRepositorioFacturas repositorioFacturas, IBreadcrumbService breadcrumbService,IDatosDtoService datosDtoService)
         {
             _permisosService = permisosService;
             _repositorioFacturas = repositorioFacturas;
             _breadcrumbService = breadcrumbService;
+            _datosDtoService = datosDtoService;
         }
 
         public async Task<IActionResult> Index(int? numpag)
@@ -50,6 +52,9 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         {
             try
             {
+                List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+                ViewBag.BreadcrumbItems = breadcrumbItems;
+
                 var facturaDTO = await _repositorioFacturas.ObtieneFactura(facturaId);
 
                 if (facturaDTO == null)
@@ -82,7 +87,6 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                 {
                     return RedirectToAction("Error", "Home");
                 }
-
                 // Generar PDF vista completa de la factura
                 return new ViewAsPdf("ImprimirFactura", facturaDTO)
                 {
@@ -98,5 +102,41 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
             }
         }
 
+        public async Task<IActionResult> CrearFactura()
+        {
+            List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+            ViewBag.BreadcrumbItems = breadcrumbItems;
+
+            var oProd = _datosDtoService.ObtieneTodoEmpleados();
+            ViewBag.Prod = oProd;
+
+
+            return View();
+        }
+
+        // Metodos que permitiran consultar CLIENTES, PRODUCTOS Y EXISTENCIAS
+        [HttpGet]
+        public async Task<JsonResult> ObtieneEmpleadoPorNit(string nit)
+        {
+            var empleado = await _repositorioFacturas.PaObtenerEmpleadoPorNit(nit);
+
+            if (empleado != null)
+            {
+                return Json(new
+                {
+                    existe = true,
+                    nombreEmpleado = empleado.NombreEmpleado,
+                    nit = empleado.NIT
+                });
+            }
+            else
+            {
+                return Json(new { existe = false, mensaje = "Empleado no encontrado." });
+            }
+        }
+
+
+
     }
 }
+

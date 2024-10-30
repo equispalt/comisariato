@@ -8,6 +8,7 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
     {
         Task<List<FacVentas>> ObtieneTodoFacturas();
         Task<FacturaDTO> ObtieneFactura(int facturaId);
+        Task<FacturaDTO> PaObtenerEmpleadoPorNit(string nit);
     }
     public class RepositorioFacturas : IRepositorioFacturas
     {
@@ -55,6 +56,20 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
 
             return facturaEncabezado;
         }
+
+        // PERMITE CONSULTAR, CLIENTES, PRODUCTOS Y EXITENCIAS
+
+        public async Task<FacturaDTO> PaObtenerEmpleadoPorNit(string nit)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            var empleado = await connection.QueryFirstOrDefaultAsync<FacturaDTO>(@"
+            EXEC obtieneEmpleadoPorNitDTO @nit",
+                new { nit });
+
+            return empleado; // Retorna null si no se encuentra el empleado
+        }
+
+
 
 
 

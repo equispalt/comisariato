@@ -36,7 +36,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Sistemas
             {
                 return RedirectToAction("Error", "Home");
             }
-            return RedirectToAction("Error", "Home");
+
         }
     }
 }

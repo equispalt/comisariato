@@ -2,15 +2,20 @@
 <div class="card">
     <div class="card-header">
         <label class="form-label"><strong>FACTURA #</strong></label>
+        <div class="d-flex justify-content-end">
+            <button class="btn btn-primary mb-2 btn-sm" id="btnTerminar" style="margin-top: 0; margin-bottom: 0;">Terminar</button>
+        </div>
+
+
         <label class="form-label bold-text" id="txtnumerooc">
 
-            @if (@ViewBag.FacID != null)
+@*             @if (@ViewBag.FacID != null)
             {
                 @foreach (var item in @ViewBag.FacID)
                 {
                     <option value="@(item.id_factura)">@item.id_factura</option>
                 }
-            }
+            } *@
         </label>
     </div>
 
@@ -21,26 +26,14 @@
             <div class="col-sm-4">
                 <div class="mb-2">
                     <label for="form-label">NIT: </label>
-                    <label class="form-control form-control-sm" id="nitCliente"></label>
+                    <input type="text" class="form-control form-control-sm" id="nitCliente">
                 </div>
             </div>
 
             <div class="col-sm-4">
                 <div class="mb-2">
                     <label for="form-label bold-text">Cliente: </label>
-                    <select class="form-control form-control-sm" id="txtcliente">
-                        <option value="0">[Seleccione un Cliente]</option>
-
-                        @if (@ViewBag.FacCliente != null)
-                        {
-                            @foreach (var item1 in @ViewBag.FacCliente)
-                            {
-                                <option value="@(item1.id_cliente)" data-nit="@item1.nit_cliente" data-direccion="@item1.direccion_cliente">
-                                    @item1.nombre_cliente @item1.apellido_cliente
-                                </option>
-                            }
-                        }
-                    </select>
+                        <label class="form-control form-control-sm" id="txtcliente"></label>
                 </div>
             </div>
 
@@ -58,8 +51,7 @@
                 <div class="mb-2">
                     <label for="form-label">Moneda</label>
                     <select class="form-control form-control-sm" type="text" id="txtmoneda">
-                        <option value="1">Quetzales</option>
-                        <option value="2">Dolares</option>
+                        <option value="3">Quetzales</option>
                     </select>
                 </div>
             </div>
@@ -69,8 +61,7 @@
                     <label for="form-label">Forma de Pago</label>
                     <select class="form-control form-control-sm" type="text" id="txtformapago">
                         <option value="1">Efectivo</option>
-                        <option value="2">Tarjeta</option>
-                        <option value="3">Credito</option>
+                        <option value="2">Credito</option>
                     </select>
                 </div>
             </div>
@@ -80,37 +71,42 @@
 
         <div class="row align-items-end">
             <div class="col-sm-3">
-                <div class="mb-2">
-                    <label for="form-label">Producto</label>
+                <div class="mb-2 position-relative">
+                    <!-- Label que siempre permanece visible -->
+                    <label class="form-label">Producto</label>
+
+                    <!-- Campo de entrada para buscar productos (oculto inicialmente) -->
+                    <input type="text" id="productoSearch" placeholder="Buscar producto..." class="form-control form-control-sm mb-2" style="display: none; position: absolute; top: 0; left: 0; width: 100%;" />
+
+                    <!-- Select de productos -->
                     <select class="form-control form-control-sm" id="txtproducto">
                         <option value="0">[Seleccione un Producto]</option>
-                        @if (@ViewBag.FacProducto != null)
-                        {
-                            @foreach (var item2 in @ViewBag.FacProducto)
-                            {
-                                <option value="@(item2.id_producto)" data-descripcion="@item2.descripcion_producto" data-precio="@item2.precio_unidad">@item2.descripcion_producto</option>
-                            }
-                        }
+                        <option value="1" data-descripcion="Producto A" data-precio="10">Producto A</option>
+                        <option value="2" data-descripcion="Producto B" data-precio="20">Producto B</option>
+                        <option value="3" data-descripcion="Producto C" data-precio="30">Producto C</option>
                     </select>
                 </div>
-            </div>
+            </div> <!-- Cierra correctamente esta columna -->
+
             <div class="col-sm-3">
                 <div class="mb-2">
-                    <label for="form-label">Cantidad</label>
+                    <label for="txtcantidad" class="form-label">Cantidad</label>
                     <input type="number" min="0" class="form-control form-control-sm" id="txtcantidad">
                 </div>
             </div>
+
             <div class="col-sm-3">
                 <div class="mb-2">
-                    <label for="form-label">Precio</label>
+                    <label for="txtprecio" class="form-label">Precio</label>
                     <input type="number" min="0" class="form-control form-control-sm" id="txtprecio">
                 </div>
             </div>
+
             <div class="col-sm-3">
                 <button class="btn btn-success mb-2 btn-sm" id="btnAgregar">Agregar</button>
-                <button class="btn btn-primary mb-2 btn-sm" id="btnTerminar">Terminar</button>
             </div>
         </div>
+
 
         <div class="row">
             <div class="col-sm-12">
@@ -134,8 +130,7 @@
     </div>
 </div>
 
-@section Scripts {
-    <script>
+@*     <script>
 
         // javaescript para actualizar campos de cliente
         $(document).ready(function () {
@@ -243,7 +238,7 @@
             }
 
             jQuery.ajax({
-                url: '@Url.Action("GuardarFactura", "Facturas")',
+                url: '@Url.Action("CrearFactura", "Facturas")',
                 type: "POST",
                 data: JSON.stringify(Factura),
                 dataType: "json",
@@ -257,5 +252,32 @@
                 }
             });
         })
-    </script>
-}
+    </script> *@
+
+    <script>
+    // Evento blur para verificar si el NIT ya existe cuando se pierde el foco del campo de NIT
+    document.getElementById('nitCliente').addEventListener('blur', function () {
+        var nit = this.value;
+        if (nit) {
+            fetch('/Facturas/ObtieneEmpleadoPorNit?nit=' + nit)
+                .then(response => response.json())
+                .then(data => {
+                    var txtCliente = document.getElementById('txtcliente');
+
+                    if (data.existe) {
+                        // Si existe, actualiza el label con el nombre del empleado
+                        txtCliente.textContent = data.nombreEmpleado; // Nombre del empleado
+                        this.value = data.nit; // NIT
+                        direccionCliente.textContent = 'Ciudad';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Manejo de errores
+                });
+        } else {
+            // Si el campo NIT está vacío, limpiar el label
+            document.getElementById('txtcliente').textContent = '';
+        }
+    });
+    </script></>

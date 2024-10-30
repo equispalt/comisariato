@@ -27,7 +27,7 @@ namespace SistemaILP.comisariato.Servicios
             // Agregar el módulo al breadcrumb si existe
             if (!string.IsNullOrEmpty(module))
             {
-                items.Add(new BreadcrumbItem(module, "#")); // Puedes ajustar el enlace según sea necesario
+                items.Add(new BreadcrumbItem(module, "#")); 
             }
 
             // Agregar elementos adicionales basados en la ruta
@@ -43,15 +43,14 @@ namespace SistemaILP.comisariato.Servicios
                         // Si estamos en la última acción del controlador Home, no lo agregamos
                         if (i == routeData.Length - 1)
                         {
-                            break; // Terminar el loop si estamos en 'Home'
+                            break; 
                         }
                         else
                         {
-                            continue; // Continuar con el siguiente elemento si no es la última parte
+                            continue; 
                         }
                     }
 
-                    // Crear un título amigable (puedes personalizar esto)
                     string title = route;
                     string url = "/" + string.Join("/", routeData.Take(i + 1)); // Construir la URL hasta el elemento actual
 
