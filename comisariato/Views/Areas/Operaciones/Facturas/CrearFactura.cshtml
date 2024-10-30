@@ -139,12 +139,16 @@
                 .then(response => response.json())
                 .then(data => {
                     var txtCliente = document.getElementById('txtcliente');
+                    var direccionCliente = document.getElementById('direccionCliente'); // Asegúrate de que este elemento exista
 
                     if (data.existe) {
                         // Si existe, actualiza el label con el nombre del empleado
                         txtCliente.textContent = data.nombreEmpleado; // Nombre del empleado
                         this.value = data.nit; // NIT
                         direccionCliente.textContent = 'Ciudad';
+
+                        // Bloquear campos de entrada
+                        bloquearCampos(true); // Llama a la función para bloquear los campos
                     } else {
                         // Si no existe, muestra la alerta
                         alert(data.mensaje); // Muestra el mensaje de error
@@ -161,6 +165,25 @@
             document.getElementById('txtcliente').textContent = '';
         }
     });
+
+    // Función para bloquear o desbloquear campos
+    function bloquearCampos(bloquear) {
+        var campos = ['nitCliente', 'otroCampo1', 'otroCampo2']; // Agrega los ID de los campos que deseas bloquear
+        campos.forEach(function (campoId) {
+            var campo = document.getElementById(campoId);
+            if (campo) {
+                campo.disabled = bloquear; // Bloquea o desbloquea el campo
+            }
+        });
+    }
+
+    // Evento para habilitar campos al presionar F2
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'F2') {
+            bloquearCampos(false); // Habilitar los campos
+        }
+    });
+
  </script>
 
  <script>

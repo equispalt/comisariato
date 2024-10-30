@@ -158,25 +158,6 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
             }
         }
 
-        [HttpGet]
-        public async Task<JsonResult> ObtieneExistencias(int cantidad, string codigo)
-        {
-            var resultado = await _repositorioFacturas.PaObtenerExistenciasProducto(cantidad, codigo);
-
-            if (resultado != null)
-            {
-                // Si hay un mensaje que indica suficiente existencia
-                return Json(new
-                {
-                    existe = true,
-                    mensaje = resultado.Mensaje 
-                });
-            }
-            else
-            {
-                return Json(new { existe = false });
-            }
-        }
 
 
     }
