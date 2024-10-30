@@ -131,10 +131,31 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
             }
             else
             {
-                return Json(new { existe = false, mensaje = "Empleado no encontrado." });
+                return Json(new { existe = false, mensaje = "Empleado no encontrado, por favor verifique" });
             }
         }
 
+        [HttpGet]
+        public async Task<JsonResult> ObtieneProductoPorCodigo(string codigo)
+        {
+            var producto = await _repositorioFacturas.PaObtenerProductoPorCodigo(codigo);
+
+            if (producto != null)
+            {
+                return Json(new
+                {
+                    existe = true,
+                    productoId = producto.ProductoId,
+                    nombreProducto = producto.NombreProducto,
+                    codigo = producto.CodigoSILP,
+                    precio = producto.PrecioUnidad
+                });
+            }
+            else
+            {
+                return Json(new { existe = false, mensaje = "Producto no encontrado, por favor verifique" });
+            }
+        }
 
 
     }

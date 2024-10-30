@@ -70,35 +70,31 @@
         <hr />
 
         <div class="row align-items-end">
-            <div class="col-sm-3">
-                <div class="mb-2 position-relative">
-                    <!-- Label que siempre permanece visible -->
-                    <label class="form-label">Producto</label>
-
-                    <!-- Campo de entrada para buscar productos (oculto inicialmente) -->
-                    <input type="text" id="productoSearch" placeholder="Buscar producto..." class="form-control form-control-sm mb-2" style="display: none; position: absolute; top: 0; left: 0; width: 100%;" />
-
-                    <!-- Select de productos -->
-                    <select class="form-control form-control-sm" id="txtproducto">
-                        <option value="0">[Seleccione un Producto]</option>
-                        <option value="1" data-descripcion="Producto A" data-precio="10">Producto A</option>
-                        <option value="2" data-descripcion="Producto B" data-precio="20">Producto B</option>
-                        <option value="3" data-descripcion="Producto C" data-precio="30">Producto C</option>
-                    </select>
+            <div class="col-sm-2">
+                <div class="mb-2">
+                    <label for="txtcodigo" class="form-label">Codigo</label>
+                    <input type="text" class="form-control form-control-sm" id="txtcodigo" />
                 </div>
-            </div> <!-- Cierra correctamente esta columna -->
+            </div>
+            
+            <div class="col-sm-4">
+                <div class="mb-2">
+                    <label class="form-label">Producto</label>
+                    <label class="form-control form-control-sm" id="txtproducto"></label>
+                </div>
+            </div> 
 
-            <div class="col-sm-3">
+            <div class="col-sm-1">
                 <div class="mb-2">
                     <label for="txtcantidad" class="form-label">Cantidad</label>
                     <input type="number" min="0" class="form-control form-control-sm" id="txtcantidad">
                 </div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-1">
                 <div class="mb-2">
                     <label for="txtprecio" class="form-label">Precio</label>
-                    <input type="number" min="0" class="form-control form-control-sm" id="txtprecio">
+                    <label class="form-control form-control-sm" id="txtprecio"></label>
                 </div>
             </div>
 
@@ -129,6 +125,14 @@
 
     </div>
 </div>
+
+<!-- Modal Consulta -->
+<div id="modal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, -50%); background-color: #fefefe; padding: 20px; border: 1px solid #888; z-index: 1000;">
+    <span id="modal-message"></span>
+    <button onclick="closeModal()">Cerrar</button>
+</div>
+
+
 
 @*     <script>
 
@@ -254,7 +258,7 @@
         })
     </script> *@
 
-    <script>
+ <script>
     // Evento blur para verificar si el NIT ya existe cuando se pierde el foco del campo de NIT
     document.getElementById('nitCliente').addEventListener('blur', function () {
         var nit = this.value;
@@ -269,6 +273,11 @@
                         txtCliente.textContent = data.nombreEmpleado; // Nombre del empleado
                         this.value = data.nit; // NIT
                         direccionCliente.textContent = 'Ciudad';
+                    } else {
+                        // Si no existe, muestra la alerta
+                        alert(data.mensaje); // Muestra el mensaje de error
+                        txtCliente.textContent = ''; // Limpia el campo de producto
+                        direccionCliente.textContent = ''; // Limpia el campo de precio
                     }
                 })
                 .catch(error => {
@@ -280,4 +289,40 @@
             document.getElementById('txtcliente').textContent = '';
         }
     });
-    </script></>
+ </script></>
+
+ <script>
+    // Evento blur para verificar si el codigo existe cuando se pierde el foco del campo de codigo
+    document.getElementById('txtcodigo').addEventListener('blur', function () {
+        var codigo = this.value;
+        if (codigo) {
+            fetch('/Facturas/ObtieneProductoPorCodigo?codigo=' + codigo)
+                .then(response => response.json())
+                .then(data => {
+                    var txtProducto = document.getElementById('txtproducto');
+                    var txtPrecio = document.getElementById('txtprecio');
+
+                    if (data.existe) {
+                        // Si existe, actualiza el label con el nombre del producto
+                        this.value = codigo
+                        txtProducto.textContent = data.nombreProducto; // Nombre del producto
+                        txtPrecio.textContent = data.precio.toFixed(2);
+                    }
+                    else {
+                        // Si no existe, muestra la alerta
+                        alert(data.mensaje); // Muestra el mensaje de error
+                        txtProducto.textContent = ''; // Limpia el campo de producto
+                        txtPrecio.textContent = ''; // Limpia el campo de precio
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Manejo de errores
+                });
+        } else {
+            // Si el campo NIT está vacío, limpiar el label
+            document.getElementById('txtproducto').textContent = '';
+            document.getElementById('txtprecio').textContent = '';
+        }
+    });
+ </script></>
