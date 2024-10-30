@@ -186,6 +186,7 @@
 
  </script>
 
+
  <script>
     // Evento blur para verificar si el codigo existe cuando se pierde el foco del campo de codigo
     document.getElementById('txtcodigo').addEventListener('blur', function () {
@@ -204,6 +205,8 @@
                         txtProducto.textContent = data.nombreProducto; // Nombre del producto
                         txtPrecio.textContent = data.precio.toFixed(2);
                         lblDisponible.textContent = data.disponible;
+
+                        bloquearTPyMoneda();
 
                         // Habilitar o deshabilitar el campo de cantidad
                         if (data.disponible > 0) {
@@ -233,6 +236,21 @@
     });
  </script>
 
+<script>
+    // Script para manejar el bloqueo y desbloqueo de campos de moneda y forma de pago
+    function bloquearTPyMoneda() {
+        document.getElementById('txtmoneda').disabled = true; // Bloquear el campo de moneda
+        document.getElementById('txtformapago').disabled = true; // Bloquear el campo de forma de pago
+    }
+
+    // Evento para habilitar campos al presionar F4
+    document.addEventListener('keydown', function (event) {
+        if (event.key === 'F4') {
+            document.getElementById('txtmoneda').disabled = false; // Habilitar el campo de moneda
+            document.getElementById('txtformapago').disabled = false; // Habilitar el campo de forma de pago
+        }
+    });
+</script>
 
 
     <script>
