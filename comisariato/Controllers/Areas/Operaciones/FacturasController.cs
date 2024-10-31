@@ -83,13 +83,6 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         {
             try
             {
-                //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
-                //if (esPermitido == false)
-                //{
-                //    return RedirectToAction("Error403", "Home");
-                //}
-
-                // Obtener el encabezado y los detalles de la factura
                 var facturaDTO = await _repositorioFacturas.ObtieneFactura(facturaId);
 
                 if (facturaDTO == null)
@@ -99,7 +92,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                 // Generar PDF vista completa de la factura
                 return new ViewAsPdf("ImprimirFactura", facturaDTO)
                 {
-                    FileName = $"Factura_{facturaDTO.FacVentaId}.pdf", // Nombre del archivo PDF
+                    FileName = $"Factura_{facturaDTO.Consecutivo}.pdf", // Nombre del archivo PDF
                     PageSize = Rotativa.AspNetCore.Options.Size.Letter,    // Opcional: Tamaño de la página
                     PageOrientation = Rotativa.AspNetCore.Options.Orientation.Portrait, // Orientación
                     CustomSwitches = "--no-stop-slow-scripts", // Opcional: configuración adicional
@@ -120,7 +113,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         }
 
         [HttpPost]
-        public JsonResult GuardarFactura([FromBody] FacVentas body)
+        public async Task<JsonResult> GuardarFactura([FromBody] FacVentas body)
         {
             try
             {
@@ -149,17 +142,29 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                 }
                 factura.Add(oDetalleFactura);
 
+                int idFacturaGenerada;
+
                 using var connection = new SqlConnection(_connectionString);
-                {
+                
                     connection.Open();
                     SqlCommand cmd = new SqlCommand("[GenerarFactura]", connection);
-                    cmd.Parameters.Add("@fac_xml", SqlDbType.Xml).Value = factura.ToString();
+                    
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.ExecuteNonQuery();
-                }
+                    cmd.Parameters.Add("@fac_xml", SqlDbType.Xml).Value = factura.ToString();
 
-                return Json(new { respuesta = true });
+                SqlParameter outputIdParam = new SqlParameter("@idFactura_generado", SqlDbType.Int)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    cmd.Parameters.Add(outputIdParam);
+
+                    cmd.ExecuteNonQuery();
+
+                idFacturaGenerada = (int)outputIdParam.Value;
+
+                return Json(new { respuesta = true, idFactura = idFacturaGenerada });
+
             }
             catch (Exception ex)
             {
