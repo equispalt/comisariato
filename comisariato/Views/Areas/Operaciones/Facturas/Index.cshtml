@@ -45,8 +45,12 @@
                                         </a>
 
                                         <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item btn-eliminar" data-toggle="modal"
+                                            <a class="dropdown-item btn-anular" data-toggle="modal"
                                                data-id="@factura.FacVentaId"
+                                               data-consecutivo="@factura.Consecutivo"
+                                               data-fecha="@factura.FechaMod"
+                                               data-empleado="@factura.NombreEmpleado"
+                                               data-total="@factura.Total"
                                                data-target="#modalAnularFactura">
                                             <i class="fa fa-ban"></i> Anular Factura
                                         </a>
@@ -127,4 +131,60 @@
     }
 </script>
 
+<!-- Modal de eliminar usuario -->
+<div class="modal fade" id="modalAnularFactura" tabindex="-1" role="dialog" aria-labelledby="modalAnularLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAnularLabel"><strong>Anular Factura</strong></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="@Url.Action("AnularFactura", "Facturas")" method="post">
+                    <input type="hidden" id="modal-facID" name="id" />
 
+                    <p><strong>¡Advertencia! </strong>Esta Accion no se puede revertir</p>
+                    <p>¿Estás seguro que deseas anular la factura?</p>   <br />
+
+                    <p>Numero: <strong id="modal-consecutivo"></strong></p>
+                    <p>Fecha Emision: <strong id="modal-fecha"></strong></p>
+                    <p>Nombre: <strong id="modal-empleado"></strong></p>
+                    <p>Total: <strong id="modal-total"></strong></p>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger">Anular</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <script>
+    // Captura el ID del usuario cuando haces clic en "btn-anular"
+    document.querySelectorAll('.btn-anular').forEach(function (button) {
+        button.addEventListener('click', function () {
+            // Captura el ID y el nombre del usuario desde el botón
+            var facID = this.getAttribute('data-id');
+            var consecutivo = this.getAttribute('data-consecutivo');
+            var fecha = this.getAttribute('data-fecha');
+            var total = this.getAttribute('data-total');
+            var empleado = this.getAttribute('data-empleado');
+
+            // Asigna los valores capturados al modal
+            document.getElementById('modal-facID').value = facID;
+            document.getElementById('modal-consecutivo').textContent = consecutivo;
+            document.getElementById('modal-fecha').textContent = fecha;
+            document.getElementById('modal-total').textContent = total;
+            document.getElementById('modal-empleado').textContent = empleado;
+
+            // Muestra el modal manualmente usando Bootstrap
+            var modalAnular = new bootstrap.Modal(document.getElementById('modalAnularFactura'));
+            modalAnular.show();
+        });
+    });
+
+ </script>

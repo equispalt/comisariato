@@ -176,6 +176,33 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AnularFactura(int id)
+        {
+            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+
+            //if (esPermitido == false)
+            //{
+            //    return RedirectToAction("Error403", "Home");
+            //}
+
+            try
+            {
+
+                bool anulado = await _repositorioFacturas.PaAnularFactura(id);
+
+                if (anulado)
+                {
+                    return RedirectToAction("Index", "Facturas");
+                }
+
+                return RedirectToAction("Error", "Home");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
 
 
         // Metodos que permitiran consultar CLIENTES, PRODUCTOS Y EXISTENCIAS

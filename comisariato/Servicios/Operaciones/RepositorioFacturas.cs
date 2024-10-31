@@ -8,6 +8,7 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
     {
         Task<List<FacVentas>> ObtieneTodoFacturas();
         Task<FacturaDTO> ObtieneFactura(int facturaId);
+        Task<bool> PaAnularFactura(int facID);
         Task<FacturaDTO> PaObtenerEmpleadoPorNit(string nit);
         Task<DetalleFacturaDTO> PaObtenerProductoPorCodigo(string codigo);
     }
@@ -58,6 +59,25 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
             return facturaEncabezado;
         }
 
+        public async Task<bool> PaAnularFactura(int facID)
+        {
+            try
+            {
+                using var connection = new SqlConnection(_connectionString);
+                await connection.ExecuteAsync(@"
+                    EXEC paAnularFactura @facventaid",
+                    new
+                    {
+                        facventaid = facID
+                    });
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         // PERMITE CONSULTAR, CLIENTES, PRODUCTOS Y EXITENCIAS
 
         public async Task<FacturaDTO> PaObtenerEmpleadoPorNit(string nit)
@@ -79,6 +99,7 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
 
             return producto; // Retorna null si no se encuentra el producto
         }
+
 
     }
 }
