@@ -1,9 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Rotativa.AspNetCore;
 using SistemaILP.comisariato.Data;
 using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Operaciones;
+using System.Configuration;
+using System.Data;
+using System.Security.Claims;
+using System.Xml.Linq;
 
 namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
 {
@@ -13,13 +18,17 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         private readonly IRepositorioFacturas _repositorioFacturas;
         private readonly IBreadcrumbService _breadcrumbService;
         private readonly IDatosDtoService _datosDtoService;
+        private readonly string _connectionString;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public FacturasController(IPermisosService permisosService, IRepositorioFacturas repositorioFacturas, IBreadcrumbService breadcrumbService,IDatosDtoService datosDtoService)
+        public FacturasController(IHttpContextAccessor contextAccessor, IConfiguration configuration, IPermisosService permisosService, IRepositorioFacturas repositorioFacturas, IBreadcrumbService breadcrumbService,IDatosDtoService datosDtoService)
         {
+            _connectionString = configuration.GetConnectionString("ConnectionComisariato") ?? "";
             _permisosService = permisosService;
             _repositorioFacturas = repositorioFacturas;
             _breadcrumbService = breadcrumbService;
             _datosDtoService = datosDtoService;
+            _contextAccessor = contextAccessor;
         }
 
         public async Task<IActionResult> Index(int? numpag)
@@ -102,17 +111,67 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
             }
         }
 
-        public async Task<IActionResult> CrearFactura()
+        public IActionResult CrearFactura()
         {
             List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
             ViewBag.BreadcrumbItems = breadcrumbItems;
 
-            var oProd = _datosDtoService.ObtieneTodoEmpleados();
-            ViewBag.Prod = oProd;
-
-
             return View();
         }
+
+        [HttpPost]
+        public JsonResult GuardarFactura([FromBody] FacVentas body)
+        {
+            try
+            {
+                string serie = GenerarSerie();
+                string consecutivo = GenerarConsecutivo();
+                string usuario = UsuarioActivo();
+
+                XElement factura = new XElement("FacVentas",
+                    new XElement("Serie", serie),
+                    new XElement("Consecutivo", consecutivo),
+                    new XElement("NIT", body.NIT),
+                    new XElement("Total", body.Total),
+                    new XElement("usuario", usuario),
+                    new XElement("TipoPagoId", body.TipoPagoId)
+                );
+
+                XElement oDetalleFactura = new XElement("FacVentasDet");
+                foreach (FacVentasDet item in body.lstFacVentasDet)
+                {
+                    oDetalleFactura.Add(new XElement("Item",
+                        new XElement("CodigoSILP", item.CodigoSILP),
+                        new XElement("Cantidad", item.Cantidad),
+                        new XElement("PrecioUnidad", item.PrecioUnidad),
+                        new XElement("TotalLinea", item.TotalLinea)
+                    ));
+                }
+                factura.Add(oDetalleFactura);
+
+                using var connection = new SqlConnection(_connectionString);
+                {
+                    connection.Open();
+                    SqlCommand cmd = new SqlCommand("[GenerarFactura]", connection);
+                    cmd.Parameters.Add("@fac_xml", SqlDbType.Xml).Value = factura.ToString();
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                return Json(new { respuesta = true });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details here if you have a logging system
+                Console.WriteLine($"Error al guardar la factura: {ex.Message}");
+
+                // Return a JSON response indicating failure
+                return Json(new { respuesta = false, mensaje = "Ocurrió un error al guardar la factura. Intente nuevamente.", error = ex.Message });
+            }
+        }
+
+
 
         // Metodos que permitiran consultar CLIENTES, PRODUCTOS Y EXISTENCIAS
         [HttpGet]
@@ -158,6 +217,35 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
             }
         }
 
+        private string GenerarSerie()
+        {
+            const string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"; // Caracteres permitidos
+            Random random = new Random();
+            char[] serie = new char[8]; // Longitud de la serie
+
+            for (int i = 0; i < serie.Length; i++)
+            {
+                serie[i] = caracteres[random.Next(caracteres.Length)]; // Selecciona un carácter aleatorio
+            }
+
+            return new string(serie); // Convierte el array de caracteres a string
+        }
+
+
+        // Método para generar un número aleatorio
+        private string GenerarConsecutivo()
+        {
+            Random random = new Random();
+            long numeroAleatorio = random.Next(1000000000, 2000000000); // Cambia el rango según tus necesidades
+            return numeroAleatorio.ToString();
+        }
+
+        private string UsuarioActivo()
+        {
+            string currentUser = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.Name)?.Value;
+
+            return currentUser;
+        }
 
 
     }

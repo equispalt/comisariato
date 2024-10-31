@@ -29,7 +29,7 @@
             <div class="col-sm-4">
                 <div class="mb-2">
                     <label for="form-label">NIT: </label>
-                    <input type="text" class="form-control form-control-sm" id="nitCliente">
+                    <input type="text" class="form-control form-control-sm" id="nitCliente" >
                 </div>
             </div>
 
@@ -90,7 +90,7 @@
             <div class="col-sm-2">
                 <div class="mb-2">
                     <span><strong>Cantidad Disponible: </strong></span><label id="lbldisponible" class="form-label"></label>
-                    <input type="number" min="0" class="form-control form-control-sm" id="txtcantidad" disabled>
+                    <input type="number" min="0" class="form-control form-control-sm" id="txtcantidad" >
                 </div>
             </div>
 
@@ -148,7 +148,7 @@
                         direccionCliente.textContent = 'Ciudad';
 
                         // Bloquear campos de entrada
-                        bloquearCampos(true); // Llama a la función para bloquear los campos
+                        bloquearCampos(true); //Llama a la función para bloquear los campos
                     } else {
                         // Si no existe, muestra la alerta
                         alert(data.mensaje); // Muestra el mensaje de error
@@ -168,11 +168,11 @@
 
     // Función para bloquear o desbloquear campos
     function bloquearCampos(bloquear) {
-        var campos = ['nitCliente', 'otroCampo1', 'otroCampo2']; // Agrega los ID de los campos que deseas bloquear
+        var campos = ['nitCliente']; // Agrega los ID de los campos que deseas bloquear
         campos.forEach(function (campoId) {
             var campo = document.getElementById(campoId);
             if (campo) {
-                campo.disabled = bloquear; // Bloquea o desbloquea el campo
+                campo.readOnly = bloquear; // Bloquea o desbloquea el campo
             }
         });
     }
@@ -201,6 +201,7 @@
 
                     if (data.existe) {
                         // Si existe, actualiza el label con el nombre del producto
+
                         this.value = codigo;
                         txtProducto.textContent = data.nombreProducto; // Nombre del producto
                         txtPrecio.textContent = data.precio.toFixed(2);
@@ -210,9 +211,9 @@
 
                         // Habilitar o deshabilitar el campo de cantidad
                         if (data.disponible > 0) {
-                            document.getElementById('txtcantidad').disabled = false; // Habilitar si hay stock disponible
+                            document.getElementById('txtcantidad').readOnly = false; // Habilitar si hay stock disponible
                         } else {
-                            document.getElementById('txtcantidad').disabled = true; // Mantener deshabilitado si no hay stock
+                            document.getElementById('txtcantidad').readOnly = true; // Mantener deshabilitado si no hay stock
                             alert('Producto Activo, pero no hay disponibilidad en el inventario.'); // Notificación al usuario
                         }
                     } else {
@@ -221,7 +222,7 @@
                         txtProducto.textContent = ''; // Limpia el campo de producto
                         txtPrecio.textContent = ''; // Limpia el campo de precio
                         lblDisponible.textContent = '0';
-                        document.getElementById('txtcantidad').disabled = true; // Deshabilitar el campo de cantidad
+                        document.getElementById('txtcantidad').readOnly = true; // Deshabilitar el campo de cantidad
                     }
                 })
                 .catch(error => {
@@ -239,15 +240,15 @@
 <script>
     // Script para manejar el bloqueo y desbloqueo de campos de moneda y forma de pago
     function bloquearTPyMoneda() {
-        document.getElementById('txtmoneda').disabled = true; // Bloquear el campo de moneda
-        document.getElementById('txtformapago').disabled = true; // Bloquear el campo de forma de pago
+        document.getElementById('txtmoneda').readOnly = true; // Bloquear el campo de moneda
+        document.getElementById('txtformapago').readOnly = true; // Bloquear el campo de forma de pago
     }
 
     // Evento para habilitar campos al presionar F4
     document.addEventListener('keydown', function (event) {
         if (event.key === 'F4') {
-            document.getElementById('txtmoneda').disabled = false; // Habilitar el campo de moneda
-            document.getElementById('txtformapago').disabled = false; // Habilitar el campo de forma de pago
+            document.getElementById('txtmoneda').readOnly = false; // Habilitar el campo de moneda
+            document.getElementById('txtformapago').readOnly = false; // Habilitar el campo de forma de pago
         }
     });
 </script>
@@ -340,56 +341,53 @@
 
 
 
-        //javascript para terminar de agregar productos al detalle
-        $("#btnTerminar").on("click", function () {
+    $("#btnTerminar").on("click", function () {
+        var FacVentasDet = [];
+        var total = 0;
 
-            var FacDetalle = []
-            var total = 0;
-
-            $('table > tbody  > tr').each(function (index, tr) {
-
-                FacDetalle.push(
-                    {
-                        producto_id: parseInt($(tr).find('td:eq(0)').text()),
-                        // descripcion_producto: $(tr).find('td:eq(1)').text(),
-
-                        cantidad_detalle: parseInt($(tr).find('td:eq(2)').text()),
-                        precio_detalle: parseFloat($(tr).find('td:eq(3)').text()),
-                        subtotal_detalle: parseFloat($(tr).find('td:eq(4)').text())
-                    }
-                )
-                total = total + parseFloat($(tr).find('td:eq(4)').text())
+        $('table > tbody  > tr').each(function (index, tr) {
+            FacVentasDet.push({
+                codigoSILP: $(tr).find('td:eq(0)').text().toString(),
+                cantidad: parseInt($(tr).find('td:eq(2)').text()),
+                PrecioUnidad: parseFloat($(tr).find('td:eq(3)').text()),
+                TotalLinea: parseFloat($(tr).find('td:eq(4)').text())
             });
+            total = total + parseFloat($(tr).find('td:eq(4)').text());
+        });
 
-            console.log(FacDetalle)
-            console.log(total)
+        console.log(FacVentasDet);
+        console.log(total);
+
+        var Factura = {
+            NIT: $("#nitCliente").val(),
+            TipoPagoId: $("#txtformapago").val(),
+            MonedaId: $("#txtmoneda").val(),
+            Total: total,
+            lstFacVentasDet: FacVentasDet
+        }
+
+        console.log("Factura JSON:", JSON.stringify(Factura));
 
 
-
-
-            var Factura = {
-                // idOrdenCompra: $("#txtnumerooc").val(),
-                cliente_id: $("#txtcliente").val(),
-                id_pago: $("#txtformapago").val(),
-                id_moneda: $("#txtmoneda").val(),
-
-                total_factura: total,
-                lstFacDetalle: FacDetalle
-            }
-
-            jQuery.ajax({
-                url: '@Url.Action("CrearFactura", "Facturas")',
-                type: "POST",
-                data: JSON.stringify(Factura),
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    console.log(data)
-                    if (data.respuesta) {
-                        alert("Factura Registrada");
-                        window.location.href = '@Url.Action("CrearFactura", "Facturas")';
-                    }
-                }
-            });
+        // Usando fetch en lugar de jQuery.ajax
+        fetch('@Url.Action("GuardarFactura", "Facturas")', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            body: JSON.stringify(Factura)
         })
-    </script>
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if (data.respuesta) {
+                    alert("Factura Registrada");
+                    window.location.href = '@Url.Action("CrearFactura", "Facturas")';
+                }
+            })
+            .catch(error => {
+                console.error("Error al registrar la factura:", error);
+            });
+    });
+
+</script>

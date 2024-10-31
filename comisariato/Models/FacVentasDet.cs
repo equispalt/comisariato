@@ -13,6 +13,10 @@
         public decimal TotalLinea { get; set; }
         public int ProgramaId { get; set; }
         public DateTime FechaMod { get; set; }
+
+        // Otras referencias
+        public string CodigoSILP { get; set; }  
+
     }
 
 }

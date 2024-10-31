@@ -17,11 +17,14 @@
         public int UsuarioId { get; set; }
         public int TipoPagoId { get; set; }
         public int Empresaid { get; set; }
+        public int MonedaId { get; set; }
 
         // otras referencias
 
+        public List<FacVentasDet> lstFacVentasDet { get; set; }
+
         public string NombreEmpleado { get; set; }
-        public string NIT { get; set; }
+        public string? NIT { get; set; }
         public string NombreUsuario { get; set; }
         public string NombreComisariato { get; set; }
         public string NombreEstado { get; set; }
