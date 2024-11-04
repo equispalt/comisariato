@@ -185,11 +185,12 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
             //{
             //    return RedirectToAction("Error403", "Home");
             //}
+            string usuario = UsuarioActivo();
 
             try
             {
 
-                bool anulado = await _repositorioFacturas.PaAnularFactura(id);
+                bool anulado = await _repositorioFacturas.PaAnularFactura(id, usuario);
 
                 if (anulado)
                 {

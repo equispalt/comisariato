@@ -8,7 +8,7 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
     {
         Task<List<FacVentas>> ObtieneTodoFacturas();
         Task<FacturaDTO> ObtieneFactura(int facturaId);
-        Task<bool> PaAnularFactura(int facID);
+        Task<bool> PaAnularFactura(int facID, string usuario);
         Task<FacturaDTO> PaObtenerEmpleadoPorNit(string nit);
         Task<DetalleFacturaDTO> PaObtenerProductoPorCodigo(string codigo);
     }
@@ -59,16 +59,17 @@ namespace SistemaILP.comisariato.Servicios.Operaciones
             return facturaEncabezado;
         }
 
-        public async Task<bool> PaAnularFactura(int facID)
+        public async Task<bool> PaAnularFactura(int facID, string usuario)
         {
             try
             {
                 using var connection = new SqlConnection(_connectionString);
                 await connection.ExecuteAsync(@"
-                    EXEC paAnularFactura @facventaid",
+                    EXEC paAnularFactura @facventaid, @user",
                     new
                     {
-                        facventaid = facID
+                        facventaid = facID,
+                        user = usuario
                     });
                 return true;
             }
