@@ -20,7 +20,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
             _breadcrumbService = breadcrumbService;
             _repositorioReportes = repositorioReportes; 
         }
-        public async Task<IActionResult> ResumenFacturas(DateTime? inicio, DateTime? fin)
+        public async Task<IActionResult> ResumenFacturas(DateTime? inicio, DateTime? fin, bool ExportarExcel = false)
         {
             List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
             ViewBag.BreadcrumbItems = breadcrumbItems;
@@ -44,6 +44,26 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
             try
             {
                 List<FacVentas> Lista = await _repositorioReportes.ResumenFacturas(inicio.Value, fin.Value);
+
+                var listaFiltrada = Lista.Select(f => new
+                {
+                    f.Consecutivo,
+                    f.Serie,
+                    f.FechaMod,
+                    f.Total,
+                    f.NombreEstado,
+                    f.NombreTipoPago,
+                    f.NombreUsuario
+                }).ToList();
+
+                TempData["ListaFacturas"] = Newtonsoft.Json.JsonConvert.SerializeObject(listaFiltrada);
+
+                if (ExportarExcel)
+                {
+                    // Genera el archivo Excel si esExportarExcel es verdadero
+                    var archivoExcel = _repositorioReportes.GenerarExcelDesdeLista(listaFiltrada);
+                    return File(archivoExcel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "ResumenFacturas.xlsx");
+                }
 
                 return View(Lista);
             }
@@ -85,8 +105,6 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
                 return RedirectToAction("Error", "Home");
             }
         }
-
-
 
     }
 }
