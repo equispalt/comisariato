@@ -15,7 +15,7 @@
         public DateTime FechaMod { get; set; }
 
         // Otras referencias
-        public string CodigoSILP { get; set; }  
+        public string CodigoSILP { get; set; }
 
     }
 

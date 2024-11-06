@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SistemaILP.comisariato.Models;
+﻿using SistemaILP.comisariato.Models;
 
 namespace SistemaILP.comisariato.Servicios
 {
@@ -27,7 +26,7 @@ namespace SistemaILP.comisariato.Servicios
             // Agregar el módulo al breadcrumb si existe
             if (!string.IsNullOrEmpty(module))
             {
-                items.Add(new BreadcrumbItem(module, "#")); 
+                items.Add(new BreadcrumbItem(module, "#"));
             }
 
             // Agregar elementos adicionales basados en la ruta
@@ -43,11 +42,11 @@ namespace SistemaILP.comisariato.Servicios
                         // Si estamos en la última acción del controlador Home, no lo agregamos
                         if (i == routeData.Length - 1)
                         {
-                            break; 
+                            break;
                         }
                         else
                         {
-                            continue; 
+                            continue;
                         }
                     }
 

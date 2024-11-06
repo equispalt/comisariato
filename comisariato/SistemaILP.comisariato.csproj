@@ -11,8 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Rotativa\wkhtmltoimage.exe" />
-    <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Rotativa\wkhtmltoimage.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Rotativa\wkhtmltopdf.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>
@@ -27,9 +31,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Areas\Reportes\" />
     <Folder Include="Rotativa\" />
-    <Folder Include="Views\Areas\Reportes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\css\Factura.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\js\site.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

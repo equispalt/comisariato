@@ -3,6 +3,7 @@ using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Finanzas;
 using SistemaILP.comisariato.Servicios.MercadeoVentas;
 using SistemaILP.comisariato.Servicios.Operaciones;
+using SistemaILP.comisariato.Servicios.Reportes;
 using SistemaILP.comisariato.Servicios.Sistemas;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,7 +49,7 @@ builder.Services.AddTransient<IRepositorioEmpleado, RepositorioEmpleados>();
 builder.Services.AddTransient<IRepositorioProducto, RepositorioProductos>();
 builder.Services.AddTransient<IRepositorioExistencias, RepositorioExistencias>();
 builder.Services.AddTransient<IRepositorioFacturas, RepositorioFacturas>();
-
+builder.Services.AddTransient<IRepositorioReportes, RepositorioReportes >();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

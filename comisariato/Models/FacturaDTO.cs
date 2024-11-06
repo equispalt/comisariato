@@ -50,7 +50,7 @@
         public decimal IVA_Unidad { get; set; }
         public decimal PrecioUnidad { get; set; }
         public decimal TotalLinea { get; set; }
-        public int Disponible { get; set; } 
+        public int Disponible { get; set; }
 
         public string Mensaje { get; set; }
     }

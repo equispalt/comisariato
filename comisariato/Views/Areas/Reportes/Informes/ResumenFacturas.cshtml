@@ -1,0 +1,66 @@
+﻿@using SistemaILP.comisariato.Data;
+@model List<FacVentas>;
+
+<div class="card">
+    <h4 style="padding-left: 20px; margin-top: 10px" class="card-title"><i class="fas fa-file-invoice"></i> Consulta De Facturas</h4>
+    
+    <!-- Formulario para filtrar por fechas -->
+    <div class="card-header">
+        <form asp-action="ResumenFacturas" method="get" class="form-inline mb-3">
+            <label for="inicio" class="mr-2">Fecha Inicio:</label>
+            <input type="date" id="inicio" name="inicio" class="form-control mr-3" />
+
+            <label for="fin" class="mr-2">Fecha Fin:</label>
+            <input type="date" id="fin" name="fin" class="form-control mr-3" />
+
+            <button type="submit" class="btn btn-primary">Generar</button>
+        </form>
+    </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0" style="height: 500px;">
+            <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered" id="tablaFacturas">
+                <thead>
+                    <tr>
+                        <th style="width: 190px; text-align: center;">Numero</th>
+                        <th style="width: 190px; text-align: center;">Serie</th>
+                        <th style="width: 190px; text-align: center;">Fecha Emision</th>
+                        <th style="width: 150px; text-align: center;">Total</th>
+                        <th style="width: 100px; text-align: center;">Estado</th>
+                        <th style="width: 200px; text-align: center;">Tipo de Pago</th>
+                        <th style="width: 200px;">Vendedor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var facturas in Model)
+                    {
+                        <tr>
+                            <td style="width: 190px; text-align: center;">@facturas.Consecutivo</td>
+                            <td style="text-align: center;">@facturas.Serie</td>
+                            <td style="text-align: center;">@facturas.FechaMod</td>
+                            <td style="text-align: right;">Q. @facturas.Total</td>
+                            <td style="text-align: center;">@facturas.NombreEstado</td>
+                            <td style="text-align: center;">@facturas.NombreTipoPago</td>
+                            <td>@facturas.NombreUsuario</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" style="text-align: center;">No hay datos disponibles.</td>
+                    </tr>
+                }
+
+                </tbody>
+            </table>
+            <hr>
+
+        </div>
+        <!-- /.card-body -->
+
+</div>
+<!-- /.card -->
+
+

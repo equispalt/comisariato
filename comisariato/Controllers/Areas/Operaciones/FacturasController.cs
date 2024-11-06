@@ -5,7 +5,6 @@ using SistemaILP.comisariato.Data;
 using SistemaILP.comisariato.Models;
 using SistemaILP.comisariato.Servicios;
 using SistemaILP.comisariato.Servicios.Operaciones;
-using System.Configuration;
 using System.Data;
 using System.Security.Claims;
 using System.Xml.Linq;
@@ -21,7 +20,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         private readonly string _connectionString;
         private readonly IHttpContextAccessor _contextAccessor;
 
-        public FacturasController(IHttpContextAccessor contextAccessor, IConfiguration configuration, IPermisosService permisosService, IRepositorioFacturas repositorioFacturas, IBreadcrumbService breadcrumbService,IDatosDtoService datosDtoService)
+        public FacturasController(IHttpContextAccessor contextAccessor, IConfiguration configuration, IPermisosService permisosService, IRepositorioFacturas repositorioFacturas, IBreadcrumbService breadcrumbService, IDatosDtoService datosDtoService)
         {
             _connectionString = configuration.GetConnectionString("ConnectionComisariato") ?? "";
             _permisosService = permisosService;
@@ -145,21 +144,21 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
                 int idFacturaGenerada;
 
                 using var connection = new SqlConnection(_connectionString);
-                
-                    connection.Open();
-                    SqlCommand cmd = new SqlCommand("[GenerarFactura]", connection);
-                    
-                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add("@fac_xml", SqlDbType.Xml).Value = factura.ToString();
+                connection.Open();
+                SqlCommand cmd = new SqlCommand("[GenerarFactura]", connection);
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.Add("@fac_xml", SqlDbType.Xml).Value = factura.ToString();
 
                 SqlParameter outputIdParam = new SqlParameter("@idFactura_generado", SqlDbType.Int)
-                    {
-                        Direction = ParameterDirection.Output
-                    };
-                    cmd.Parameters.Add(outputIdParam);
+                {
+                    Direction = ParameterDirection.Output
+                };
+                cmd.Parameters.Add(outputIdParam);
 
-                    cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();
 
                 idFacturaGenerada = (int)outputIdParam.Value;
 
@@ -232,7 +231,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         {
             var producto = await _repositorioFacturas.PaObtenerProductoPorCodigo(codigo);
 
-            if (producto != null) 
+            if (producto != null)
             {
                 return Json(new
                 {
