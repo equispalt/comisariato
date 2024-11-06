@@ -8,10 +8,10 @@
     <div class="card-header">
         <form asp-action="ResumenFacturas" method="get" class="form-inline mb-3">
             <label for="inicio" class="mr-2">Fecha Inicio:</label>
-            <input type="date" id="inicio" name="inicio" class="form-control mr-3" />
+            <input type="date" id="inicio" name="inicio" class="form-control mr-3" value="@ViewBag.FechaInicio" />
 
             <label for="fin" class="mr-2">Fecha Fin:</label>
-            <input type="date" id="fin" name="fin" class="form-control mr-3" />
+            <input type="date" id="fin" name="fin" class="form-control mr-3" value="@ViewBag.FechaFin" />
 
             <button type="submit" class="btn btn-primary">Generar</button>
         </form>

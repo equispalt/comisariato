@@ -26,9 +26,13 @@
         public string NombreEmpleado { get; set; }
         public string? NIT { get; set; }
         public string NombreUsuario { get; set; }
+        public string NombreProducto { get; set; }
         public string NombreComisariato { get; set; }
         public string NombreEstado { get; set; }
         public string NombreTipoPago { get; set; }
+        public int CantidadVendida { get; set; }
+        public decimal PrecioUnidad { get; set; }
+
 
     }
 }

@@ -38,9 +38,11 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
                 return View();
             }
 
+            ViewBag.FechaInicio = inicio.Value.ToString("yyyy-MM-dd");
+            ViewBag.FechaFin = fin.Value.ToString("yyyy-MM-dd");
+
             try
             {
-
                 List<FacVentas> Lista = await _repositorioReportes.ResumenFacturas(inicio.Value, fin.Value);
 
                 return View(Lista);
@@ -51,6 +53,38 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
             }
         }
 
+        public async Task<IActionResult> DetalleVentasPorProducto(DateTime? inicio, DateTime? fin)
+        {
+            List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+            ViewBag.BreadcrumbItems = breadcrumbItems;
+
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
+
+            if (!inicio.HasValue || !fin.HasValue)
+            {
+                // Devuelve la vista vacía si no se han proporcionado las fechas
+                return View();
+            }
+
+            ViewBag.FechaInicio = inicio.Value.ToString("yyyy-MM-dd");
+            ViewBag.FechaFin = fin.Value.ToString("yyyy-MM-dd");
+
+            try
+            {
+                List<FacVentas> Lista = await _repositorioReportes.DetalleVentasPorProducto(inicio.Value, fin.Value);
+
+                return View(Lista);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
 
 
 
