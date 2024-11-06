@@ -73,7 +73,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
             }
         }
 
-        public async Task<IActionResult> DetalleVentasPorProducto(DateTime? inicio, DateTime? fin)
+        public async Task<IActionResult> DetalleVentasPorProducto(DateTime? inicio, DateTime? fin, bool ExportarExcel = false)
         {
             List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
             ViewBag.BreadcrumbItems = breadcrumbItems;
@@ -97,6 +97,27 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
             try
             {
                 List<FacVentas> Lista = await _repositorioReportes.DetalleVentasPorProducto(inicio.Value, fin.Value);
+
+                var listaFiltrada = Lista.Select(f => new
+                {
+                    f.FechaMod,
+                    f.Consecutivo,
+                    f.CodigoSILP,
+                    f.NombreProducto,
+                    f.CantidadVendida,
+                    f.PrecioUnidad,
+                    f.Total
+                }).ToList();
+
+                TempData["ListaFacturas"] = Newtonsoft.Json.JsonConvert.SerializeObject(listaFiltrada);
+
+
+                if (ExportarExcel)
+                {
+                    // Genera el archivo Excel si esExportarExcel es verdadero
+                    var archivoExcel = _repositorioReportes.GenerarExcelDesdeLista(listaFiltrada);
+                    return File(archivoExcel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "DetalleVentasPorProducto.xlsx");
+                }
 
                 return View(Lista);
             }
