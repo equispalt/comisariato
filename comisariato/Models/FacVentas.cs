@@ -26,6 +26,7 @@
         public string NombreEmpleado { get; set; }
         public string? NIT { get; set; }
         public string NombreUsuario { get; set; }
+        public string CodigoSILP { get; set; }
         public string NombreProducto { get; set; }
         public string NombreComisariato { get; set; }
         public string NombreEstado { get; set; }
