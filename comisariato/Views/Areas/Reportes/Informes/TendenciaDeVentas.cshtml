@@ -1,0 +1,79 @@
+﻿@using SistemaILP.comisariato.Data;
+@model List<TendenciaVentas>;
+
+<div class="card">
+    <h4 style="padding-left: 20px; margin-top: 10px" class="card-title"><i class="fas fa-file-invoice"></i> Tendencia De Ventas</h4>
+
+    <!-- Formulario para filtrar por fechas -->
+    <div class="card-header">
+        <form asp-action="TendenciaDeVentas" method="get" class="form-inline mb-3">
+            <label for="inicio" class="mr-2">Fecha Inicio:</label>
+            <input type="date" id="inicio" name="inicio" class="form-control mr-3" value="@ViewBag.FechaInicio" />
+
+            <label for="fin" class="mr-2">Fecha Fin:</label>
+            <input type="date" id="fin" name="fin" class="form-control mr-4" value="@ViewBag.FechaFin" />
+
+            <div class="form-check mr-4">
+                <input type="checkbox" class="form-check-input" id="agruparporanio" name="agruparporanio"
+                       value="true" @(ViewBag.AgruparPorAnio ?? false ? "checked" : "") />
+                <label class="form-check-label" for="agruparporanio"><strong>Tendencia por Año</strong></label>
+            </div>
+
+            <button type="submit" class="btn btn-primary mr-auto">Generar</button>
+
+            <button type="submit" class="btn btn-success mr-2 " name="ExportarExcel" value="true"><i class="fas fa-file-excel"></i>  Exportar a Excel</button>
+        </form>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body table-responsive p-0" style="height: 500px;">
+        <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered" id="tablaFacturas">
+            <thead>
+                <tr>
+                    <th style="width: 100px; text-align: center;">Año</th>
+                    @if (!(ViewBag.AgruparPorAnio ?? false))
+                    {
+                        <th style="width: 100px; text-align: center;">Mes</th>
+                    }
+                    <th style="width: 100px; text-align: center;">Codigo SILP</th>
+                    <th style="width: 150px; text-align: center;">Producto</th>
+                    <th style="width: 100px; text-align: center;">Cantidad Vendida</th>
+                    <th style="width: 150px; text-align: center;">Ingresos Generados</th>
+                    <th style="width: 100px; text-align: center;">Porcentaje de Venta</th>
+                    <th style="width: 100px; text-align: center;">Clasificacion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var Tendencia in Model)
+                    {
+                        <tr>
+                            <td style="text-align: center;">@Tendencia.Anio</td>
+                            @if (!(ViewBag.AgruparPorAnio ?? false))
+                            {
+                                <td style="text-align: center;">@Tendencia.Mes</td>
+                            }
+                            <td style="text-align: center;">@Tendencia.CodigoSILP</td>
+                            <td style="text-align: left;">@Tendencia.NombreProducto</td>
+                            <td style="text-align: center;">@Tendencia.CantidadVendida</td>
+                            <td style="text-align: right;">Q. @Tendencia.IngresosGenerados.ToString("F2")</td>
+                            <td style="text-align: center;">@Tendencia.PorcentajeVentas.ToString("F2") %</td>
+                            <td style="text-align: center;">@Tendencia.Clasificacion</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="7" style="text-align: center;">No hay datos disponibles.</td>
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+        <hr>
+
+    </div>
+    <!-- /.card-body -->
+</div>
+<!-- /.card -->

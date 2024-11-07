@@ -127,5 +127,61 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
             }
         }
 
+        public async Task<IActionResult> TendenciaDeVentas(DateTime? inicio, DateTime? fin, bool? agruparporanio, bool ExportarExcel = false)
+        {
+            List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
+            ViewBag.BreadcrumbItems = breadcrumbItems;
+
+            bool esPermitido = await _permisosService.ValidaPermisoPrograma();
+
+            if (esPermitido == false)
+            {
+                return RedirectToAction("Error403", "Home");
+            }
+
+            if (!inicio.HasValue || !fin.HasValue)
+            {
+                // Devuelve la vista vacía si no se han proporcionado las fechas
+                return View();
+            }
+
+            ViewBag.FechaInicio = inicio.Value.ToString("yyyy-MM-dd");
+            ViewBag.FechaFin = fin.Value.ToString("yyyy-MM-dd");
+            ViewBag.AgruparPorAnio = agruparporanio ?? false;
+
+            try
+            {
+                List<TendenciaVentas> Lista = await _repositorioReportes.TendenciaDeVentas(inicio.Value, fin.Value, agruparporanio ?? false);
+
+                var listaFiltrada = Lista.Select(P => new
+                {
+                    P.Anio,
+                    P.Mes,
+                    P.CodigoSILP,
+                    P.NombreProducto,
+                    P.CantidadVendida,
+                    P.IngresosGenerados,
+                    P.PorcentajeVentas,
+                    P.Clasificacion
+                }).ToList();
+
+                TempData["ListaTendencia"] = Newtonsoft.Json.JsonConvert.SerializeObject(listaFiltrada);
+
+
+                if (ExportarExcel)
+                {
+                    // Genera el archivo Excel si esExportarExcel es verdadero
+                    var archivoExcel = _repositorioReportes.GenerarExcelDesdeLista(listaFiltrada);
+                    return File(archivoExcel, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "TendenciaDeVentas.xlsx");
+                }
+
+                return View(Lista);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
     }
 }

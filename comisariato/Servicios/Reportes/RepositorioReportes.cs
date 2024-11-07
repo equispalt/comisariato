@@ -12,7 +12,7 @@ namespace SistemaILP.comisariato.Servicios.Reportes
     {
         Task<List<FacVentas>> ResumenFacturas(DateTime inicio, DateTime fin);
         Task<List<FacVentas>> DetalleVentasPorProducto(DateTime inicio, DateTime fin);
-
+        Task<List<TendenciaVentas>> TendenciaDeVentas(DateTime inicio, DateTime fin, bool AgruparPorAnio);
         byte[] GenerarExcelDesdeLista<T>(List<T> lista);
     }
 
@@ -47,6 +47,20 @@ namespace SistemaILP.comisariato.Servicios.Reportes
                         {
                             FechaInicio = inicio,
                             FechaFin = fin
+                        });
+            return facturas.ToList();
+        }
+
+        public async Task<List<TendenciaVentas>> TendenciaDeVentas(DateTime inicio, DateTime fin, bool AgruparPorAnio)
+        {
+            using var connection = new SqlConnection(_connectionString);
+            IEnumerable<TendenciaVentas> facturas = await connection.QueryAsync<TendenciaVentas>(@"
+                        EXEC TendenciaDeVentas  @FechaInicio, @FechaFin , @AgruparPorAnio",
+                        new
+                        {
+                            FechaInicio = inicio,
+                            FechaFin = fin,
+                            AgruparPorAnio = AgruparPorAnio
                         });
             return facturas.ToList();
         }
