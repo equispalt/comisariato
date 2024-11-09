@@ -178,12 +178,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Operaciones
         [HttpPost]
         public async Task<IActionResult> AnularFactura(int id)
         {
-            //bool esPermitido = await _permisosService.ValidaPermisoPrograma();
 
-            //if (esPermitido == false)
-            //{
-            //    return RedirectToAction("Error403", "Home");
-            //}
             string usuario = UsuarioActivo();
 
             try
