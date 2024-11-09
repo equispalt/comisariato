@@ -13,12 +13,6 @@
             <label for="fin" class="mr-2">Fecha Fin:</label>
             <input type="date" id="fin" name="fin" class="form-control mr-4" value="@ViewBag.FechaFin" />
 
-            <div class="form-check mr-4">
-                <input type="checkbox" class="form-check-input" id="agruparporanio" name="agruparporanio"
-                       value="true" @(ViewBag.AgruparPorAnio ?? false ? "checked" : "") />
-                <label class="form-check-label" for="agruparporanio"><strong>Tendencia por Año</strong></label>
-            </div>
-
             <button type="submit" class="btn btn-primary mr-auto">Generar</button>
 
             <button type="submit" class="btn btn-success mr-2 " name="ExportarExcel" value="true"><i class="fas fa-file-excel"></i>  Exportar a Excel</button>
@@ -29,11 +23,6 @@
         <table class="table table-responsive-sm table-head-fixed text-nowrap table-hover table-bordered" id="tablaFacturas">
             <thead>
                 <tr>
-                    <th style="width: 100px; text-align: center;">Año</th>
-                    @if (!(ViewBag.AgruparPorAnio ?? false))
-                    {
-                        <th style="width: 100px; text-align: center;">Mes</th>
-                    }
                     <th style="width: 100px; text-align: center;">Codigo SILP</th>
                     <th style="width: 150px; text-align: center;">Producto</th>
                     <th style="width: 100px; text-align: center;">Cantidad Vendida</th>
@@ -48,11 +37,6 @@
                     @foreach (var Tendencia in Model)
                     {
                         <tr>
-                            <td style="text-align: center;">@Tendencia.Anio</td>
-                            @if (!(ViewBag.AgruparPorAnio ?? false))
-                            {
-                                <td style="text-align: center;">@Tendencia.Mes</td>
-                            }
                             <td style="text-align: center;">@Tendencia.CodigoSILP</td>
                             <td style="text-align: left;">@Tendencia.NombreProducto</td>
                             <td style="text-align: center;">@Tendencia.CantidadVendida</td>

@@ -127,7 +127,7 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
             }
         }
 
-        public async Task<IActionResult> TendenciaDeVentas(DateTime? inicio, DateTime? fin, bool? agruparporanio, bool ExportarExcel = false)
+        public async Task<IActionResult> TendenciaDeVentas(DateTime? inicio, DateTime? fin, bool ExportarExcel = false)
         {
             List<BreadcrumbItem> breadcrumbItems = _breadcrumbService.GetBreadcrumbItems(HttpContext);
             ViewBag.BreadcrumbItems = breadcrumbItems;
@@ -147,16 +147,13 @@ namespace SistemaILP.comisariato.Controllers.Areas.Reportes
 
             ViewBag.FechaInicio = inicio.Value.ToString("yyyy-MM-dd");
             ViewBag.FechaFin = fin.Value.ToString("yyyy-MM-dd");
-            ViewBag.AgruparPorAnio = agruparporanio ?? false;
 
             try
             {
-                List<TendenciaVentas> Lista = await _repositorioReportes.TendenciaDeVentas(inicio.Value, fin.Value, agruparporanio ?? false);
+                List<TendenciaVentas> Lista = await _repositorioReportes.TendenciaDeVentas(inicio.Value, fin.Value);
 
                 var listaFiltrada = Lista.Select(P => new
                 {
-                    P.Anio,
-                    P.Mes,
                     P.CodigoSILP,
                     P.NombreProducto,
                     P.CantidadVendida,
